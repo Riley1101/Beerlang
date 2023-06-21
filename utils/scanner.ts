@@ -51,6 +51,18 @@ export class Scanner {
     return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z") || c == "_";
   }
 
+  private _identifier() {
+    while (this._is_alpha_numeric()) this._advance();
+    let text = this.contents.substring(this.start, this.current);
+    let type = TokenType.Identifier;
+    if (text in TokenType) type = TokenType[text as keyof typeof TokenType];
+    this._add_token(type);
+  }
+
+  private _is_alpha_numeric(): boolean {
+    return this._is_alpha() || this._is_digit();
+  }
+
   private _peek_next() {
     if (this.current + 1 >= this.contents.length) return "\0";
     return this.contents.charAt(this.current + 1);
@@ -132,11 +144,6 @@ export class Scanner {
       case "\r":
       case "\t":
         break;
-      case "o":
-        if (this._peek_next() == "r") {
-          this._add_token(TokenType.Or);
-        }
-        break;
       case "\n":
         this.line += 1;
         break;
@@ -154,10 +161,11 @@ export class Scanner {
         break;
 
       default:
-        error(this.line, "unexpected error default");
         if (this._is_digit()) {
           this._number();
-        }
+        } else if (this._is_alpha()) {
+          this._identifier();
+        } else error(this.line, "unexpected identifier default");
         break;
     }
   }

@@ -14,7 +14,7 @@ export class Gideon {
       scanner.log_tokens();
     });
     */
-    let tmp = 'var a = "12"; var b = 12;';
+    let tmp = 'var a = "12"; var b = 12; if (a == b) { print "hello"; }';
     let scanner = new Scanner(tmp);
     scanner.scan_tokens();
     scanner.log_tokens();
