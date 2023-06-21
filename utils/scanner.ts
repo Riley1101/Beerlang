@@ -1,6 +1,6 @@
 import { error } from "./log";
 import { Token } from "./token";
-import { TokenType, LoxObject } from "./types";
+import { LoxObject, TokenType } from "./types";
 
 export class Scanner {
   tokens: Token[] = [];
@@ -23,7 +23,7 @@ export class Scanner {
 
   private _add_token(token: TokenType, literal: LoxObject = null) {
     if (literal === null) literal = null;
-    let text = this.contents.substring(this.start + 1, this.current - 1);
+    let text = this.contents.substring(this.start, this.current);
     this.tokens.push(new Token(token, text, literal, this.line));
   }
   private _match(expected: string) {
@@ -42,10 +42,32 @@ export class Scanner {
     if (this._is_at_end()) return "\0";
     return this.contents.charAt(this.current);
   }
+  private _is_digit(): boolean {
+    let c = this._peek();
+    return c >= "0" && c <= "9";
+  }
+  private _is_alpha(): boolean {
+    let c = this._peek();
+    return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z") || c == "_";
+  }
+
+  private _peek_next() {
+    if (this.current + 1 >= this.contents.length) return "\0";
+    return this.contents.charAt(this.current + 1);
+  }
+
+  private _number() {
+    while (this._is_digit()) this._advance();
+    if (this._peek() == "." && this._is_digit()) {
+      this._advance();
+      while (this._is_digit()) this._advance();
+    }
+    let value = parseFloat(this.contents.substring(this.start, this.current));
+    this._add_token(TokenType.Number, value);
+  }
 
   private scan_token() {
     let c = this._advance();
-    console.log(c);
     switch (c) {
       case "(":
         this._add_token(TokenType.LeftParen);
@@ -110,8 +132,14 @@ export class Scanner {
       case "\r":
       case "\t":
         break;
+      case "o":
+        if (this._peek_next() == "r") {
+          this._add_token(TokenType.Or);
+        }
+        break;
       case "\n":
         this.line += 1;
+        break;
       case '"':
         while (this._peek() != '"' && !this._is_at_end()) {
           if (this._peek() == "\n") this.line += 1;
@@ -127,6 +155,9 @@ export class Scanner {
 
       default:
         error(this.line, "unexpected error default");
+        if (this._is_digit()) {
+          this._number();
+        }
         break;
     }
   }
