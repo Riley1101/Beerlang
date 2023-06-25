@@ -4,7 +4,7 @@
  */
 export function error(line: number, message: string) {
   report(line, "", message, "error");
-  // throw new Error(message);
+  throw new Error(message);
 }
 
 export function info(line: number, message: string) {

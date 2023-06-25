@@ -1,4 +1,4 @@
 var a = 12;
 var b = 14;
-var c = a ~ b;
-var hello = "Hello world;
+var c = a - b;
+var hello = "Hello world";

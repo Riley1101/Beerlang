@@ -1,6 +1,6 @@
 import { error } from "./log";
 import { Token } from "./token";
-import { LoxObject, TokenType } from "./types";
+import { LoxObject, TokenType, keywords } from "./types";
 
 export class Scanner {
   tokens: Token[] = [];
@@ -42,25 +42,27 @@ export class Scanner {
     if (this._is_at_end()) return "\0";
     return this.contents.charAt(this.current);
   }
-  private _is_digit(): boolean {
-    let c = this._peek();
+  private _is_digit(c:string): boolean {
     return c >= "0" && c <= "9";
   }
-  private _is_alpha(): boolean {
-    let c = this._peek();
+  private _is_alpha(c:string): boolean {
     return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z") || c == "_";
   }
 
   private _identifier() {
-    while (this._is_alpha_numeric()) this._advance();
+    while (this._is_alpha_numeric(this._peek())) {
+      this._advance();
+    }
     let text = this.contents.substring(this.start, this.current);
-    let type = TokenType.Identifier;
-    if (text in TokenType) type = TokenType[text as keyof typeof TokenType];
-    this._add_token(type);
+    if (text in keywords) {
+      this._add_token(keywords[text] as TokenType,text);
+    } else {
+      this._add_token(TokenType.Identifier,text);
+    }
   }
 
-  private _is_alpha_numeric(): boolean {
-    return this._is_alpha() || this._is_digit();
+  private _is_alpha_numeric(c:string): boolean {
+    return this._is_alpha(c) || this._is_digit(c);
   }
 
   private _peek_next() {
@@ -69,10 +71,10 @@ export class Scanner {
   }
 
   private _number() {
-    while (this._is_digit()) this._advance();
-    if (this._peek() == "." && this._is_digit()) {
+    while (this._is_digit(this._peek())) this._advance();
+    if (this._peek() == "." && this._is_digit(this._peek_next())) {
       this._advance();
-      while (this._is_digit()) this._advance();
+      while (this._is_digit(this._peek())) this._advance();
     }
     let value = parseFloat(this.contents.substring(this.start, this.current));
     this._add_token(TokenType.Number, value);
@@ -161,9 +163,9 @@ export class Scanner {
         break;
 
       default:
-        if (this._is_digit()) {
+        if (this._is_digit(c)) {
           this._number();
-        } else if (this._is_alpha()) {
+        } else if (this._is_alpha(c)) {
           this._identifier();
         } else error(this.line, "unexpected identifier default");
         break;

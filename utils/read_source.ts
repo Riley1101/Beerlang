@@ -24,10 +24,11 @@ export function run_prompt(exec: Exec) {
 }
 
 export function read_source(exec: Exec) {
-    if (process.argv.length > 2) {
+  if (process.argv.length > 2) {
     const path = process.argv[2];
-    return run_file(path, exec);
-} else {
+    if (path) return run_file(path, exec);
+    else run_prompt(exec);
+  } else {
     return run_prompt(exec);
-}
+  }
 }
