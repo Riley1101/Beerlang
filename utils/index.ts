@@ -7,7 +7,8 @@ export class Gideon {
     read_source((contents: string) => {
       let scanner = new Scanner(contents);
       scanner.scan_tokens();
-      scanner.log_tokens();
+      const tokens = scanner.get_tokens();
+      console.log(tokens);
     });
   }
 }

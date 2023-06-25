@@ -42,10 +42,10 @@ export class Scanner {
     if (this._is_at_end()) return "\0";
     return this.contents.charAt(this.current);
   }
-  private _is_digit(c:string): boolean {
+  private _is_digit(c: string): boolean {
     return c >= "0" && c <= "9";
   }
-  private _is_alpha(c:string): boolean {
+  private _is_alpha(c: string): boolean {
     return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z") || c == "_";
   }
 
@@ -55,13 +55,13 @@ export class Scanner {
     }
     let text = this.contents.substring(this.start, this.current);
     if (text in keywords) {
-      this._add_token(keywords[text] as TokenType,text);
+      this._add_token(keywords[text] as TokenType, text);
     } else {
-      this._add_token(TokenType.Identifier,text);
+      this._add_token(TokenType.Identifier, text);
     }
   }
 
-  private _is_alpha_numeric(c:string): boolean {
+  private _is_alpha_numeric(c: string): boolean {
     return this._is_alpha(c) || this._is_digit(c);
   }
 
@@ -177,6 +177,9 @@ export class Scanner {
       this.scan_token();
     }
     this.tokens.push(new Token(TokenType.EOF, "", null, this.current));
+  }
+  public get_tokens() {
+    return this.tokens;
   }
   public log_tokens() {
     console.log(this.tokens);
