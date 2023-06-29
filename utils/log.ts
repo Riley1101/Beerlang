@@ -2,13 +2,13 @@
  * @param {number} line - report the line number
  * @param {string} message - report the message
  */
-export function error(line: number, message: string) {
-  report(line, "", message, "error");
-  throw new Error(message);
+export function error(line: number, message: string): never{
+    report(line, "", message, "error");
+    throw new Error(message);
 }
 
 export function info(line: number, message: string) {
-  report(line, "", message, "info");
+    report(line, "", message, "info");
 }
 
 type Log = "error" | "info";
@@ -19,10 +19,10 @@ type Log = "error" | "info";
  * @param {string} message - report the message
  */
 export function report(
-  line: number,
-  where: string,
-  message: string,
-  type: Log
+    line: number,
+    where: string,
+    message: string,
+    type: Log
 ) {
-  console.log(`[${type}] --> [line ${line}] Error ${where}: ${message}`);
+    console.log(`[${type}] --> [line ${line}] Error ${where}: ${message}`);
 }
