@@ -1,4 +1,5 @@
 import { Token } from "./token";
+import { LoxObject } from "./types";
 
 export interface Expr {
     accept<T>(visitor: ExprVisitor<T>): T;
@@ -9,6 +10,9 @@ export interface Stmt {
 }
 export interface ExprVisitor<T> {
     visitBinaryExpr(expr: BinaryExpr): T;
+    visitUnaryExpr(expr: UnaryExpr): T;
+    visitLiteralExpr(expr: LiteralExpr): T;
+    visitThisExpr(expr: ThisExpr): T;
 }
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
@@ -25,6 +29,41 @@ export interface StmtVisitor<T> { }
 * Unary 
 * Primarry
 */
+
+export class ThisExpr implements Expr{
+    value : Token 
+    constructor(value:Token){
+        this.value = value
+    }
+    accept<T>(visitor: ExprVisitor<T>): T {
+       return visitor.visitThisExpr(this) 
+    }
+}
+
+export class LiteralExpr implements Expr{
+    value :LoxObject
+    constructor(value:LoxObject){
+        this.value = value
+    }
+    accept<T>(visitor: ExprVisitor<T>): T {
+        return visitor.visitLiteralExpr(this)
+    }
+}
+
+export class UnaryExpr implements Expr {
+    right: Expr;
+    operator: Token;
+
+    constructor(operator: Token, right: Expr) {
+        this.operator = operator
+        this.right = right
+    }
+
+    accept<T>(visitor: ExprVisitor<T>): T {
+        return visitor.visitUnaryExpr(this)
+    }
+}
+
 export class BinaryExpr implements Expr {
     left: Expr;
     operator: Token;
@@ -61,7 +100,20 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
             .join("\n");
     }
 
+    visitThisExpr(expr: ThisExpr): string {
+       return this.parenthesize(expr.value.lexeme) 
+    }
+
+    visitLiteralExpr(expr: LiteralExpr): string {
+        if (expr.value === null) return "nil";
+        if (typeof expr.value === "string") return `"${expr.value}"`;
+        return expr.value.toString();
+    }
+
     visitBinaryExpr(expr: BinaryExpr): string {
         return this.parenthesize(expr.operator.lexeme, expr.left, expr.right);
+    }
+    visitUnaryExpr(expr: UnaryExpr): string {
+        return this.parenthesize(expr.operator.lexeme, expr.right)
     }
 }
