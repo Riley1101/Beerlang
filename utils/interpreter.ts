@@ -1,4 +1,5 @@
 import * as Ast from './ast'
+import { error } from './log'
 import type { LoxObject, } from './types'
 import { TokenType } from './types'
 
@@ -12,6 +13,15 @@ export class Interpreter implements Ast.ExprVisitor<LoxObject>{
         if (a == null && b == null) return true;
         if (a == null) return false
         return a === b
+    }
+
+    interpret(expr: Ast.Expr) {
+        try {
+            let value = this.evaluate(expr)
+            console.log(value)
+        } catch (err) {
+            error(0, 'Run time err at interpret')
+        }
     }
 
     visitLiteralExpr(expr: Ast.LiteralExpr): LoxObject {
@@ -53,25 +63,25 @@ export class Interpreter implements Ast.ExprVisitor<LoxObject>{
     }
     /** todo */
     visitThisExpr(expr: Ast.ThisExpr): LoxObject {
-
+        return null;
     }
     visitSuperExpr(expr: Ast.SuperExpr): LoxObject {
-
+        return null;
     }
     visitUnaryExpr(expr: Ast.UnaryExpr): LoxObject {
-
+        return null;
     }
     visitLogicalExpr(expr: Ast.LogicalExpr): LoxObject {
-
+        return null;
     }
     visitGroupingExpr(expr: Ast.GroupingExpr): LoxObject {
-
+        return null;
     }
     visitVariableExpr(expr: Ast.VariableExpr): LoxObject {
-
+        return null;
     }
     visitAssignmentExpr(expr: Ast.AssignmentExpr): LoxObject {
-
+        return null;
     }
 
 }
