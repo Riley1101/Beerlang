@@ -10,6 +10,40 @@ export class Parser {
         this.tokens = token
         this.current = 0
     }
+    public parse(): ast.Stmt[] {
+        const statements: ast.Stmt[] = []
+        while (!this.isAtEnd()) {
+            try {
+                statements.push(this.assignment())
+            } catch {
+                console.log("error")
+                this.synchronize()
+            }
+
+        }
+        return statements
+    }
+
+    private synchronize() {
+        this.advance()
+        while (!this.isAtEnd()) {
+            if (this.previous().type === TokenType.Semicolon) return
+            switch (this.peek().type) {
+                case TokenType.Class:
+                case TokenType.Fun:
+                case TokenType.Var:
+                    console.log("break")
+                    break;
+                case TokenType.For:
+                case TokenType.If:
+                case TokenType.While:
+                case TokenType.Print:
+                case TokenType.Return:
+                    return
+            }
+            this.advance()
+        }
+    }
 
     private isAtEnd(): boolean {
         return this.peek().type === TokenType.EOF
@@ -47,9 +81,9 @@ export class Parser {
         return false
     }
 
-    private logicalAnd():ast.Expr{
+    private logicalAnd(): ast.Expr {
         let expr = this.equality();
-        while(this.match(TokenType.And)){
+        while (this.match(TokenType.And)) {
             let operator = this.previous();
             let right = this.equality();
             expr = new ast.LogicalExpr(expr, operator, right)
@@ -57,9 +91,9 @@ export class Parser {
         return expr
     }
 
-    private logicalOr():ast.Expr{
+    private logicalOr(): ast.Expr {
         let expr = this.logicalAnd();
-        while(this.match(TokenType.Or)){
+        while (this.match(TokenType.Or)) {
             let operator = this.previous();
             let right = this.logicalAnd();
             expr = new ast.LogicalExpr(expr, operator, right)
@@ -67,19 +101,18 @@ export class Parser {
         return expr
     }
 
-    private assignment(): ast.Expr{
-       let expr = this.logicalOr();
-       if(this.match(TokenType.Equal)){
-           const equal = this.previous()
-           let value = this.assignment()
-           if(expr instanceof ast.VariableExpr){
-               const name = expr.name
-               return new ast.AssignmentExpr(name, value)
-           }
-           error(equal.line, "Invalid assignment target.")
-       }
-       return expr
-       
+    private assignment(): ast.Expr {
+        let expr = this.logicalOr();
+        if (this.match(TokenType.Equal)) {
+            const equal = this.previous()
+            let value = this.assignment()
+            if (expr instanceof ast.VariableExpr) {
+                const name = expr.name
+                return new ast.AssignmentExpr(name, value)
+            }
+            error(equal.line, "Invalid assignment.")
+        }
+        return expr
     }
 
     private expression(): ast.Expr {
@@ -97,7 +130,11 @@ export class Parser {
             this.consume(TokenType.RightParen, "Expect ')' after expression.")
             return new ast.GroupingExpr(expr)
         }
+        if (this.match(TokenType.Identifier)) {
+            return new ast.VariableExpr(this.previous())
+        }
         error(this.peek().line, "Expect expression.")
+        console.log('i run anyways')
     }
 
 
@@ -116,7 +153,6 @@ export class Parser {
             let operator = this.previous()
             let right = this.unary()
             expr = new ast.BinaryExpr(expr, operator, right)
-
         }
         return expr
     }
@@ -143,15 +179,13 @@ export class Parser {
 
     private equality() {
         let expr = this.comparism()
-        while(this.match(TokenType.Equal, TokenType.EqualEqual)){
+        while (this.match(TokenType.Equal, TokenType.EqualEqual)) {
             let operator = this.previous();
             let right = this.comparism();
             expr = new ast.BinaryExpr(expr, operator, right)
         }
         return expr
 
-    }
-    public parse() {
     }
 
 }
