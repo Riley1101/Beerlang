@@ -1,4 +1,4 @@
-var a = 12;
-var b = 14;
-var c = a - b;
-var hello = "Hello world";
+a = 12
+b = 14
+c = a - b
+hello = "Hello world"
