@@ -1,12 +1,19 @@
 import * as Ast from "./ast";
-import { error } from "./log";
+import { errorReporter, RuntimeError } from "./log";
 import type { LoxObject } from "./types";
+
 import { TokenType } from "./types";
 import { Token } from "./token";
 
 export class Interpreter implements Ast.ExprVisitor<LoxObject> {
   private evaluate(expr: Ast.Expr): LoxObject {
     return expr.accept(this);
+  }
+
+  private isTruthy(object: LoxObject) {
+    if (object == null) return false;
+    if (typeof object === "boolean") return object;
+    return true;
   }
 
   private isEqual(a: LoxObject, b: LoxObject) {
@@ -16,17 +23,21 @@ export class Interpreter implements Ast.ExprVisitor<LoxObject> {
   }
 
   interpret(expr: Ast.Expr) {
-    try {
-      let value = this.evaluate(expr);
-      console.log(value);
-    } catch (err) {
-      error(0, "Run time err at interpret");
-    }
+    let value = this.evaluate(expr);
+    console.log(value);
   }
 
-  checkNumberOperand(operator: Token, left: LoxObject, right: LoxObject) {
+  checkNumberOperand(operator: Token, right: LoxObject) {
+    if (typeof right === "number") return;
+    errorReporter.report(
+      new RuntimeError(operator, "Operand must be a number")
+    );
+  }
+  checkNumberOperands(operator: Token, left: LoxObject, right: LoxObject) {
     if (typeof left === "number" && typeof right === "number") return;
-    throw new Error(`Operand must be number`);
+    errorReporter.report(
+      new RuntimeError(operator, "Operands must be numbers.")
+    );
   }
 
   visitLiteralExpr(expr: Ast.LiteralExpr): LoxObject {
@@ -38,32 +49,32 @@ export class Interpreter implements Ast.ExprVisitor<LoxObject> {
     let right = this.evaluate(expr.right);
     switch (expr.operator.type) {
       case TokenType.Minus:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         return (left as number) - (right as number);
       case TokenType.Slash:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         return (left as number) / (right as number);
       case TokenType.Star:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         return (left as number) * (right as number);
       case TokenType.Greater:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         return (left as number) > (right as number);
       case TokenType.GreaterEqual:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         return (left as number) >= (right as number);
       case TokenType.Less:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         return (left as number) < (right as number);
       case TokenType.LessEqual:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         return (left as number) <= (right as number);
       case TokenType.EqualEqual:
         return this.isEqual(left, right);
       case TokenType.BangEqual:
         return !this.isEqual(left, right);
       case TokenType.Plus:
-        this.checkNumberOperand(expr.operator, left, right);
+        this.checkNumberOperands(expr.operator, left, right);
         if (typeof left === "number" && typeof right === "number") {
           return left + right;
         }
@@ -82,13 +93,22 @@ export class Interpreter implements Ast.ExprVisitor<LoxObject> {
     return null;
   }
   visitUnaryExpr(expr: Ast.UnaryExpr): LoxObject {
+    let right = this.evaluate(expr.right);
+    switch (expr.operator.type) {
+      case TokenType.Bang:
+        return this.isTruthy(right);
+      case TokenType.Minus:
+        this.checkNumberOperand(expr.operator, right);
+        console.log(right);
+        return -(right as number);
+    }
     return null;
   }
   visitLogicalExpr(expr: Ast.LogicalExpr): LoxObject {
     return null;
   }
   visitGroupingExpr(expr: Ast.GroupingExpr): LoxObject {
-    return null;
+    return this.evaluate(expr.expression);
   }
   visitVariableExpr(expr: Ast.VariableExpr): LoxObject {
     return null;

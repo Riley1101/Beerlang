@@ -1,4 +1,4 @@
-import { error } from "./log";
+import { error, errorReporter, SyntaxError } from "./log";
 import { Token } from "./token";
 import { LoxObject, TokenType, keywords } from "./types";
 
@@ -155,7 +155,14 @@ export class Scanner {
           this._advance();
         }
         if (this._is_at_end()) {
-          error(this.line, "unexpected error default");
+          errorReporter.report(
+            new SyntaxError(
+              "Unterminated string.",
+              this.line,
+              // TODO!
+              this.contents.substring(this.start, this.current)
+            )
+          );
           return;
         }
         this._advance();
@@ -167,7 +174,14 @@ export class Scanner {
           this._number();
         } else if (this._is_alpha(c)) {
           this._identifier();
-        } else error(this.line, "unexpected identifier default");
+        } else
+          errorReporter.report(
+            new SyntaxError(
+              "Unexpected character.",
+              this.line,
+              this.contents.substring(this.start, this.current)
+            )
+          );
         break;
     }
   }
