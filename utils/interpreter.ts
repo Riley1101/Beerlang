@@ -1,15 +1,16 @@
 import * as Ast from "./ast";
 import { errorReporter, RuntimeError } from "./log";
 import type { LoxObject } from "./types";
-
+import { Environment } from "./environment";
 import { TokenType } from "./types";
 import { Token } from "./token";
 
 export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
+  private globals = new Environment();
+  private environment = this.globals;
   private evaluate(expr: Ast.Expr): LoxObject {
     return expr.accept(this);
   }
-
   private isTruthy(object: LoxObject) {
     if (object == null) return false;
     if (typeof object === "boolean") return object;
@@ -49,12 +50,14 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     if (expr.initializer) {
       value = this.evaluate(expr.initializer);
     }
+    this.environment.define(expr.name.lexeme, value);
   }
 
   visitExpressionStmt(stmt: Ast.ExpressionStmt): void {
     console.log(this.evaluate(stmt.expression));
     this.evaluate(stmt.expression);
   }
+
   visitPrintStmt(expr: Ast.PrintStmt): void {
     const value = this.evaluate(expr.expression);
     console.log(value);
@@ -145,7 +148,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     return this.evaluate(expr.expression);
   }
   visitVariableExpr(expr: Ast.VariableExpr): LoxObject {
-    return null;
+    return this.environment.get(expr.name);
   }
   visitAssignmentExpr(expr: Ast.AssignmentExpr): LoxObject {
     return null;

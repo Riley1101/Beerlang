@@ -1,3 +1,11 @@
-2 + 3
-4 + 1 
-3 + 1
+var z = 12; 
+var a = 100;
+var b = 2;
+var c = 8;
+var e = 6;
+var f = 15;
+
+var apple = b + c;
+var orange = e + f;
+var taste = a - ( apple + orange );
+print taste;
