@@ -17,9 +17,7 @@ export class Gideon {
       const parser = new Parser(tokens);
       console.log(tokens);
       let stats = parser.parse();
-      for (let stat of stats) {
-        interpreter.interpret(stat);
-      }
+      interpreter.interpret(stats);
     } else {
       read_source((contents: string) => {
         let scanner = new Scanner(contents);
@@ -28,9 +26,7 @@ export class Gideon {
         const parser = new Parser(tokens);
         console.log(tokens);
         let stats = parser.parse();
-        for (let stat of stats) {
-          interpreter.interpret(stat);
-        }
+        interpreter.interpret(stats);
       });
     }
   }

@@ -5,7 +5,7 @@ import type { LoxObject } from "./types";
 import { TokenType } from "./types";
 import { Token } from "./token";
 
-export class Interpreter implements Ast.ExprVisitor<LoxObject> {
+export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   private evaluate(expr: Ast.Expr): LoxObject {
     return expr.accept(this);
   }
@@ -22,21 +22,55 @@ export class Interpreter implements Ast.ExprVisitor<LoxObject> {
     return a === b;
   }
 
-  interpret(expr: Ast.Expr) {
-    let value = this.evaluate(expr);
+  private execute(stmt: Ast.Stmt): void {
+    stmt.accept(this);
+  }
+
+  private stringify(object: LoxObject): string {
+    if (object == null) return "nil";
+    return object.toString();
+  }
+
+  interpret(target: Ast.Expr | Ast.Stmt[]) {
+    if (Array.isArray(target)) {
+      for (const statement of target) {
+        statement && this.execute(statement);
+      }
+      // expr evaulate
+    } else {
+      let value = this.evaluate(target);
+      console.log(value);
+    }
+  }
+
+  //statements start
+  visitVarStmt(expr: Ast.VarStmt): void {
+    let value = null;
+    if (expr.initializer) {
+      value = this.evaluate(expr.initializer);
+    }
+  }
+
+  visitExpressionStmt(stmt: Ast.ExpressionStmt): void {
+    console.log(this.evaluate(stmt.expression));
+    this.evaluate(stmt.expression);
+  }
+  visitPrintStmt(expr: Ast.PrintStmt): void {
+    const value = this.evaluate(expr.expression);
     console.log(value);
   }
 
+  // expr starts
   checkNumberOperand(operator: Token, right: LoxObject) {
     if (typeof right === "number") return;
     errorReporter.report(
-      new RuntimeError(operator, "Operand must be a number")
+      new RuntimeError(operator, "Operand must be a number"),
     );
   }
   checkNumberOperands(operator: Token, left: LoxObject, right: LoxObject) {
     if (typeof left === "number" && typeof right === "number") return;
     errorReporter.report(
-      new RuntimeError(operator, "Operands must be numbers.")
+      new RuntimeError(operator, "Operands must be numbers."),
     );
   }
 

@@ -115,22 +115,22 @@ export class Scanner {
         break;
       case "!":
         this._add_token(
-          this._match("=") ? TokenType.BangEqual : TokenType.Bang
+          this._match("=") ? TokenType.BangEqual : TokenType.Bang,
         );
         break;
       case "=":
         this._add_token(
-          this._match("=") ? TokenType.EqualEqual : TokenType.Equal
+          this._match("=") ? TokenType.EqualEqual : TokenType.Equal,
         );
         break;
       case "<":
         this._add_token(
-          this._match("=") ? TokenType.LessEqual : TokenType.Less
+          this._match("=") ? TokenType.LessEqual : TokenType.Less,
         );
         break;
       case ">":
         this._add_token(
-          this._match("=") ? TokenType.GreaterEqual : TokenType.Greater
+          this._match("=") ? TokenType.GreaterEqual : TokenType.Greater,
         );
         break;
       case "/":
@@ -150,25 +150,8 @@ export class Scanner {
         this.line += 1;
         break;
       case '"':
-        while (this._peek() != '"' && !this._is_at_end()) {
-          if (this._peek() == "\n") this.line += 1;
-          this._advance();
-        }
-        if (this._is_at_end()) {
-          errorReporter.report(
-            new SyntaxError(
-              "Unterminated string.",
-              this.line,
-              // TODO!
-              this.contents.substring(this.start, this.current)
-            )
-          );
-          return;
-        }
-        this._advance();
-        this._add_token(TokenType.String);
+        this.string();
         break;
-
       default:
         if (this._is_digit(c)) {
           this._number();
@@ -179,12 +162,32 @@ export class Scanner {
             new SyntaxError(
               "Unexpected character.",
               this.line,
-              this.contents.substring(this.start, this.current)
-            )
+              this.contents.substring(this.start, this.current),
+            ),
           );
         break;
     }
   }
+
+  private string() {
+    while (this._peek() != '"' && !this._is_at_end()) {
+      if (this._peek() == "\n") this.line += 1;
+      this._advance();
+    }
+    if (this._is_at_end()) {
+      errorReporter.report(
+        new SyntaxError(
+          "Unterminated string.",
+          this.line,
+          this.contents.substring(this.start, this.current),
+        ),
+      );
+    }
+    this._advance();
+    let value = this.contents.substring(this.start + 1, this.current - 1);
+    this._add_token(TokenType.String, value);
+  }
+
   public scan_tokens() {
     while (!this._is_at_end()) {
       this.start = this.current;
