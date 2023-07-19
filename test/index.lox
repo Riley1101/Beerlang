@@ -1,4 +1,8 @@
-var a = 12;
-var b = 14;
-var c = a ~ b;
-var hello = "Hello world;
+var a = 1;
+{
+  var c  = ( 2 +4);
+  var a = a + 2 + c;
+  var e = a + 2 + c;
+  print a;
+  print e;
+}
