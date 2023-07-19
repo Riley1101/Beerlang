@@ -22,10 +22,21 @@ export interface ExprVisitor<T> {
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
 
+export class BlockStmt implements Stmt {
+  statements: Stmt[];
+  constructor(statements: Stmt[]) {
+    this.statements = statements;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitBlockStmt(this);
+  }
+}
+
 export interface StmtVisitor<T> {
   visitExpressionStmt(expr: ExpressionStmt): T;
   visitVarStmt(expr: VarStmt): T;
   visitPrintStmt(expr: PrintStmt): T;
+  visitBlockStmt(expr: BlockStmt): T;
 }
 
 export class VarStmt implements Stmt {
@@ -198,6 +209,16 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   }
 
   // statements start
+
+  visitBlockStmt(expr: BlockStmt): string {
+    let result = "(block";
+    for (const statement of expr.statements) {
+      result += this.indent(statement.accept(this));
+    }
+    result += ")";
+    return result;
+  }
+
   visitVarStmt(expr: VarStmt): string {
     const name = new VariableExpr(expr.name);
     if (expr.initializer) {

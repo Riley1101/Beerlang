@@ -44,6 +44,18 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     }
   }
 
+  private executeBlock(statements: Ast.Stmt[], environment: Environment) {
+    const previous = this.environment;
+    try {
+      this.environment = environment;
+      for (const statement of statements) {
+        this.execute(statement);
+      }
+    } finally {
+      this.environment = previous;
+    }
+  }
+
   //statements start
   visitVarStmt(expr: Ast.VarStmt): void {
     let value = null;
@@ -54,7 +66,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   visitExpressionStmt(stmt: Ast.ExpressionStmt): void {
-    console.log(this.evaluate(stmt.expression));
     this.evaluate(stmt.expression);
   }
 
@@ -63,17 +74,21 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     console.log(value);
   }
 
+  visitBlockStmt(expr: Ast.BlockStmt): void {
+    this.executeBlock(expr.statements, new Environment(this.environment));
+  }
+
   // expr starts
   checkNumberOperand(operator: Token, right: LoxObject) {
     if (typeof right === "number") return;
     errorReporter.report(
-      new RuntimeError(operator, "Operand must be a number"),
+      new RuntimeError(operator, "Operand must be a number")
     );
   }
   checkNumberOperands(operator: Token, left: LoxObject, right: LoxObject) {
     if (typeof left === "number" && typeof right === "number") return;
     errorReporter.report(
-      new RuntimeError(operator, "Operands must be numbers."),
+      new RuntimeError(operator, "Operands must be numbers.")
     );
   }
 
@@ -136,7 +151,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
         return this.isTruthy(right);
       case TokenType.Minus:
         this.checkNumberOperand(expr.operator, right);
-        console.log(right);
         return -(right as number);
     }
     return null;

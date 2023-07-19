@@ -146,7 +146,8 @@ export class Parser {
     if (this.match(TokenType.Identifier)) {
       return new ast.VariableExpr(this.previous());
     }
-    error(this.peek().line, "Expect expression.");
+
+    error(this.peek().line, "Expect expression. the error comes from here");
   }
 
   private unary(): ast.Expr {
@@ -185,7 +186,7 @@ export class Parser {
         TokenType.Greater,
         TokenType.GreaterEqual,
         TokenType.Less,
-        TokenType.LessEqual,
+        TokenType.LessEqual
       )
     ) {
       let operator = this.previous();
@@ -205,6 +206,16 @@ export class Parser {
     return expr;
   }
 
+
+  private block(){
+    const statements = [];
+    while(!this.check(TokenType.RightBrace) && !this.isAtEnd()){
+      statements.push(this.decleration());
+    }
+    this.consume(TokenType.RightBrace, "Expect '}' after block.");
+    return statements;
+  }
+
   private printStatement(): ast.Stmt {
     let value = this.expression();
     this.consume(TokenType.Semicolon, "Expect ';' after expression.");
@@ -219,6 +230,7 @@ export class Parser {
 
   private statement(): ast.Stmt {
     if (this.match(TokenType.Print)) return this.printStatement();
+    if (this.match(TokenType.LeftBrace)) return new ast.BlockStmt(this.block());
     return this.expressionStatement();
   }
 }
