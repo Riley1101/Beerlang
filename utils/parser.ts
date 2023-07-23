@@ -120,7 +120,7 @@ export class Parser {
       let value = this.assignment();
       if (expr instanceof ast.VariableExpr) {
         const name = expr.name;
-        return new ast.AssignmentExpr(name, value);
+        return new ast.AssignExpr(name, value);
       }
       error(equal.line, "Invalid assignment.");
     }

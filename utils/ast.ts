@@ -10,13 +10,13 @@ export interface Stmt {
 }
 export interface ExprVisitor<T> {
   visitBinaryExpr(expr: BinaryExpr): T;
+  visitAssignExpr(expr: AssignExpr): T;
   visitUnaryExpr(expr: UnaryExpr): T;
   visitLiteralExpr(expr: LiteralExpr): T;
   visitThisExpr(expr: ThisExpr): T;
   visitSuperExpr(expr: SuperExpr): T;
   visitLogicalExpr(expr: LogicalExpr): T;
   visitVariableExpr(expr: VariableExpr): T;
-  visitAssignmentExpr(expr: AssignmentExpr): T;
   visitGroupingExpr(expr: GroupingExpr): T;
 }
 
@@ -82,6 +82,18 @@ export class ExpressionStmt implements Stmt {
  * Primarry
  */
 
+export class AssignExpr implements Expr {
+  name: Token;
+  value: Expr;
+
+  constructor(name: Token, value: Expr) {
+    this.name = name;
+    this.value = value;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitAssignExpr(this);
+  }
+}
 export class GroupingExpr implements Expr {
   expression: Expr;
   constructor(expression: Expr) {
@@ -92,17 +104,6 @@ export class GroupingExpr implements Expr {
   }
 }
 
-export class AssignmentExpr implements Expr {
-  name: Token;
-  value: Expr;
-  constructor(name: Token, value: Expr) {
-    this.name = name;
-    this.value = value;
-  }
-  accept<T>(visitor: ExprVisitor<T>): T {
-    return visitor.visitAssignmentExpr(this);
-  }
-}
 
 export class VariableExpr implements Expr {
   name: Token;
@@ -238,9 +239,6 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   visitGroupingExpr(expr: GroupingExpr): string {
     return this.parenthesize("group", expr.expression);
   }
-  visitAssignmentExpr(expr: AssignmentExpr): string {
-    return this.parenthesize(expr.name.lexeme, expr.value);
-  }
   visitVariableExpr(expr: VariableExpr): string {
     return this.parenthesize(expr.name.lexeme);
   }
@@ -267,5 +265,9 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   }
   visitUnaryExpr(expr: UnaryExpr): string {
     return this.parenthesize(expr.operator.lexeme, expr.right);
+  }
+  visitAssignExpr(expr: AssignExpr): string {
+    let name = new VariableExpr(expr.name);
+    return this.parenthesize("assign", name, expr.value);
   }
 }
