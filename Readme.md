@@ -1,1 +1,1 @@
-# Gideon : a interpreter in Typescript
+# Gideon : an interpreter in Typescript
