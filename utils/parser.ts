@@ -115,7 +115,6 @@ export class Parser {
 
   private assignment(): ast.Expr {
     // current
-    console.log("assignment starts");
     let expr = this.logicalOr();
     if (this.match(TokenType.Equal)) {
       let value = this.assignment();

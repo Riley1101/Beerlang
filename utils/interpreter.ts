@@ -185,7 +185,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     return this.lookUpVariable(expr.name, expr);
   }
   visitAssignExpr(expr: Ast.AssignExpr): LoxObject {
-    console.log("did i work");
     let value = this.evaluate(expr.value);
     const distance = this.locals.get(expr);
     if (distance != null) {

@@ -46,7 +46,6 @@ export class Environment {
     }
   }
   assign(name: Token, value: LoxObject): void {
-      console.log("did i ever gets called")
     if (name.lexeme in this.values) {
       this.values[name.lexeme] = value;
       return;
