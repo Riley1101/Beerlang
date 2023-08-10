@@ -1,7 +1,0 @@
-if(false){
-    print "Hello";
-}else if(false){
-    print "world";
-}else{
-    print "Nothing works";
-}

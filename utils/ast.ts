@@ -131,11 +131,11 @@ export class VariableExpr implements Expr {
 
 export class LogicalExpr implements Expr {
   left: Expr;
-  value: Token;
+  operator: Token;
   right: Expr;
-  constructor(left: Expr, value: Token, right: Expr) {
+  constructor(left: Expr, operator: Token, right: Expr) {
     this.left = left;
-    this.value = value;
+    this.operator = operator;
     this.right = right;
   }
   accept<T>(visitor: ExprVisitor<T>): T {

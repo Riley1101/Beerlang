@@ -147,13 +147,15 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     }
     return null;
   }
-  /** todo */
+
   visitThisExpr(expr: Ast.ThisExpr): LoxObject {
     return null;
   }
+
   visitSuperExpr(expr: Ast.SuperExpr): LoxObject {
     return null;
   }
+
   visitUnaryExpr(expr: Ast.UnaryExpr): LoxObject {
     let right = this.evaluate(expr.right);
     switch (expr.operator.type) {
@@ -165,9 +167,17 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     }
     return null;
   }
+
   visitLogicalExpr(expr: Ast.LogicalExpr): LoxObject {
-    return null;
+    let left = this.evaluate(expr.left);
+    if (expr.operator.type === TokenType.Or) {
+      if (this.isTruthy(left)) return left;
+    } else {
+      if (!this.isTruthy(left)) return left;
+    }
+    return this.evaluate(expr.right);
   }
+
   visitGroupingExpr(expr: Ast.GroupingExpr): LoxObject {
     return this.evaluate(expr.expression);
   }
