@@ -10,17 +10,31 @@ export interface Stmt {
 }
 export interface ExprVisitor<T> {
   visitBinaryExpr(expr: BinaryExpr): T;
+  visitAssignExpr(expr: AssignExpr): T;
   visitUnaryExpr(expr: UnaryExpr): T;
   visitLiteralExpr(expr: LiteralExpr): T;
   visitThisExpr(expr: ThisExpr): T;
   visitSuperExpr(expr: SuperExpr): T;
   visitLogicalExpr(expr: LogicalExpr): T;
   visitVariableExpr(expr: VariableExpr): T;
-  visitAssignmentExpr(expr: AssignmentExpr): T;
   visitGroupingExpr(expr: GroupingExpr): T;
 }
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
+
+export class IfStmt implements Stmt {
+  condition: Expr;
+  thenBranch: Stmt;
+  elseBranch: Stmt | null;
+  constructor(condition: Expr, thenBranch: Stmt, elseBranch: Stmt | null) {
+    this.condition = condition;
+    this.thenBranch = thenBranch;
+    this.elseBranch = elseBranch;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitIfStmt(this);
+  }
+}
 
 export class BlockStmt implements Stmt {
   statements: Stmt[];
@@ -34,6 +48,7 @@ export class BlockStmt implements Stmt {
 
 export interface StmtVisitor<T> {
   visitExpressionStmt(expr: ExpressionStmt): T;
+  visitIfStmt(expr: IfStmt): T;
   visitVarStmt(expr: VarStmt): T;
   visitPrintStmt(expr: PrintStmt): T;
   visitBlockStmt(expr: BlockStmt): T;
@@ -82,6 +97,18 @@ export class ExpressionStmt implements Stmt {
  * Primarry
  */
 
+export class AssignExpr implements Expr {
+  name: Token;
+  value: Expr;
+
+  constructor(name: Token, value: Expr) {
+    this.name = name;
+    this.value = value;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitAssignExpr(this);
+  }
+}
 export class GroupingExpr implements Expr {
   expression: Expr;
   constructor(expression: Expr) {
@@ -89,18 +116,6 @@ export class GroupingExpr implements Expr {
   }
   accept<T>(visitor: ExprVisitor<T>): T {
     return visitor.visitGroupingExpr(this);
-  }
-}
-
-export class AssignmentExpr implements Expr {
-  name: Token;
-  value: Expr;
-  constructor(name: Token, value: Expr) {
-    this.name = name;
-    this.value = value;
-  }
-  accept<T>(visitor: ExprVisitor<T>): T {
-    return visitor.visitAssignmentExpr(this);
   }
 }
 
@@ -116,11 +131,11 @@ export class VariableExpr implements Expr {
 
 export class LogicalExpr implements Expr {
   left: Expr;
-  value: Token;
+  operator: Token;
   right: Expr;
-  constructor(left: Expr, value: Token, right: Expr) {
+  constructor(left: Expr, operator: Token, right: Expr) {
     this.left = left;
-    this.value = value;
+    this.operator = operator;
     this.right = right;
   }
   accept<T>(visitor: ExprVisitor<T>): T {
@@ -210,6 +225,12 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
 
   // statements start
 
+  visitIfStmt(expr: IfStmt): string {
+    let result = `(if ${this.strigify(expr.condition)}`;
+    console.log(result);
+    return result;
+  }
+
   visitBlockStmt(expr: BlockStmt): string {
     let result = "(block";
     for (const statement of expr.statements) {
@@ -233,13 +254,9 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   visitPrintStmt(expr: PrintStmt): string {
     return this.parenthesize("print", expr.expression);
   }
-
   // expressions start
   visitGroupingExpr(expr: GroupingExpr): string {
     return this.parenthesize("group", expr.expression);
-  }
-  visitAssignmentExpr(expr: AssignmentExpr): string {
-    return this.parenthesize(expr.name.lexeme, expr.value);
   }
   visitVariableExpr(expr: VariableExpr): string {
     return this.parenthesize(expr.name.lexeme);
@@ -267,5 +284,9 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   }
   visitUnaryExpr(expr: UnaryExpr): string {
     return this.parenthesize(expr.operator.lexeme, expr.right);
+  }
+  visitAssignExpr(expr: AssignExpr): string {
+    let name = new VariableExpr(expr.name);
+    return this.parenthesize("assign", name, expr.value);
   }
 }

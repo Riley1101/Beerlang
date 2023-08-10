@@ -1,4 +1,4 @@
-import { error, errorReporter, SyntaxError } from "./log";
+import { errorReporter, SyntaxError } from "./log";
 import { Token } from "./token";
 import { LoxObject, TokenType, keywords } from "./types";
 
@@ -17,6 +17,7 @@ export class Scanner {
     this.end = 0;
     this.line = 1;
   }
+
   private _is_at_end() {
     return this.current >= this.contents.length;
   }
@@ -26,6 +27,7 @@ export class Scanner {
     let text = this.contents.substring(this.start, this.current);
     this.tokens.push(new Token(token, text, literal, this.line));
   }
+
   private _match(expected: string) {
     if (this._is_at_end()) return false;
     if (this.contents.charAt(this.current) != expected) return false;
@@ -42,6 +44,7 @@ export class Scanner {
     if (this._is_at_end()) return "\0";
     return this.contents.charAt(this.current);
   }
+
   private _is_digit(c: string): boolean {
     return c >= "0" && c <= "9";
   }

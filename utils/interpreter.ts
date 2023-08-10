@@ -8,8 +8,20 @@ import { Token } from "./token";
 export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   private globals = new Environment();
   private environment = this.globals;
+  private locals = new Map<Ast.Expr, number>();
   private evaluate(expr: Ast.Expr): LoxObject {
     return expr.accept(this);
+  }
+  resolve(expr: Ast.Expr, depth: number) {
+    this.locals.set(expr, depth);
+  }
+  private lookUpVariable(name: Token, expr: Ast.Expr) {
+    const distance = this.locals.get(expr);
+    if (distance != undefined) {
+      return this.environment.getAt(distance, name.lexeme);
+    } else {
+      return this.globals.get(name);
+    }
   }
   private isTruthy(object: LoxObject) {
     if (object == null) return false;
@@ -40,7 +52,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
       // expr evaulate
     } else {
       let value = this.evaluate(target);
-      console.log(value);
     }
   }
 
@@ -58,8 +69,8 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
 
   //statements start
   visitVarStmt(expr: Ast.VarStmt): void {
-    let value = null;
-    if (expr.initializer) {
+    let value: LoxObject = null;
+    if (expr.initializer !== null) {
       value = this.evaluate(expr.initializer);
     }
     this.environment.define(expr.name.lexeme, value);
@@ -133,17 +144,18 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
         if (typeof left === "string" && typeof right === "string") {
           return left + right;
         }
-        break;
     }
     return null;
   }
-  /** todo */
+
   visitThisExpr(expr: Ast.ThisExpr): LoxObject {
     return null;
   }
+
   visitSuperExpr(expr: Ast.SuperExpr): LoxObject {
     return null;
   }
+
   visitUnaryExpr(expr: Ast.UnaryExpr): LoxObject {
     let right = this.evaluate(expr.right);
     switch (expr.operator.type) {
@@ -155,16 +167,39 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     }
     return null;
   }
+
   visitLogicalExpr(expr: Ast.LogicalExpr): LoxObject {
-    return null;
+    let left = this.evaluate(expr.left);
+    if (expr.operator.type === TokenType.Or) {
+      if (this.isTruthy(left)) return left;
+    } else {
+      if (!this.isTruthy(left)) return left;
+    }
+    return this.evaluate(expr.right);
   }
+
   visitGroupingExpr(expr: Ast.GroupingExpr): LoxObject {
     return this.evaluate(expr.expression);
   }
   visitVariableExpr(expr: Ast.VariableExpr): LoxObject {
-    return this.environment.get(expr.name);
+    return this.lookUpVariable(expr.name, expr);
   }
-  visitAssignmentExpr(expr: Ast.AssignmentExpr): LoxObject {
-    return null;
+  visitAssignExpr(expr: Ast.AssignExpr): LoxObject {
+    let value = this.evaluate(expr.value);
+    const distance = this.locals.get(expr);
+    if (distance != null) {
+      this.environment.assignAt(distance, expr.name, value);
+    } else {
+      this.globals.assign(expr.name, value);
+    }
+    return value;
+  }
+
+  visitIfStmt(expr: Ast.IfStmt): void {
+    if (this.isTruthy(this.evaluate(expr.condition))) {
+      this.execute(expr.thenBranch);
+    } else if (expr.elseBranch !== null) {
+      this.execute(expr.elseBranch);
+    }
   }
 }

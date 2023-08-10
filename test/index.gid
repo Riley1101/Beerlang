@@ -1,0 +1,4 @@
+var stmt = true and false; 
+print stmt;
+var a = 12;
+print a;
