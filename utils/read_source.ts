@@ -4,9 +4,6 @@ import { error } from "./log";
 
 type Exec = (contents: string) => void;
 
-/**
- * @param {string} path - read the file
- */
 export function run_file(path: string, exec: Exec) {
   try {
     const contents = fs.readFileSync(path);

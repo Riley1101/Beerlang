@@ -1,8 +1,7 @@
-var a = 1;
-{
-  var c  = ( 2 +4);
-  var a = a + 2 + c;
-  var e = a + 2 + c;
-  print a;
-  print e;
+if(false){
+    print "Hello";
+}else if(false){
+    print "world";
+}else{
+    print "Nothing works";
 }

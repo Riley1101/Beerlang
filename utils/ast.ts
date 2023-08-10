@@ -22,6 +22,20 @@ export interface ExprVisitor<T> {
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
 
+export class IfStmt implements Stmt {
+  condition: Expr;
+  thenBranch: Stmt;
+  elseBranch: Stmt | null;
+  constructor(condition: Expr, thenBranch: Stmt, elseBranch: Stmt | null) {
+    this.condition = condition;
+    this.thenBranch = thenBranch;
+    this.elseBranch = elseBranch;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitIfStmt(this);
+  }
+}
+
 export class BlockStmt implements Stmt {
   statements: Stmt[];
   constructor(statements: Stmt[]) {
@@ -34,6 +48,7 @@ export class BlockStmt implements Stmt {
 
 export interface StmtVisitor<T> {
   visitExpressionStmt(expr: ExpressionStmt): T;
+  visitIfStmt(expr: IfStmt): T;
   visitVarStmt(expr: VarStmt): T;
   visitPrintStmt(expr: PrintStmt): T;
   visitBlockStmt(expr: BlockStmt): T;
@@ -103,7 +118,6 @@ export class GroupingExpr implements Expr {
     return visitor.visitGroupingExpr(this);
   }
 }
-
 
 export class VariableExpr implements Expr {
   name: Token;
@@ -211,6 +225,12 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
 
   // statements start
 
+  visitIfStmt(expr: IfStmt): string {
+    let result = `(if ${this.strigify(expr.condition)}`;
+    console.log(result);
+    return result;
+  }
+
   visitBlockStmt(expr: BlockStmt): string {
     let result = "(block";
     for (const statement of expr.statements) {
@@ -234,7 +254,6 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   visitPrintStmt(expr: PrintStmt): string {
     return this.parenthesize("print", expr.expression);
   }
-
   // expressions start
   visitGroupingExpr(expr: GroupingExpr): string {
     return this.parenthesize("group", expr.expression);

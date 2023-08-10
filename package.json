@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "bun index.ts ./test/index.lox",
     "dev": "tsc -w",
-    "start": "nodemon index.ts"
+    "start": "bun index.ts"
   },
   "keywords": [],
   "author": "",

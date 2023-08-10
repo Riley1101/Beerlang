@@ -146,7 +146,6 @@ export class Parser {
     if (this.match(TokenType.Identifier)) {
       return new ast.VariableExpr(this.previous());
     }
-
     error(this.peek().line, "Expect expression. the error comes from here");
   }
 
@@ -206,10 +205,9 @@ export class Parser {
     return expr;
   }
 
-
-  private block(){
+  private block() {
     const statements = [];
-    while(!this.check(TokenType.RightBrace) && !this.isAtEnd()){
+    while (!this.check(TokenType.RightBrace) && !this.isAtEnd()) {
       statements.push(this.decleration());
     }
     this.consume(TokenType.RightBrace, "Expect '}' after block.");
@@ -231,6 +229,18 @@ export class Parser {
   private statement(): ast.Stmt {
     if (this.match(TokenType.Print)) return this.printStatement();
     if (this.match(TokenType.LeftBrace)) return new ast.BlockStmt(this.block());
+    if (this.match(TokenType.If)) return this.ifStatement();
     return this.expressionStatement();
+  }
+  private ifStatement(): ast.Stmt {
+    this.consume(TokenType.LeftParen, "Expect '(' after 'if'.");
+    let condition = this.expression();
+    this.consume(TokenType.RightParen, "Expect ')' after if condition.");
+    let thenBranch = this.statement();
+    let elseBranch = null;
+    if (this.match(TokenType.Else)) {
+      elseBranch = this.statement();
+    }
+    return new ast.IfStmt(condition, thenBranch, elseBranch);
   }
 }

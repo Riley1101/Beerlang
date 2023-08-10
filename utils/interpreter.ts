@@ -20,7 +20,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     if (distance != undefined) {
       return this.environment.getAt(distance, name.lexeme);
     } else {
-        console.log(this.globals.get(name), 'llokup')
       return this.globals.get(name);
     }
   }
@@ -37,7 +36,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   private execute(stmt: Ast.Stmt): void {
-    console.log(stmt);
     stmt.accept(this);
   }
 
@@ -185,5 +183,13 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
       this.globals.assign(expr.name, value);
     }
     return value;
+  }
+
+  visitIfStmt(expr: Ast.IfStmt): void {
+    if (this.isTruthy(this.evaluate(expr.condition))) {
+      this.execute(expr.thenBranch);
+    } else if (expr.elseBranch !== null) {
+      this.execute(expr.elseBranch);
+    }
   }
 }
