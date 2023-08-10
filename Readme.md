@@ -1,3 +1,3 @@
-# Gideon : an interpreter in Typescript
+# Gideon: an interpreter in Typescript
 
-More info at [Here](https://www.arkar.space/projects/gideon)
+More info [Here](https://www.arkar.space/projects/gideon)](https://www.arkar.space/projects/gideon)

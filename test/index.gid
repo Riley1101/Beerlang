@@ -1,4 +1,5 @@
-var stmt = true and false; 
-print stmt;
-var a = 12;
+var a = 1;
+a = 2; 
+print a;
+a = 3;
 print a;

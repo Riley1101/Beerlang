@@ -22,6 +22,18 @@ export interface ExprVisitor<T> {
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
 
+export class WhileStmt implements Stmt {
+  condition: Expr;
+  body: Stmt;
+  constructor(condition: Expr, body: Stmt) {
+    this.condition = condition;
+    this.body = body;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitWhileStmt(this);
+  }
+}
+
 export class IfStmt implements Stmt {
   condition: Expr;
   thenBranch: Stmt;
@@ -49,6 +61,7 @@ export class BlockStmt implements Stmt {
 export interface StmtVisitor<T> {
   visitExpressionStmt(expr: ExpressionStmt): T;
   visitIfStmt(expr: IfStmt): T;
+  visitWhileStmt(expr: WhileStmt): T;
   visitVarStmt(expr: VarStmt): T;
   visitPrintStmt(expr: PrintStmt): T;
   visitBlockStmt(expr: BlockStmt): T;
@@ -263,7 +276,7 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   }
 
   visitLogicalExpr(expr: LogicalExpr): string {
-    return this.parenthesize(expr.value.lexeme);
+    return this.parenthesize(expr.operator.lexeme);
   }
   visitSuperExpr(expr: SuperExpr): string {
     return this.parenthesize(expr.value.lexeme);
@@ -286,7 +299,13 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     return this.parenthesize(expr.operator.lexeme, expr.right);
   }
   visitAssignExpr(expr: AssignExpr): string {
-    let name = new VariableExpr(expr.name);
+    const name = new VariableExpr(expr.name);
     return this.parenthesize("assign", name, expr.value);
+  }
+  visitWhileStmt(expr: WhileStmt): string {
+    let result = `(while ${this.strigify(expr.condition)}`;
+    const bodyResult = this.strigify(expr.body);
+    result += this.indent(bodyResult);
+    return result;
   }
 }

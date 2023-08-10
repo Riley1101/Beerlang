@@ -1,6 +1,6 @@
-import { Token } from "./token";
-import { error } from "./log";
 import * as ast from "./ast";
+import { error } from "./log";
+import { Token } from "./token";
 import { TokenType } from "./types";
 
 export class Parser {
@@ -114,15 +114,16 @@ export class Parser {
   }
 
   private assignment(): ast.Expr {
+    // current
+    console.log("assignment starts");
     let expr = this.logicalOr();
     if (this.match(TokenType.Equal)) {
-      const equal = this.previous();
       let value = this.assignment();
       if (expr instanceof ast.VariableExpr) {
-        const name = expr.name;
+        let name = expr.name;
         return new ast.AssignExpr(name, value);
       }
-      error(equal.line, "Invalid assignment.");
+      error(this.peek().line, "Invalid assignment target.");
     }
     return expr;
   }
@@ -197,7 +198,7 @@ export class Parser {
 
   private equality() {
     let expr = this.comparism();
-    while (this.match(TokenType.Equal, TokenType.EqualEqual)) {
+    while (this.match(TokenType.BangEqual, TokenType.EqualEqual)) {
       let operator = this.previous();
       let right = this.comparism();
       expr = new ast.BinaryExpr(expr, operator, right);
@@ -230,7 +231,16 @@ export class Parser {
     if (this.match(TokenType.Print)) return this.printStatement();
     if (this.match(TokenType.LeftBrace)) return new ast.BlockStmt(this.block());
     if (this.match(TokenType.If)) return this.ifStatement();
+    if (this.match(TokenType.While)) return this.whileStatement();
     return this.expressionStatement();
+  }
+
+  private whileStatement(): ast.Stmt {
+    this.consume(TokenType.LeftParen, "Expect '(' after 'while'.");
+    let condition = this.expression();
+    this.consume(TokenType.RightParen, "Expect ')' after condition.");
+    let body = this.statement();
+    return new ast.WhileStmt(condition, body);
   }
   private ifStatement(): ast.Stmt {
     this.consume(TokenType.LeftParen, "Expect '(' after 'if'.");
