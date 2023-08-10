@@ -1,5 +1,8 @@
-var a = 10;
-while(a > 0){
-    print a;
-    a = a - 1;
+var a = 1;
+{
+  var c  = ( 2 +4);
+  var a = a + 2 + c;
+  var e = a + 2 + c;
+  print a;
+  print e;
 }

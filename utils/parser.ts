@@ -231,7 +231,40 @@ export class Parser {
     if (this.match(TokenType.LeftBrace)) return new ast.BlockStmt(this.block());
     if (this.match(TokenType.If)) return this.ifStatement();
     if (this.match(TokenType.While)) return this.whileStatement();
+    if (this.match(TokenType.For)) return this.forStatement();
     return this.expressionStatement();
+  }
+
+  private forStatement(): ast.Stmt {
+    this.consume(TokenType.LeftParen, "Expect '(' after 'for'.");
+    let initializer;
+    if (this.match(TokenType.Semicolon)) {
+      initializer = null;
+    } else if (this.match(TokenType.Var)) {
+      initializer = this.varDecleration();
+    } else {
+      initializer = this.expressionStatement();
+    }
+    let condition = null;
+    if (!this.check(TokenType.Semicolon)) {
+      condition = this.expression();
+    }
+    this.consume(TokenType.Semicolon, "Expect ';' after loop condition.");
+    let increment = null;
+    if (!this.check(TokenType.RightParen)) {
+      increment = this.expression();
+    }
+    this.consume(TokenType.RightParen, "Expect ')' after for clauses.");
+    let body = this.statement();
+    if (increment !== null) {
+      body = new ast.BlockStmt([body, new ast.ExpressionStmt(increment)]);
+    }
+    if (condition === null) condition = new ast.LiteralExpr(true);
+    body = new ast.WhileStmt(condition, body);
+    if (initializer !== null) {
+      body = new ast.BlockStmt([initializer, body]);
+    }
+    return body;
   }
 
   private whileStatement(): ast.Stmt {

@@ -22,6 +22,27 @@ export interface ExprVisitor<T> {
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
 
+export class ForStmt implements Stmt {
+  initializer: Expr | null;
+  condition: Expr | null;
+  increment: Expr | null;
+  body: Stmt;
+  constructor(
+    initializer: Expr | null,
+    condition: Expr | null,
+    increment: Expr | null,
+    body: Stmt
+  ) {
+    this.initializer = initializer;
+    this.condition = condition;
+    this.increment = increment;
+    this.body = body;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitForStmt(this);
+  }
+}
+
 export class WhileStmt implements Stmt {
   condition: Expr;
   body: Stmt;
@@ -62,6 +83,7 @@ export interface StmtVisitor<T> {
   visitExpressionStmt(expr: ExpressionStmt): T;
   visitIfStmt(expr: IfStmt): T;
   visitWhileStmt(expr: WhileStmt): T;
+  visitForStmt(expr: ForStmt): T;
   visitVarStmt(expr: VarStmt): T;
   visitPrintStmt(expr: PrintStmt): T;
   visitBlockStmt(expr: BlockStmt): T;
@@ -244,11 +266,11 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     return result;
   }
 
-  visitBlockStmt(expr: BlockStmt): string {
+  visitBlockStmt(stmt: BlockStmt): string {
     let result = "(block";
-    for (const statement of expr.statements) {
-      result += this.indent(statement.accept(this));
-    }
+    stmt.statements.forEach((innerStmt) => {
+      result += "\n" + this.indent(this.strigify(innerStmt));
+    });
     result += ")";
     return result;
   }

@@ -60,7 +60,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     try {
       this.environment = environment;
       for (const statement of statements) {
-        this.execute(statement);
+        statement && this.execute(statement);
       }
     } finally {
       this.environment = previous;
@@ -86,7 +86,8 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   visitBlockStmt(expr: Ast.BlockStmt): void {
-    this.executeBlock(expr.statements, new Environment(this.environment));
+    let newEnvironment = new Environment(this.environment);
+    this.executeBlock(expr.statements, newEnvironment);
   }
 
   // expr starts
@@ -205,6 +206,16 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   visitWhileStmt(expr: Ast.WhileStmt): void {
     while (this.isTruthy(this.evaluate(expr.condition))) {
       this.execute(expr.body);
+    }
+  }
+
+  visitForStmt(expr: Ast.ForStmt): void {
+    if (expr.initializer !== null) {
+      this.evaluate(expr.initializer);
+    }
+    while (this.isTruthy(this.evaluate(expr.condition as Ast.Expr))) {
+      this.execute(expr.body);
+      this.evaluate(expr.increment as Ast.Expr);
     }
   }
 }

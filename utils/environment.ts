@@ -23,17 +23,21 @@ export class Environment {
     if (this.enclosing !== null) {
       return this.enclosing.get(name);
     }
+    console.log(this);
     errorReporter.report(
       new ReferenceError(`Undefined variable '${name.lexeme}'.`)
     );
     throw new Error("Unreachable");
   }
   ancestor(distance: number): Environment {
-    let environment: Environment = this;
-    for (let i = 0; i < distance; i++) {
-      environment = environment.enclosing as Environment;
+    if (distance === 0) return this;
+    else {
+      let environment = this.enclosing || null;
+      for (let i = 0; i < distance; i++) {
+        environment = environment?.enclosing || null;
+      }
+      return environment as Environment;
     }
-    return environment;
   }
   assignAt(distance: number, name: Token, value: LoxObject): void {
     const environment = this.ancestor(distance);
