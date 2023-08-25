@@ -14,6 +14,7 @@ export class Gideon {
       let scanner = new Scanner("1 + 2");
       scanner.scan_tokens();
       const tokens = scanner.get_tokens();
+      console.log(tokens)
       const parser = new Parser(tokens);
       let stats = parser.parse();
       interpreter.interpret(stats);
