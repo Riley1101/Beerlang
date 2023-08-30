@@ -1,6 +1,6 @@
-import { Token } from "./token";
-import { error } from "./log";
 import * as ast from "./ast";
+import { error } from "./log";
+import { Token } from "./token";
 import { TokenType } from "./types";
 
 export class Parser {
@@ -114,15 +114,15 @@ export class Parser {
   }
 
   private assignment(): ast.Expr {
+    // current
     let expr = this.logicalOr();
     if (this.match(TokenType.Equal)) {
-      const equal = this.previous();
       let value = this.assignment();
       if (expr instanceof ast.VariableExpr) {
-        const name = expr.name;
+        let name = expr.name;
         return new ast.AssignExpr(name, value);
       }
-      error(equal.line, "Invalid assignment.");
+      error(this.peek().line, "Invalid assignment target.");
     }
     return expr;
   }
@@ -197,7 +197,7 @@ export class Parser {
 
   private equality() {
     let expr = this.comparism();
-    while (this.match(TokenType.Equal, TokenType.EqualEqual)) {
+    while (this.match(TokenType.BangEqual, TokenType.EqualEqual)) {
       let operator = this.previous();
       let right = this.comparism();
       expr = new ast.BinaryExpr(expr, operator, right);
@@ -230,7 +230,49 @@ export class Parser {
     if (this.match(TokenType.Print)) return this.printStatement();
     if (this.match(TokenType.LeftBrace)) return new ast.BlockStmt(this.block());
     if (this.match(TokenType.If)) return this.ifStatement();
+    if (this.match(TokenType.While)) return this.whileStatement();
+    if (this.match(TokenType.For)) return this.forStatement();
     return this.expressionStatement();
+  }
+
+  private forStatement(): ast.Stmt {
+    this.consume(TokenType.LeftParen, "Expect '(' after 'for'.");
+    let initializer;
+    if (this.match(TokenType.Semicolon)) {
+      initializer = null;
+    } else if (this.match(TokenType.Var)) {
+      initializer = this.varDecleration();
+    } else {
+      initializer = this.expressionStatement();
+    }
+    let condition = null;
+    if (!this.check(TokenType.Semicolon)) {
+      condition = this.expression();
+    }
+    this.consume(TokenType.Semicolon, "Expect ';' after loop condition.");
+    let increment = null;
+    if (!this.check(TokenType.RightParen)) {
+      increment = this.expression();
+    }
+    this.consume(TokenType.RightParen, "Expect ')' after for clauses.");
+    let body = this.statement();
+    if (increment !== null) {
+      body = new ast.BlockStmt([body, new ast.ExpressionStmt(increment)]);
+    }
+    if (condition === null) condition = new ast.LiteralExpr(true);
+    body = new ast.WhileStmt(condition, body);
+    if (initializer !== null) {
+      body = new ast.BlockStmt([initializer, body]);
+    }
+    return body;
+  }
+
+  private whileStatement(): ast.Stmt {
+    this.consume(TokenType.LeftParen, "Expect '(' after 'while'.");
+    let condition = this.expression();
+    this.consume(TokenType.RightParen, "Expect ')' after condition.");
+    let body = this.statement();
+    return new ast.WhileStmt(condition, body);
   }
   private ifStatement(): ast.Stmt {
     this.consume(TokenType.LeftParen, "Expect '(' after 'if'.");

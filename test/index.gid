@@ -1,4 +1,8 @@
-var stmt = true and false; 
-print stmt;
-var a = 12;
-print a;
+var a = 1;
+{
+  var c  = ( 2 +4);
+  var a = a + 2 + c;
+  var e = a + 2 + c;
+  print a;
+  print e;
+}
