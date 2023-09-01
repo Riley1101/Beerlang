@@ -63,12 +63,16 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
 
   interpret(target: Ast.Expr | Ast.Stmt[]) {
     if (Array.isArray(target)) {
-      for (const statement of target) {
-        statement && this.execute(statement);
+      try {
+        for (const statement of target) {
+          this.execute(statement);
+        }
+      } catch (error) {
+        errorReporter.report(error as Error);
       }
-      // expr evaulate
     } else {
       let value = this.evaluate(target);
+      console.log(value);
     }
   }
 
@@ -241,9 +245,8 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
       this.execute(expr.body);
     }
   }
-  visitFunctionStmt(stmt: Ast.FunctionStmt): LoxObject {
+  visitFunctionStmt(stmt: Ast.FunctionStmt): void {
     const fun = new LoxFunction(stmt, this.environment, false);
     this.environment.define(stmt.name.lexeme, fun);
-    return null;
   }
 }

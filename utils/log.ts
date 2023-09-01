@@ -6,6 +6,7 @@ import { Token } from "./token";
  */
 export function error(line: number, message: string): never {
   report(line, "", message, "error");
+  console.log(line,message)
   throw new Error(message);
 }
 

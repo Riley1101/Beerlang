@@ -70,7 +70,13 @@ export class Environment {
     const environment = this.ancestor(distance);
     if (environment !== null)
       return environment.values[name.lexeme] as LoxObject;
+    errorReporter.report(
+      new ReferenceError(`Undefined variable '${name.lexeme}'.`),
+    );
+    // TODO variable not found and this code should never been reached
+    throw new ReferenceError(`Undefined variable '${name.lexeme}'.`);
   }
+
   getThis(): LoxObject {
     return this.values["this"] as LoxObject;
   }

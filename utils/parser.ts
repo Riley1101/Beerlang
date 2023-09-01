@@ -16,7 +16,6 @@ export class Parser {
       try {
         statements.push(this.decleration());
       } catch {
-        console.log("error");
         this.synchronize();
       }
     }
@@ -171,7 +170,7 @@ export class Parser {
     if (this.match(TokenType.Identifier)) {
       return new ast.VariableExpr(this.previous());
     }
-    error(this.peek().line, "Expect expression. the error comes from here");
+    throw error(this.peek().line, "Expect expression.");
   }
 
   private unary(): ast.Expr {
@@ -183,23 +182,16 @@ export class Parser {
     return this.call();
   }
 
-  private call() :ast.Expr{
+  private call(): ast.Expr {
     let expr = this.primary();
     while (true) {
       if (this.match(TokenType.LeftParen)) {
         expr = this.finishCall(expr);
-      } 
-      else if (this.match(TokenType.Dot)) {
-        let name = this.consume(
-          TokenType.Identifier,
-          "Expect property name after '.'.",
-        );
-        expr = new ast.GetExpr(expr, name);
-      }
-      else {
+      } else {
         break;
       }
     }
+    return expr;
   }
 
   private finishCall(callee: ast.Expr): ast.Expr {
@@ -288,11 +280,11 @@ export class Parser {
   }
 
   private statement(): ast.Stmt {
-    if (this.match(TokenType.For)) return this.forStatement();
     if (this.match(TokenType.Print)) return this.printStatement();
     if (this.match(TokenType.LeftBrace)) return new ast.BlockStmt(this.block());
     if (this.match(TokenType.If)) return this.ifStatement();
     if (this.match(TokenType.While)) return this.whileStatement();
+    if (this.match(TokenType.For)) return this.forStatement();
     return this.expressionStatement();
   }
 
