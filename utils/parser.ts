@@ -286,7 +286,7 @@ export class Parser {
       value = this.expression();
     }
     this.consume(TokenType.Semicolon, "Expect ';' after return value.");
-    return new ast.ReturnStmt(keyword, value);
+    return new ast.ReturnStmt(keyword, value as ast.Expr);
   }
 
   private statement(): ast.Stmt {
