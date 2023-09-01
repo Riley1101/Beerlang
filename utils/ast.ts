@@ -9,18 +9,35 @@ export interface Stmt {
   accept<T>(visitor: StmtVisitor<T>): T;
 }
 export interface ExprVisitor<T> {
-  visitBinaryExpr(expr: BinaryExpr): T;
   visitAssignExpr(expr: AssignExpr): T;
-  visitUnaryExpr(expr: UnaryExpr): T;
-  visitLiteralExpr(expr: LiteralExpr): T;
-  visitThisExpr(expr: ThisExpr): T;
-  visitSuperExpr(expr: SuperExpr): T;
-  visitLogicalExpr(expr: LogicalExpr): T;
-  visitVariableExpr(expr: VariableExpr): T;
+  visitBinaryExpr(expr: BinaryExpr): T;
+  visitCallExpr(expr: CallExpr): T;
   visitGroupingExpr(expr: GroupingExpr): T;
+  visitLiteralExpr(expr: LiteralExpr): T;
+  visitLogicalExpr(expr: LogicalExpr): T;
+  visitSuperExpr(expr: SuperExpr): T;
+  visitThisExpr(expr: ThisExpr): T;
+  visitUnaryExpr(expr: UnaryExpr): T;
+  visitVariableExpr(expr: VariableExpr): T;
 }
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
+
+export class FunctionStmt implements Stmt {
+  name: Token;
+  params: Token[];
+  body: Stmt[];
+
+  constructor(name: Token, params: Token[], body: Stmt[]) {
+    this.name = name;
+    this.params = params;
+    this.body = body;
+  }
+
+  accept<R>(visitor: StmtVisitor<R>): R {
+    return visitor.visitFunctionStmt(this);
+  }
+}
 
 export class ForStmt implements Stmt {
   initializer: Expr | null;
@@ -31,7 +48,7 @@ export class ForStmt implements Stmt {
     initializer: Expr | null,
     condition: Expr | null,
     increment: Expr | null,
-    body: Stmt
+    body: Stmt,
   ) {
     this.initializer = initializer;
     this.condition = condition;
@@ -80,6 +97,7 @@ export class BlockStmt implements Stmt {
 }
 
 export interface StmtVisitor<T> {
+  visitFunctionStmt(expr: FunctionStmt): T;
   visitExpressionStmt(expr: ExpressionStmt): T;
   visitIfStmt(expr: IfStmt): T;
   visitWhileStmt(expr: WhileStmt): T;
@@ -131,6 +149,21 @@ export class ExpressionStmt implements Stmt {
  * Unary
  * Primarry
  */
+
+export class CallExpr implements Expr {
+  callee: Expr;
+  paren: Token;
+  args: Expr[];
+  constructor(callee: Expr, paren: Token, args: Expr[]) {
+    this.callee = callee;
+    this.paren = paren;
+    this.args = args;
+  }
+
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitCallExpr(this);
+  }
+}
 
 export class AssignExpr implements Expr {
   name: Token;
@@ -262,7 +295,6 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
 
   visitIfStmt(expr: IfStmt): string {
     let result = `(if ${this.strigify(expr.condition)}`;
-    console.log(result);
     return result;
   }
 

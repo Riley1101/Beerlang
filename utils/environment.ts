@@ -1,18 +1,23 @@
 import type { Token } from "./token";
 import { errorReporter } from "./log";
-import type { LoxObject } from "./types";
+import type { LoxObject, LoxCallable } from "./types";
+
+type EnvironmentValues = LoxObject | LoxCallable;
 
 export class Environment {
   enclosing: Environment | null;
-  private values: Record<string, LoxObject> = {};
+
+  private values: Record<string, EnvironmentValues> = {};
+
   constructor(enclosing?: Environment) {
-    if (enclosing) {
+    this.enclosing = enclosing || null;
+    /* if (enclosing) {
       this.enclosing = enclosing;
     } else {
       this.enclosing = null;
-    }
+    } */
   }
-  define(name: string, value: LoxObject): void {
+  define(name: string, value: EnvironmentValues): void {
     this.values[name] = value;
   }
 
@@ -23,12 +28,12 @@ export class Environment {
     if (this.enclosing !== null) {
       return this.enclosing.get(name);
     }
-    console.log(this);
     errorReporter.report(
-      new ReferenceError(`Undefined variable '${name.lexeme}'.`)
+      new ReferenceError(`Undefined variable '${name.lexeme}'.`),
     );
-    throw new Error("Unreachable");
+    throw new ReferenceError(`Undefined variable '${name.lexeme}'.`);
   }
+
   ancestor(distance: number): Environment {
     if (distance === 0) return this;
     else {
@@ -45,7 +50,7 @@ export class Environment {
       environment.values[name.lexeme] = value;
     } else {
       errorReporter.report(
-        new ReferenceError(`Undefined variable '${name.lexeme}'.`)
+        new ReferenceError(`Undefined variable '${name.lexeme}'.`),
       );
     }
   }
@@ -59,11 +64,23 @@ export class Environment {
       return;
     }
     errorReporter.report(
-      new ReferenceError(`Undefined variable '${name.lexeme}'.`)
+      new ReferenceError(`Undefined variable '${name.lexeme}'.`),
     );
   }
 
-  getAt(distance: number, name: string): LoxObject {
-    return this.ancestor(distance).values[name] as LoxObject;
+  getAt(distance: number, name: Token): LoxObject {
+    //    return this.ancestor(distance).values[name] as LoxObject;
+    const environment = this.ancestor(distance);
+    if (environment !== null)
+      return environment.values[name.lexeme] as LoxObject;
+    errorReporter.report(
+      new ReferenceError(`Undefined variable '${name.lexeme}'.`),
+    );
+    // TODO variable not found and this code should never been reached
+    throw new ReferenceError(`Undefined variable '${name.lexeme}'.`);
+  }
+
+  getThis(): LoxObject {
+    return this.values["this"] as LoxObject;
   }
 }

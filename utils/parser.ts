@@ -1,5 +1,5 @@
 import * as ast from "./ast";
-import { error } from "./log";
+import { error, errorReporter } from "./log";
 import { Token } from "./token";
 import { TokenType } from "./types";
 
@@ -16,7 +16,6 @@ export class Parser {
       try {
         statements.push(this.decleration());
       } catch {
-        console.log("error");
         this.synchronize();
       }
     }
@@ -24,8 +23,32 @@ export class Parser {
   }
 
   private decleration(): ast.Stmt {
+    if (this.match(TokenType.Fun)) return this.funDeclearation("function");
     if (this.match(TokenType.Var)) return this.varDecleration();
     return this.statement();
+  }
+
+  private funDeclearation(kind: string) {
+    const name = this.consume(TokenType.Identifier, `Expect ${kind} name`);
+    this.consume(TokenType.LeftParen, `Expect '(' after ${kind} name`);
+    const params: Token[] = [];
+    if (!this.check(TokenType.RightParen)) {
+      do {
+        if (params.length >= 255) {
+          errorReporter.report(
+            new Error("Can't have more than 255 parameters."),
+          );
+        }
+        params.push(
+          this.consume(TokenType.Identifier, "Expect parameter name"),
+        );
+      } while (this.match(TokenType.Comma));
+    }
+    this.consume(TokenType.RightParen, "Expect ')' after parameters.");
+
+    this.consume(TokenType.LeftBrace, `Expect '{' before ${kind} body`);
+    const body = this.block();
+    return new ast.FunctionStmt(name, params, body);
   }
 
   private varDecleration(): ast.Stmt {
@@ -137,7 +160,8 @@ export class Parser {
     if (this.match(TokenType.Nil)) return new ast.LiteralExpr(null);
     if (this.match(TokenType.Number, TokenType.String))
       return new ast.LiteralExpr(this.previous().literal);
-    // if (this.match(TokenType.This), TokenType.This) return new ast.ThisExpr(this.previous())
+    // if (this.match(TokenType.This), TokenType.This) return new
+    // ast.ThisExpr(this.previous())
     if (this.match(TokenType.LeftParen)) {
       let expr = this.expression();
       this.consume(TokenType.RightParen, "Expect ')' after expression.");
@@ -146,7 +170,7 @@ export class Parser {
     if (this.match(TokenType.Identifier)) {
       return new ast.VariableExpr(this.previous());
     }
-    error(this.peek().line, "Expect expression. the error comes from here");
+    throw error(this.peek().line, "Expect expression.");
   }
 
   private unary(): ast.Expr {
@@ -155,7 +179,36 @@ export class Parser {
       let right = this.unary();
       return new ast.UnaryExpr(operator, right);
     }
-    return this.primary();
+    return this.call();
+  }
+
+  private call(): ast.Expr {
+    let expr = this.primary();
+    while (true) {
+      if (this.match(TokenType.LeftParen)) {
+        expr = this.finishCall(expr);
+      } else {
+        break;
+      }
+    }
+    return expr;
+  }
+
+  private finishCall(callee: ast.Expr): ast.Expr {
+    const args: ast.Expr[] = [];
+    if (!this.check(TokenType.RightParen)) {
+      do {
+        if (args.length >= 255) {
+          error(this.peek().line, "Cannot have more than 255 arguments.");
+        }
+        args.push(this.expression());
+      } while (this.match(TokenType.Comma));
+    }
+    let paren = this.consume(
+      TokenType.RightParen,
+      "Expect ')' after arguments.",
+    );
+    return new ast.CallExpr(callee, paren, args);
   }
 
   private factor(): ast.Expr {
@@ -185,7 +238,7 @@ export class Parser {
         TokenType.Greater,
         TokenType.GreaterEqual,
         TokenType.Less,
-        TokenType.LessEqual
+        TokenType.LessEqual,
       )
     ) {
       let operator = this.previous();

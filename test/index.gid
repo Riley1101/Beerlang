@@ -1,8 +1,10 @@
-var a = 1;
-{
-  var c  = ( 2 +4);
-  var a = a + 2 + c;
-  var e = a + 2 + c;
-  print a;
-  print e;
+fun factorial(i) {
+  var total = 1;
+  while (i > 0) {
+    total = total * i;
+    i = i - 1;
+  }
+  print total;
 }
+
+factorial(4);

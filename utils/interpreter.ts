@@ -1,14 +1,31 @@
 import * as Ast from "./ast";
 import { errorReporter, RuntimeError } from "./log";
-import type { LoxObject } from "./types";
+import { LoxObject, LoxCallable, LoxClockFunction } from "./types";
 import { Environment } from "./environment";
-import { TokenType } from "./types";
+import { TokenType, LoxFunction } from "./types";
 import { Token } from "./token";
 
 export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   private globals = new Environment();
   private environment = this.globals;
   private locals = new Map<Ast.Expr, number>();
+
+  constructor() {
+    this.globals.define("clock", new LoxClockFunction());
+  }
+
+  public executeBlock(statements: Ast.Stmt[], environment: Environment) {
+    const previous = this.environment;
+    try {
+      this.environment = environment;
+      for (const statement of statements) {
+        this.execute(statement);
+      }
+    } finally {
+      this.environment = previous;
+    }
+  }
+
   private evaluate(expr: Ast.Expr): LoxObject {
     return expr.accept(this);
   }
@@ -18,7 +35,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   private lookUpVariable(name: Token, expr: Ast.Expr) {
     const distance = this.locals.get(expr);
     if (distance != undefined) {
-      return this.environment.getAt(distance, name.lexeme);
+      return this.environment.getAt(distance, name);
     } else {
       return this.globals.get(name);
     }
@@ -46,24 +63,16 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
 
   interpret(target: Ast.Expr | Ast.Stmt[]) {
     if (Array.isArray(target)) {
-      for (const statement of target) {
-        statement && this.execute(statement);
+      try {
+        for (const statement of target) {
+          this.execute(statement);
+        }
+      } catch (error) {
+        errorReporter.report(error as Error);
       }
-      // expr evaulate
     } else {
       let value = this.evaluate(target);
-    }
-  }
-
-  private executeBlock(statements: Ast.Stmt[], environment: Environment) {
-    const previous = this.environment;
-    try {
-      this.environment = environment;
-      for (const statement of statements) {
-        statement && this.execute(statement);
-      }
-    } finally {
-      this.environment = previous;
+      console.log(value);
     }
   }
 
@@ -94,13 +103,13 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   checkNumberOperand(operator: Token, right: LoxObject) {
     if (typeof right === "number") return;
     errorReporter.report(
-      new RuntimeError(operator, "Operand must be a number")
+      new RuntimeError(operator, "Operand must be a number"),
     );
   }
   checkNumberOperands(operator: Token, left: LoxObject, right: LoxObject) {
     if (typeof left === "number" && typeof right === "number") return;
     errorReporter.report(
-      new RuntimeError(operator, "Operands must be numbers.")
+      new RuntimeError(operator, "Operands must be numbers."),
     );
   }
 
@@ -183,17 +192,40 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     return this.evaluate(expr.expression);
   }
   visitVariableExpr(expr: Ast.VariableExpr): LoxObject {
-    return this.lookUpVariable(expr.name, expr);
+    return this.environment.get(expr.name);
+    // return this.lookUpVariable(expr.name, expr);
   }
   visitAssignExpr(expr: Ast.AssignExpr): LoxObject {
-    let value = this.evaluate(expr.value);
+    /* let value = this.evaluate(expr.value);
     const distance = this.locals.get(expr);
     if (distance != null) {
       this.environment.assignAt(distance, expr.name, value);
     } else {
       this.globals.assign(expr.name, value);
     }
+    return value; */
+    let value = this.evaluate(expr.value);
+    this.environment.assign(expr.name, value);
     return value;
+  }
+
+  visitCallExpr(expr: Ast.CallExpr): LoxObject {
+    const callee: any = this.evaluate(expr.callee);
+    const args = expr.args.map((arg) => this.evaluate(arg));
+    if (!(callee instanceof LoxCallable)) {
+      errorReporter.report(
+        new RuntimeError(expr.paren, "Can only call functions and classes."),
+      );
+    }
+    if (args.length !== callee.arity()) {
+      errorReporter.report(
+        new RuntimeError(
+          expr.paren,
+          `Expected ${callee.arity()} arguments but got ${args.length}.`,
+        ),
+      );
+    }
+    return callee.call(this, args);
   }
 
   visitIfStmt(expr: Ast.IfStmt): void {
@@ -215,7 +247,10 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     }
     while (this.isTruthy(this.evaluate(expr.condition as Ast.Expr))) {
       this.execute(expr.body);
-      this.evaluate(expr.increment as Ast.Expr);
     }
+  }
+  visitFunctionStmt(stmt: Ast.FunctionStmt): void {
+    const fun = new LoxFunction(stmt, this.environment, false);
+    this.environment.define(stmt.name.lexeme, fun);
   }
 }
