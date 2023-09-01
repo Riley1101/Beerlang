@@ -77,6 +77,13 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   //statements start
+  visitReturnStmt(stmt: Ast.ReturnStmt): void {
+    let value = null;
+    if (stmt.value !== null) value = this.evaluate(stmt.value);
+
+    throw new LoxFunction.Return(value);
+  }
+
   visitVarStmt(expr: Ast.VarStmt): void {
     let value: LoxObject = null;
     if (expr.initializer !== null) {

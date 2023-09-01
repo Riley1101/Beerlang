@@ -279,8 +279,19 @@ export class Parser {
     return new ast.ExpressionStmt(expr);
   }
 
+  private returnStatement(): ast.Stmt {
+    let keyword = this.previous();
+    let value = null;
+    if (!this.check(TokenType.Semicolon)) {
+      value = this.expression();
+    }
+    this.consume(TokenType.Semicolon, "Expect ';' after return value.");
+    return new ast.ReturnStmt(keyword, value);
+  }
+
   private statement(): ast.Stmt {
     if (this.match(TokenType.Print)) return this.printStatement();
+    if (this.match(TokenType.Return)) return this.returnStatement();
     if (this.match(TokenType.LeftBrace)) return new ast.BlockStmt(this.block());
     if (this.match(TokenType.If)) return this.ifStatement();
     if (this.match(TokenType.While)) return this.whileStatement();

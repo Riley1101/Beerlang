@@ -23,6 +23,18 @@ export interface ExprVisitor<T> {
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
 
+export class ReturnStmt implements Stmt {
+  keyword: Token;
+  value: Expr;
+  constructor(keyword: Token, value: Expr) {
+    this.keyword = keyword;
+    this.value = value;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitReturnStmt(this);
+  }
+}
+
 export class FunctionStmt implements Stmt {
   name: Token;
   params: Token[];
@@ -97,6 +109,7 @@ export class BlockStmt implements Stmt {
 }
 
 export interface StmtVisitor<T> {
+  visitReturnStmt(expr: ReturnStmt): T;
   visitFunctionStmt(expr: FunctionStmt): T;
   visitExpressionStmt(expr: ExpressionStmt): T;
   visitIfStmt(expr: IfStmt): T;
