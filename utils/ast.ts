@@ -9,16 +9,16 @@ export interface Stmt {
   accept<T>(visitor: StmtVisitor<T>): T;
 }
 export interface ExprVisitor<T> {
-  visitBinaryExpr(expr: BinaryExpr): T;
   visitAssignExpr(expr: AssignExpr): T;
+  visitBinaryExpr(expr: BinaryExpr): T;
   visitCallExpr(expr: CallExpr): T;
-  visitUnaryExpr(expr: UnaryExpr): T;
-  visitLiteralExpr(expr: LiteralExpr): T;
-  visitThisExpr(expr: ThisExpr): T;
-  visitSuperExpr(expr: SuperExpr): T;
-  visitLogicalExpr(expr: LogicalExpr): T;
-  visitVariableExpr(expr: VariableExpr): T;
   visitGroupingExpr(expr: GroupingExpr): T;
+  visitLiteralExpr(expr: LiteralExpr): T;
+  visitLogicalExpr(expr: LogicalExpr): T;
+  visitSuperExpr(expr: SuperExpr): T;
+  visitThisExpr(expr: ThisExpr): T;
+  visitUnaryExpr(expr: UnaryExpr): T;
+  visitVariableExpr(expr: VariableExpr): T;
 }
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;

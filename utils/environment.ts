@@ -6,13 +6,16 @@ type EnvironmentValues = LoxObject | LoxCallable;
 
 export class Environment {
   enclosing: Environment | null;
+
   private values: Record<string, EnvironmentValues> = {};
+
   constructor(enclosing?: Environment) {
-    if (enclosing) {
+    this.enclosing = enclosing || null;
+    /* if (enclosing) {
       this.enclosing = enclosing;
     } else {
       this.enclosing = null;
-    }
+    } */
   }
   define(name: string, value: EnvironmentValues): void {
     this.values[name] = value;
