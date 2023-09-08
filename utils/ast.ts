@@ -52,16 +52,11 @@ export class FunctionStmt implements Stmt {
 }
 
 export class ForStmt implements Stmt {
-  initializer: Expr | null;
-  condition: Expr | null;
-  increment: Expr | null;
+  initializer: Expr;
+  condition: Expr;
+  increment: Expr;
   body: Stmt;
-  constructor(
-    initializer: Expr | null,
-    condition: Expr | null,
-    increment: Expr | null,
-    body: Stmt,
-  ) {
+  constructor(initializer: Expr, condition: Expr, increment: Expr, body: Stmt) {
     this.initializer = initializer;
     this.condition = condition;
     this.increment = increment;
@@ -372,6 +367,34 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   visitWhileStmt(expr: WhileStmt): string {
     let result = `(while ${this.strigify(expr.condition)}`;
     const bodyResult = this.strigify(expr.body);
+    result += this.indent(bodyResult);
+    return result;
+  }
+
+  visitCallExpr(expr: CallExpr): string {
+    return this.parenthesize("call", expr.callee, ...expr.args);
+  }
+  visitFunctionStmt(expr: FunctionStmt): string {
+    let result = `(fun ${expr.name.lexeme} (`;
+    expr.params.forEach((param) => {
+      result += param.lexeme + " ";
+    });
+    result += ")";
+    const bodyResult = this.strigify(expr.body);
+    result += this.indent(bodyResult);
+    return result;
+  }
+
+  visitReturnStmt(stmt: ReturnStmt): string {
+    return stmt.value !== null
+      ? this.parenthesize(stmt.keyword.lexeme, stmt.value)
+      : this.parenthesize(stmt.keyword.lexeme);
+  }
+  visitForStmt(expr: ForStmt): string {
+    let bodyResult = this.strigify(expr.body);
+    let result = `(for ${this.strigify(expr.initializer)} ${this.strigify(
+      expr.condition,
+    )} ${this.strigify(expr.increment)}`;
     result += this.indent(bodyResult);
     return result;
   }

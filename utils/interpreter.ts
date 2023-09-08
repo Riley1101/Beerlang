@@ -98,7 +98,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
 
   visitPrintStmt(expr: Ast.PrintStmt): void {
     const value = this.evaluate(expr.expression);
-    console.log(value);
+    console.log(this.stringify(value));
   }
 
   visitBlockStmt(expr: Ast.BlockStmt): void {
@@ -199,21 +199,21 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     return this.evaluate(expr.expression);
   }
   visitVariableExpr(expr: Ast.VariableExpr): LoxObject {
-    return this.environment.get(expr.name);
-    // return this.lookUpVariable(expr.name, expr);
+    /*     return this.environment.get(expr.name); */
+    return this.lookUpVariable(expr.name, expr);
   }
   visitAssignExpr(expr: Ast.AssignExpr): LoxObject {
-    /* let value = this.evaluate(expr.value);
+    let value = this.evaluate(expr.value);
     const distance = this.locals.get(expr);
     if (distance != null) {
       this.environment.assignAt(distance, expr.name, value);
     } else {
       this.globals.assign(expr.name, value);
     }
-    return value; */
-    let value = this.evaluate(expr.value);
-    this.environment.assign(expr.name, value);
     return value;
+    /* let value = this.evaluate(expr.value);
+    this.environment.assign(expr.name, value);
+    return value; */
   }
 
   visitCallExpr(expr: Ast.CallExpr): LoxObject {
