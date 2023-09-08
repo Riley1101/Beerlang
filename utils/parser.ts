@@ -6,9 +6,13 @@ import { TokenType } from "./types";
 export class Parser {
   private tokens: Token[];
   private current: number;
-  constructor(token: Token[]) {
-    this.tokens = token;
+
+  constructor() {
     this.current = 0;
+    this.tokens = [];
+  }
+  set_tokens(tokens: Token[]) {
+    this.tokens = tokens;
   }
   public parse(): ast.Stmt[] {
     const statements: ast.Stmt[] = [];

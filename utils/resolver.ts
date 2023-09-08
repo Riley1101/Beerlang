@@ -41,7 +41,6 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   resolve(target: ast.Stmt | ast.Expr | ast.Stmt[]): void {
     if (target instanceof Array) target.forEach((stmt) => this.resolve(stmt));
     else {
-      console.log(target);
       target.accept(this);
     }
   }
@@ -201,6 +200,7 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
     }
   }
   visitPrintStmt(expr: ast.PrintStmt): void {
+    console.log("i worked");
     this.resolve(expr.expression);
   }
 }
