@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "bun index.ts ./test/index.gid",
-    "dev": "tsc -w",
-    "start": "bun index.ts"
+    "repl": "bun index.ts"
   },
   "keywords": [],
   "author": "",

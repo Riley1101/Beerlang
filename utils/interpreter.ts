@@ -62,6 +62,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   interpret(target: Ast.Expr | Ast.Stmt[]) {
+      console.log(target)
     if (Array.isArray(target)) {
       try {
         for (const statement of target) {
@@ -72,6 +73,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
       }
     } else {
       let value = this.evaluate(target);
+      console.log('i should')
       console.log(value);
     }
   }
