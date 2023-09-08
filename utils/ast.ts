@@ -23,6 +23,18 @@ export interface ExprVisitor<T> {
 
 export type SyntaxVisitor<E, S> = ExprVisitor<E> & StmtVisitor<S>;
 
+export class ReturnStmt implements Stmt {
+  keyword: Token;
+  value: Expr;
+  constructor(keyword: Token, value: Expr) {
+    this.keyword = keyword;
+    this.value = value;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitReturnStmt(this);
+  }
+}
+
 export class FunctionStmt implements Stmt {
   name: Token;
   params: Token[];
@@ -40,16 +52,11 @@ export class FunctionStmt implements Stmt {
 }
 
 export class ForStmt implements Stmt {
-  initializer: Expr | null;
-  condition: Expr | null;
-  increment: Expr | null;
+  initializer: Expr;
+  condition: Expr;
+  increment: Expr;
   body: Stmt;
-  constructor(
-    initializer: Expr | null,
-    condition: Expr | null,
-    increment: Expr | null,
-    body: Stmt,
-  ) {
+  constructor(initializer: Expr, condition: Expr, increment: Expr, body: Stmt) {
     this.initializer = initializer;
     this.condition = condition;
     this.increment = increment;
@@ -97,6 +104,7 @@ export class BlockStmt implements Stmt {
 }
 
 export interface StmtVisitor<T> {
+  visitReturnStmt(expr: ReturnStmt): T;
   visitFunctionStmt(expr: FunctionStmt): T;
   visitExpressionStmt(expr: ExpressionStmt): T;
   visitIfStmt(expr: IfStmt): T;
@@ -359,6 +367,34 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   visitWhileStmt(expr: WhileStmt): string {
     let result = `(while ${this.strigify(expr.condition)}`;
     const bodyResult = this.strigify(expr.body);
+    result += this.indent(bodyResult);
+    return result;
+  }
+
+  visitCallExpr(expr: CallExpr): string {
+    return this.parenthesize("call", expr.callee, ...expr.args);
+  }
+  visitFunctionStmt(expr: FunctionStmt): string {
+    let result = `(fun ${expr.name.lexeme} (`;
+    expr.params.forEach((param) => {
+      result += param.lexeme + " ";
+    });
+    result += ")";
+    const bodyResult = this.strigify(expr.body);
+    result += this.indent(bodyResult);
+    return result;
+  }
+
+  visitReturnStmt(stmt: ReturnStmt): string {
+    return stmt.value !== null
+      ? this.parenthesize(stmt.keyword.lexeme, stmt.value)
+      : this.parenthesize(stmt.keyword.lexeme);
+  }
+  visitForStmt(expr: ForStmt): string {
+    let bodyResult = this.strigify(expr.body);
+    let result = `(for ${this.strigify(expr.initializer)} ${this.strigify(
+      expr.condition,
+    )} ${this.strigify(expr.increment)}`;
     result += this.indent(bodyResult);
     return result;
   }

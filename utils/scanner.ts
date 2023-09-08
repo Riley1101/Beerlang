@@ -9,13 +9,17 @@ export class Scanner {
   end: number;
   current: number;
   line: number;
-  constructor(contents: string) {
-    this.contents = contents;
+  constructor() {
+    this.contents = "";
     this.tokens = [];
     this.start = 0;
     this.current = 0;
     this.end = 0;
     this.line = 1;
+  }
+
+  set_contents(str: string) {
+    this.contents = str;
   }
 
   private _is_at_end() {

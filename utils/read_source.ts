@@ -16,13 +16,14 @@ export function run_file(path: string, exec: Exec) {
 export function run_prompt(exec: Exec) {
   const stdin = process.openStdin();
   stdin.addListener("data", (d) => {
+    console.log(d);
     exec(d.toString());
   });
 }
 
 export function read_source(exec: Exec) {
   if (process.argv.length > 2) {
-    const path = process.argv[2];
+    const path = process.argv[2] as string;
     if (path) return run_file(path, exec);
     else run_prompt(exec);
   } else {
