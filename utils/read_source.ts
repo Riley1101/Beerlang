@@ -16,7 +16,6 @@ export function run_file(path: string, exec: Exec) {
 export function run_prompt(exec: Exec) {
   const stdin = process.openStdin();
   stdin.addListener("data", (d) => {
-    console.log(d);
     exec(d.toString());
   });
 }

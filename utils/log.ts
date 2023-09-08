@@ -4,10 +4,8 @@ import { Token } from "./token";
  * @param {number} line - report the line number
  * @param {string} message - report the message
  */
-export function error(line: number, message: string): never {
+export function error(line: number, message: string){
   report(line, "", message, "error");
-  console.log(line,message)
-  throw new Error(message);
 }
 
 export function info(line: number, message: string) {
@@ -27,7 +25,8 @@ export function report(
   message: string,
   type: Log,
 ) {
-  console.log(`[${type}] --> [line ${line}] Error ${where}: ${message}`);
+  let mess = `[${type}] --> [line ${line}] Error ${where}: ${message}`;
+  throw new Error(mess);
 }
 
 export class ClientError extends Error {
@@ -95,10 +94,10 @@ class ErrorReporter {
     }
     header += "]";
     console.log(header + " " + error.message);
-
     if (error instanceof RuntimeError) this.hadRuntimeError = true;
     else if (error instanceof SyntaxError) this.hadSyntaxError = true;
     else this.hadCliError = true;
+    throw error;
   }
 }
 

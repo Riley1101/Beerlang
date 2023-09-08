@@ -200,7 +200,6 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
     }
   }
   visitPrintStmt(expr: ast.PrintStmt): void {
-    console.log("i worked");
     this.resolve(expr.expression);
   }
 }
