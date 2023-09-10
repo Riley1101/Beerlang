@@ -58,7 +58,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
 
   private stringify(object: LoxObject): string {
     if (object == null) return "nil";
-    console.log(object,'obj');
     return object.toString();
   }
 
@@ -265,9 +264,16 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
 
   visitClassStmt(expr: Ast.ClassStmt): void {
     this.environment.define(expr.name.lexeme, null);
-    const klass = new LoxClass(expr.name.lexeme);
+    let env = this.environment;
+    let methods: Record<string, LoxFunction> = {};
+    expr.methods.forEach((method) => {
+      const fun = new LoxFunction(method, env, method.name.lexeme === "init");
+      methods[method.name.lexeme] = fun;
+    });
+    let klass = new LoxClass(expr.name.lexeme, methods);
     this.environment.assign(expr.name, klass);
   }
+
   visitSetExpr(expr: Ast.SetExpr): LoxObject {
     const object = this.evaluate(expr.object);
     if (!(object instanceof LoxInstance)) {

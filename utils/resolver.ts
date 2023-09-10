@@ -128,11 +128,16 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
 
   visitAssignExpr(expr: ast.AssignExpr): void {
     this.resolve(expr.value);
+
     this.resolveLocal(expr, expr.name);
   }
 
   visitClassStmt(stmt: ast.ClassStmt): void {
     this.declare(stmt.name);
+    stmt.methods.forEach((method) => {
+      let declaration = FunctionType.Method;
+      this.resolveFunction(method, declaration);
+    });
     this.define(stmt.name);
   }
 

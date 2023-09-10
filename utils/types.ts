@@ -1,8 +1,9 @@
-import { Interpreter } from "./interpreter";
-import { RuntimeError, errorReporter } from "./log";
-import { Token } from "./token";
-import { Environment } from "./environment";
 import * as Ast from "./ast";
+import { Environment } from "./environment";
+import { Interpreter } from "./interpreter";
+import { errorReporter, RuntimeError } from "./log";
+import { Token } from "./token";
+
 export enum TokenType {
   // Single character tokens
   LeftParen = "LeftParen", // '('
@@ -166,6 +167,7 @@ export class LoxInstance {
     const method = this.klass.findMethod(name.lexeme);
 
     if (method !== null) return method.bind(this);
+
     throw errorReporter.report(
       new RuntimeError(name, `Undefined property '${name.lexeme}'.`),
     );
@@ -178,9 +180,10 @@ export class LoxInstance {
 export class LoxClass extends LoxCallable {
   name: string;
   methods: Record<string, LoxCallable> = {};
-  constructor(name: string) {
+  constructor(name: string,methods: Record<string, LoxCallable>) {
     super();
     this.name = name;
+    this.methods = methods;
   }
 
   findMethod(name: string): LoxFunction | null {
@@ -192,9 +195,11 @@ export class LoxClass extends LoxCallable {
 
   override call(interpreter: Interpreter, args: LoxObject[]): LoxObject {
     const instance = new LoxInstance(this);
+
     return instance;
   }
   override toString(): string {
+    console.log(JSON.stringify(this, null, 2));
     return this.name;
   }
   override arity(): number {
