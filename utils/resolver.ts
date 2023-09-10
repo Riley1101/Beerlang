@@ -3,6 +3,12 @@ import { Interpreter } from "./interpreter";
 import { errorReporter, ResolverError } from "./log";
 import { Token } from "./token";
 
+enum ClassType {
+  None = "None",
+  Class = "Class",
+  SubClass = "SubClass",
+}
+
 enum FunctionType {
   None = "None",
   Function = "Function",
@@ -25,6 +31,7 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   private interpreter: Interpreter;
   private scopes = new ScopeStack();
   private currentFunction = FunctionType.None;
+  private currentClass = ClassType.None;
 
   constructor(interpreter: Interpreter) {
     this.interpreter = interpreter;
@@ -133,12 +140,21 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   }
 
   visitClassStmt(stmt: ast.ClassStmt): void {
+    let enclosingClass = this.currentClass;
+    this.currentClass = ClassType.Class;
+
     this.declare(stmt.name);
+    this.define(stmt.name);
+
+    this.beginScope();
+    this.scopes.peek()["this"] = true;
     stmt.methods.forEach((method) => {
       let declaration = FunctionType.Method;
+      if (method.name.lexeme === "init") declaration = FunctionType.Initializer;
       this.resolveFunction(method, declaration);
     });
-    this.define(stmt.name);
+    this.endScope();
+    this.currentClass = enclosingClass;
   }
 
   visitFunctionStmt(expr: ast.FunctionStmt): void {
@@ -157,6 +173,15 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   }
 
   visitReturnStmt(stmt: ast.ReturnStmt): void {
+    if (this.currentFunction === FunctionType.None) {
+      errorReporter.report(
+        new ResolverError(
+          "Cannot return value from an initializer.",
+          stmt.keyword.line,
+          "",
+        ),
+      );
+    }
     if (stmt.value !== null) {
       this.resolve(stmt.value);
     }
@@ -199,7 +224,16 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
     return;
   }
   visitThisExpr(expr: ast.ThisExpr): void {
-    return;
+    if (this.currentClass === ClassType.None) {
+      errorReporter.report(
+        new ResolverError(
+          "Cannot use 'this' outside of a class.",
+          expr.keyword.line,
+          expr.keyword.lexeme,
+        ),
+      );
+    }
+    this.resolveLocal(expr, expr.keyword);
   }
   visitForStmt(expr: ast.ForStmt): void {
     if (expr) {

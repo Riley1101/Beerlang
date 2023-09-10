@@ -109,6 +109,7 @@ export class LoxFunction extends LoxCallable {
   private declaration: Ast.FunctionStmt;
   private closure: Environment;
   private is_initializer: boolean;
+
   constructor(
     dec: Ast.FunctionStmt,
     closure: Environment,
@@ -137,6 +138,8 @@ export class LoxFunction extends LoxCallable {
         return e.value;
       }
     }
+    if (this.is_initializer) return this.closure.getThis();
+
     return null;
   }
 
@@ -180,7 +183,7 @@ export class LoxInstance {
 export class LoxClass extends LoxCallable {
   name: string;
   methods: Record<string, LoxCallable> = {};
-  constructor(name: string,methods: Record<string, LoxCallable>) {
+  constructor(name: string, methods: Record<string, LoxCallable>) {
     super();
     this.name = name;
     this.methods = methods;
@@ -195,14 +198,18 @@ export class LoxClass extends LoxCallable {
 
   override call(interpreter: Interpreter, args: LoxObject[]): LoxObject {
     const instance = new LoxInstance(this);
-
+    const initializer = this.findMethod("init");
+    if (initializer !== null) {
+      initializer.bind(instance).call(interpreter, args);
+    }
     return instance;
   }
   override toString(): string {
-    console.log(JSON.stringify(this, null, 2));
     return this.name;
   }
   override arity(): number {
-    return 0;
+    const initializer = this.findMethod("init");
+    if (initializer === null) return 0;
+    return initializer.arity();
   }
 }

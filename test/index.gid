@@ -1,28 +1,12 @@
-class Dog{
-    woof(){
-        print "Woof Woof!";
+class Person {
+    init(){
+        this.name =  "Hello";
+    }
+    sayName() {
+        print this.name;
     }
 }
 
-class Cat{
-    meow(){
-        print "Meow Meow!";
-    }
-}
+var p = Person();
+p.sayName();
 
-class Me{
-    reality(){
-        print "I am a dog person but";
-        print "My girl love cats so ";
-        print "I have no choice";
-    }
-}
-
-var d = Dog();
-d.woof();
-
-var c = Cat();
-c.meow();
-
-var me = Me();
-me.reality();

@@ -167,7 +167,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   visitThisExpr(expr: Ast.ThisExpr): LoxObject {
-    return null;
+    return this.lookUpVariable(expr.keyword, expr);
   }
 
   visitSuperExpr(expr: Ast.SuperExpr): LoxObject {

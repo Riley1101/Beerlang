@@ -178,8 +178,9 @@ export class Parser {
     if (this.match(TokenType.Nil)) return new ast.LiteralExpr(null);
     if (this.match(TokenType.Number, TokenType.String))
       return new ast.LiteralExpr(this.previous().literal);
-    // if (this.match(TokenType.This), TokenType.This) return new
-    // ast.ThisExpr(this.previous())
+    if (this.match(TokenType.This)) {
+      return new ast.ThisExpr(this.previous());
+    }
     if (this.match(TokenType.LeftParen)) {
       let expr = this.expression();
       this.consume(TokenType.RightParen, "Expect ')' after expression.");
