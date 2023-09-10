@@ -1,6 +1,6 @@
-fun fib(n) {
-  if (n < 2) return n;
-  return fib(n - 1) + fib(n - 2); 
+class Person {
 }
 
-print fib(10);
+var p = Person();
+
+print p;

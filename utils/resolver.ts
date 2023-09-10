@@ -131,6 +131,11 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
     this.resolveLocal(expr, expr.name);
   }
 
+  visitClassStmt(stmt: ast.ClassStmt): void {
+    this.declare(stmt.name);
+    this.define(stmt.name);
+  }
+
   visitFunctionStmt(expr: ast.FunctionStmt): void {
     this.declare(expr.name);
     this.define(expr.name);
@@ -201,5 +206,12 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   }
   visitPrintStmt(expr: ast.PrintStmt): void {
     this.resolve(expr.expression);
+  }
+  visitGetExpr(expr: ast.GetExpr): void {
+    this.resolve(expr.object);
+  }
+  visitSetExpr(expr: ast.SetExpr): void {
+    this.resolve(expr.value);
+    this.resolve(expr.object);
   }
 }

@@ -4,7 +4,7 @@ import { Token } from "./token";
  * @param {number} line - report the line number
  * @param {string} message - report the message
  */
-export function error(line: number, message: string){
+export function error(line: number, message: string) {
   report(line, "", message, "error");
 }
 
