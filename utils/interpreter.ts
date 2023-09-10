@@ -1,8 +1,8 @@
 import * as Ast from "./ast";
 import { errorReporter, RuntimeError } from "./log";
-import { LoxObject, LoxCallable, LoxClockFunction } from "./types";
+import { LoxInstance, LoxObject, LoxCallable, LoxClockFunction } from "./types";
 import { Environment } from "./environment";
-import { TokenType, LoxFunction } from "./types";
+import { TokenType, LoxFunction, LoxClass } from "./types";
 import { Token } from "./token";
 
 export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
@@ -109,6 +109,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   // expr starts
   checkNumberOperand(operator: Token, right: LoxObject) {
     if (typeof right === "number") return;
+
     errorReporter.report(
       new RuntimeError(operator, "Operand must be a number"),
     );
@@ -166,7 +167,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   visitThisExpr(expr: Ast.ThisExpr): LoxObject {
-    return null;
+    return this.lookUpVariable(expr.keyword, expr);
   }
 
   visitSuperExpr(expr: Ast.SuperExpr): LoxObject {
@@ -259,5 +260,38 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   visitFunctionStmt(stmt: Ast.FunctionStmt): void {
     const fun = new LoxFunction(stmt, this.environment, false);
     this.environment.define(stmt.name.lexeme, fun);
+  }
+
+  visitClassStmt(expr: Ast.ClassStmt): void {
+    this.environment.define(expr.name.lexeme, null);
+    let env = this.environment;
+    let methods: Record<string, LoxFunction> = {};
+    expr.methods.forEach((method) => {
+      const fun = new LoxFunction(method, env, method.name.lexeme === "init");
+      methods[method.name.lexeme] = fun;
+    });
+    let klass = new LoxClass(expr.name.lexeme, methods);
+    this.environment.assign(expr.name, klass);
+  }
+
+  visitSetExpr(expr: Ast.SetExpr): LoxObject {
+    const object = this.evaluate(expr.object);
+    if (!(object instanceof LoxInstance)) {
+      throw errorReporter.report(
+        new RuntimeError(expr.name, "Only instances have fields."),
+      );
+    }
+    const value = this.evaluate(expr.value);
+    object.set(expr.name, value);
+    return value;
+  }
+  visitGetExpr(expr: Ast.GetExpr): LoxObject {
+    const object = this.evaluate(expr.object);
+    if (object instanceof LoxInstance) {
+      return object.get(expr.name);
+    }
+    throw errorReporter.report(
+      new RuntimeError(expr.name, "Only instances have properties."),
+    );
   }
 }

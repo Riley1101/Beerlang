@@ -37,7 +37,9 @@ export class Runner {
       let stmts = this.parser.parse();
       this.resolver.resolve(stmts);
       let ast = this.ast_printer.strigify(stmts);
+      console.log("================= AST STARTS =================");
       console.log(ast);
+      console.log("================= AST ENDS =================");
       this.interpreter.interpret(stmts);
     });
   }

@@ -1,6 +1,9 @@
-import { Interpreter } from "./interpreter";
-import { Environment } from "./environment";
 import * as Ast from "./ast";
+import { Environment } from "./environment";
+import { Interpreter } from "./interpreter";
+import { errorReporter, RuntimeError } from "./log";
+import { Token } from "./token";
+
 export enum TokenType {
   // Single character tokens
   LeftParen = "LeftParen", // '('
@@ -69,12 +72,18 @@ export const keywords: Record<string, TokenType> = {
   while: TokenType.While,
 };
 
-export type LoxObject = string | number | boolean | null;
+export type LoxObject =
+  | string
+  | number
+  | boolean
+  | null
+  | LoxCallable
+  | LoxInstance;
 
 export abstract class LoxCallable {
   abstract arity(): number;
   abstract call(interpreter: Interpreter, args: LoxObject[]): LoxObject;
-  abstract to_string(): string;
+  abstract toString(): string;
 }
 
 export class LoxClockFunction extends LoxCallable {
@@ -84,7 +93,7 @@ export class LoxClockFunction extends LoxCallable {
   override call(): LoxObject {
     return Date.now().valueOf() / 1000.0;
   }
-  override to_string(): string {
+  override toString(): string {
     return "<native fun 'clock'>";
   }
 }
@@ -100,6 +109,7 @@ export class LoxFunction extends LoxCallable {
   private declaration: Ast.FunctionStmt;
   private closure: Environment;
   private is_initializer: boolean;
+
   constructor(
     dec: Ast.FunctionStmt,
     closure: Environment,
@@ -128,10 +138,78 @@ export class LoxFunction extends LoxCallable {
         return e.value;
       }
     }
+    if (this.is_initializer) return this.closure.getThis();
+
     return null;
   }
 
-  to_string(): string {
+  bind(instance: LoxInstance): LoxFunction {
+    const environment = new Environment(this.closure);
+    environment.define("this", instance);
+    return new LoxFunction(this.declaration, environment, this.is_initializer);
+  }
+
+  toString(): string {
     return `<fn ${this.declaration.name.lexeme}>`;
+  }
+}
+
+export class LoxInstance {
+  private klass: LoxClass;
+  private fields: Record<string, LoxObject> = {};
+  constructor(klass: LoxClass) {
+    this.klass = klass;
+  }
+  set(name: Token, value: LoxObject): void {
+    this.fields[name.lexeme] = value;
+  }
+  get(name: Token): LoxObject {
+    if (name.lexeme in this.fields) {
+      return this.fields[name.lexeme] as LoxObject;
+    }
+    const method = this.klass.findMethod(name.lexeme);
+
+    if (method !== null) return method.bind(this);
+
+    throw errorReporter.report(
+      new RuntimeError(name, `Undefined property '${name.lexeme}'.`),
+    );
+  }
+  toString(): string {
+    return this.klass.name + " instance";
+  }
+}
+
+export class LoxClass extends LoxCallable {
+  name: string;
+  methods: Record<string, LoxCallable> = {};
+  constructor(name: string, methods: Record<string, LoxCallable>) {
+    super();
+    this.name = name;
+    this.methods = methods;
+  }
+
+  findMethod(name: string): LoxFunction | null {
+    if (name in this.methods) {
+      return this.methods[name] as LoxFunction;
+    }
+    return null;
+  }
+
+  override call(interpreter: Interpreter, args: LoxObject[]): LoxObject {
+    const instance = new LoxInstance(this);
+    const initializer = this.findMethod("init");
+    if (initializer !== null) {
+      initializer.bind(instance).call(interpreter, args);
+    }
+    return instance;
+  }
+  override toString(): string {
+    return this.name;
+  }
+  override arity(): number {
+    const initializer = this.findMethod("init");
+    if (initializer === null) return 0;
+    return initializer.arity();
   }
 }

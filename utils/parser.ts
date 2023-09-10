@@ -27,9 +27,21 @@ export class Parser {
   }
 
   private decleration(): ast.Stmt {
+    if (this.match(TokenType.Class)) return this.classDeclearation();
     if (this.match(TokenType.Fun)) return this.funDeclearation("function");
     if (this.match(TokenType.Var)) return this.varDecleration();
     return this.statement();
+  }
+
+  private classDeclearation(): ast.Stmt {
+    const name = this.consume(TokenType.Identifier, "Expect class name.");
+    this.consume(TokenType.LeftBrace, "Expect '{' before class body.");
+    const methods: ast.FunctionStmt[] = [];
+    while (!this.check(TokenType.RightBrace) && !this.isAtEnd()) {
+      methods.push(this.funDeclearation("method"));
+    }
+    this.consume(TokenType.RightBrace, "Expect '}' after class body.");
+    return new ast.ClassStmt(name, methods);
   }
 
   private funDeclearation(kind: string) {
@@ -90,7 +102,7 @@ export class Parser {
 
   private consume(type: TokenType, message: string): Token {
     if (this.check(type)) return this.advance();
-    error(this.peek().line, message);
+    throw error(this.peek().line, message);
   }
 
   private peek(): Token {
@@ -148,6 +160,8 @@ export class Parser {
       if (expr instanceof ast.VariableExpr) {
         let name = expr.name;
         return new ast.AssignExpr(name, value);
+      } else if (expr instanceof ast.GetExpr) {
+        return new ast.SetExpr(expr.object, expr.name, value);
       }
       error(this.peek().line, "Invalid assignment target.");
     }
@@ -164,8 +178,9 @@ export class Parser {
     if (this.match(TokenType.Nil)) return new ast.LiteralExpr(null);
     if (this.match(TokenType.Number, TokenType.String))
       return new ast.LiteralExpr(this.previous().literal);
-    // if (this.match(TokenType.This), TokenType.This) return new
-    // ast.ThisExpr(this.previous())
+    if (this.match(TokenType.This)) {
+      return new ast.ThisExpr(this.previous());
+    }
     if (this.match(TokenType.LeftParen)) {
       let expr = this.expression();
       this.consume(TokenType.RightParen, "Expect ')' after expression.");
@@ -191,6 +206,12 @@ export class Parser {
     while (true) {
       if (this.match(TokenType.LeftParen)) {
         expr = this.finishCall(expr);
+      } else if (this.match(TokenType.Dot)) {
+        const token = this.consume(
+          TokenType.Identifier,
+          "Expect property name after '.'.",
+        );
+        expr = new ast.GetExpr(expr, token);
       } else {
         break;
       }

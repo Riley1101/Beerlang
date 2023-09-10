@@ -9,6 +9,8 @@ export interface Stmt {
   accept<T>(visitor: StmtVisitor<T>): T;
 }
 export interface ExprVisitor<T> {
+  visitSetExpr(expr: SetExpr): T;
+  visitGetExpr(expr: GetExpr): T;
   visitAssignExpr(expr: AssignExpr): T;
   visitBinaryExpr(expr: BinaryExpr): T;
   visitCallExpr(expr: CallExpr): T;
@@ -35,6 +37,19 @@ export class ReturnStmt implements Stmt {
   }
 }
 
+export class ClassStmt implements Stmt {
+  name: Token;
+  methods: FunctionStmt[];
+  constructor(name: Token, methods: FunctionStmt[]) {
+    this.name = name;
+    this.methods = methods;
+  }
+
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitClassStmt(this);
+  }
+}
+
 export class FunctionStmt implements Stmt {
   name: Token;
   params: Token[];
@@ -48,6 +63,32 @@ export class FunctionStmt implements Stmt {
 
   accept<R>(visitor: StmtVisitor<R>): R {
     return visitor.visitFunctionStmt(this);
+  }
+}
+
+export class SetExpr implements Expr {
+  object: Expr;
+  name: Token;
+  value: Expr;
+  constructor(object: Expr, name: Token, value: Expr) {
+    this.object = object;
+    this.name = name;
+    this.value = value;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitSetExpr(this);
+  }
+}
+
+export class GetExpr implements Expr {
+  object: Expr;
+  name: Token;
+  constructor(object: Expr, name: Token) {
+    this.object = object;
+    this.name = name;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitGetExpr(this);
   }
 }
 
@@ -104,6 +145,7 @@ export class BlockStmt implements Stmt {
 }
 
 export interface StmtVisitor<T> {
+  visitClassStmt(expr: ClassStmt): T;
   visitReturnStmt(expr: ReturnStmt): T;
   visitFunctionStmt(expr: FunctionStmt): T;
   visitExpressionStmt(expr: ExpressionStmt): T;
@@ -230,9 +272,9 @@ export class SuperExpr implements Expr {
 }
 
 export class ThisExpr implements Expr {
-  value: Token;
+  keyword: Token;
   constructor(value: Token) {
-    this.value = value;
+    this.keyword = value;
   }
   accept<T>(visitor: ExprVisitor<T>): T {
     return visitor.visitThisExpr(this);
@@ -345,7 +387,7 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   }
 
   visitThisExpr(expr: ThisExpr): string {
-    return this.parenthesize(expr.value.lexeme);
+    return this.parenthesize(expr.keyword.lexeme);
   }
 
   visitLiteralExpr(expr: LiteralExpr): string {
@@ -390,6 +432,7 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
       ? this.parenthesize(stmt.keyword.lexeme, stmt.value)
       : this.parenthesize(stmt.keyword.lexeme);
   }
+
   visitForStmt(expr: ForStmt): string {
     let bodyResult = this.strigify(expr.body);
     let result = `(for ${this.strigify(expr.initializer)} ${this.strigify(
@@ -397,5 +440,25 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     )} ${this.strigify(expr.increment)}`;
     result += this.indent(bodyResult);
     return result;
+  }
+
+  visitClassStmt(stmt: ClassStmt): string {
+    let result = `(class ${stmt.name.lexeme}`;
+    stmt.methods.forEach((method) => {
+      result += "\n" + this.indent(this.strigify(method));
+    });
+    result += ")";
+    return result;
+  }
+
+  visitGetExpr(expr: GetExpr): string {
+    return this.parenthesize(`get ${expr.name.lexeme}`, expr.object);
+  }
+  visitSetExpr(expr: SetExpr): string {
+    return this.parenthesize(
+      `set ${expr.name.lexeme}`,
+      expr.object,
+      expr.value,
+    );
   }
 }
