@@ -35,10 +35,11 @@ export class Runner {
       this.scanner.scan_tokens();
       this.parser.set_tokens(this.scanner.tokens);
       let stmts = this.parser.parse();
-      console.log(stmts);
       this.resolver.resolve(stmts);
       let ast = this.ast_printer.strigify(stmts);
+      console.log("================= AST STARTS =================");
       console.log(ast);
+      console.log("================= AST ENDS =================");
       this.interpreter.interpret(stmts);
     });
   }

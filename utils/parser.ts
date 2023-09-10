@@ -34,7 +34,6 @@ export class Parser {
   }
 
   private classDeclearation(): ast.Stmt {
-    console.log("classDeclearation");
     const name = this.consume(TokenType.Identifier, "Expect class name.");
     this.consume(TokenType.LeftBrace, "Expect '{' before class body.");
     const methods: ast.FunctionStmt[] = [];
@@ -42,7 +41,6 @@ export class Parser {
       methods.push(this.funDeclearation("method"));
     }
     this.consume(TokenType.RightBrace, "Expect '}' after class body.");
-    console.log("classDeclearation end");
     return new ast.ClassStmt(name, methods);
   }
 

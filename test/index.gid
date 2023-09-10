@@ -1,7 +1,28 @@
-class Bacon {
-  eat() {
-    print "Crunch crunch crunch!";
-  }
+class Dog{
+    woof(){
+        print "Woof Woof!";
+    }
 }
 
-Bacon().eat();
+class Cat{
+    meow(){
+        print "Meow Meow!";
+    }
+}
+
+class Me{
+    reality(){
+        print "I am a dog person but";
+        print "My girl love cats so ";
+        print "I have no choice";
+    }
+}
+
+var d = Dog();
+d.woof();
+
+var c = Cat();
+c.meow();
+
+var me = Me();
+me.reality();
