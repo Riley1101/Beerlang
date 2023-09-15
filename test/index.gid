@@ -1,9 +1,10 @@
-class Thing {
-    getCallback(a) {
-        return 12 + a ;
-    }
+print "=== Function 3: closure ===";
+fun makeCounter() {
+    var i = 0;
+  fun count() {
+    print("=========>");
+    print i;
+  }
+  count();
 }
-
-var t = Thing();
-var b = t.getCallback(12);
-print b;
+makeCounter();

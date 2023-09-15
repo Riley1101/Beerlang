@@ -6,7 +6,7 @@ import { TokenType, LoxFunction, LoxClass } from "./types";
 import { Token } from "./token";
 
 export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
-  private globals = new Environment();
+  globals = new Environment();
   private environment = this.globals;
   private locals = new Map<Ast.Expr, number>();
 
@@ -19,7 +19,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     try {
       this.environment = environment;
       for (const statement of statements) {
-        this.execute(statement);
+        statements && this.execute(statement);
       }
     } finally {
       this.environment = previous;
@@ -34,8 +34,10 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
   private lookUpVariable(name: Token, expr: Ast.Expr) {
     const distance = this.locals.get(expr);
-    if (distance != undefined) {
-      return this.environment.getAt(distance, name);
+    console.log(distance);
+    if (distance !== undefined) {
+      let char = this.environment.getAt(distance, name);
+      return char;
     } else {
       return this.globals.get(name);
     }
@@ -97,6 +99,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   }
 
   visitPrintStmt(expr: Ast.PrintStmt): void {
+    console.log(expr.expression.accept(this));
     const value = this.evaluate(expr.expression);
     console.log(this.stringify(value));
   }
@@ -109,7 +112,6 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   // expr starts
   checkNumberOperand(operator: Token, right: LoxObject) {
     if (typeof right === "number") return;
-
     errorReporter.report(
       new RuntimeError(operator, "Operand must be a number"),
     );
@@ -206,7 +208,7 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
   visitAssignExpr(expr: Ast.AssignExpr): LoxObject {
     let value = this.evaluate(expr.value);
     const distance = this.locals.get(expr);
-    if (distance != null) {
+    if (distance != undefined) {
       this.environment.assignAt(distance, expr.name, value);
     } else {
       this.globals.assign(expr.name, value);
@@ -285,13 +287,12 @@ export class Interpreter implements Ast.SyntaxVisitor<LoxObject, void> {
     object.set(expr.name, value);
     return value;
   }
+
   visitGetExpr(expr: Ast.GetExpr): LoxObject {
-    const object = this.evaluate(expr.object);
-    if (object instanceof LoxInstance) {
-      return object.get(expr.name);
-    }
-    throw errorReporter.report(
+    const object = this.evaluate(expr.object) as LoxInstance;
+    return object.get(expr.name);
+    /* throw errorReporter.report(
       new RuntimeError(expr.name, "Only instances have properties."),
-    );
+    ); */
   }
 }

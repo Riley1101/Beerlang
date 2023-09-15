@@ -1,8 +1,8 @@
 import type { Token } from "./token";
 import { errorReporter } from "./log";
-import type { LoxObject, LoxCallable } from "./types";
+import type { LoxObject } from "./types";
 
-type EnvironmentValues = LoxObject | LoxCallable;
+type EnvironmentValues = LoxObject;
 
 export class Environment {
   enclosing: Environment | null;
@@ -10,12 +10,11 @@ export class Environment {
   private values: Record<string, EnvironmentValues> = {};
 
   constructor(enclosing?: Environment) {
-    this.enclosing = enclosing || null;
-    /* if (enclosing) {
+    if (enclosing) {
       this.enclosing = enclosing;
     } else {
       this.enclosing = null;
-    } */
+    }
   }
   define(name: string, value: EnvironmentValues): void {
     this.values[name] = value;
@@ -59,7 +58,7 @@ export class Environment {
       this.values[name.lexeme] = value;
       return;
     }
-    if (this.enclosing) {
+    if (this.enclosing !== null) {
       this.enclosing.assign(name, value);
       return;
     }
@@ -69,13 +68,11 @@ export class Environment {
   }
 
   getAt(distance: number, name: Token): LoxObject {
-    //    return this.ancestor(distance).values[name] as LoxObject;
+    //        return this.ancestor(distance).values[name] as LoxObject;
     const environment = this.ancestor(distance);
-    if (environment !== null)
+    if (environment !== null) {
       return environment.values[name.lexeme] as LoxObject;
-    errorReporter.report(
-      new ReferenceError(`Undefined variable '${name.lexeme}'.`),
-    );
+    }
     // TODO variable not found and this code should never been reached
     throw new ReferenceError(`Undefined variable '${name.lexeme}'.`);
   }

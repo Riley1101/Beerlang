@@ -20,7 +20,7 @@ type Scope = Record<string, boolean>;
 
 class ScopeStack extends Array<Scope> {
   isEmpty(): boolean {
-    return this.length === 0;
+    return this.length < 1;
   }
   peek(): Scope {
     return this[this.length - 1] as Scope;
@@ -45,6 +45,8 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
     this.scopes.pop();
   }
 
+  resolve(statements: ast.Stmt[]): void;
+  resolve(stmt: ast.Stmt | ast.Expr): void;
   resolve(target: ast.Stmt | ast.Expr | ast.Stmt[]): void {
     if (target instanceof Array) target.forEach((stmt) => this.resolve(stmt));
     else {
@@ -52,9 +54,12 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
     }
   }
 
-  private resolveStmt(stmt: ast.Stmt[]): void {
-    for (const statement of stmt) {
-      this.resolve(statement);
+  private resolveLocal(expr: ast.Expr, name: Token): void {
+    for (let i = this.scopes.length - 1; i >= 0; i--) {
+      if (name.lexeme in (this.scopes[i] as Scope)) {
+        this.interpreter.resolve(expr, this.scopes.length - 1 - i);
+        return;
+      }
     }
   }
 
@@ -75,37 +80,27 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
 
   private define(name: Token): void {
     if (this.scopes.isEmpty()) return;
-    this.scopes.peek()[name.lexeme] = true;
-  }
 
-  private resolveLocal(expr: ast.Expr, name: Token): void {
-    for (let i = this.scopes.length - 1; i >= 0; i--) {
-      let scope = this.scopes[i];
-      if (scope) {
-        if (name.lexeme in scope) {
-          this.interpreter.resolve(expr, this.scopes.length - 1 - i);
-          return;
-        }
-      }
-    }
+    const scope = this.scopes.peek();
+    scope[name.lexeme] = true;
   }
 
   private resolveFunction(fun: ast.FunctionStmt, type: FunctionType) {
     const enclosingFunction = this.currentFunction;
     this.currentFunction = type;
     this.beginScope();
-    for (const param of fun.params) {
+    fun.params.forEach((param) => {
       this.declare(param);
       this.define(param);
-    }
-    this.resolveStmt(fun.body);
+    });
+    this.resolve(fun.body);
     this.endScope();
     this.currentFunction = enclosingFunction;
   }
 
-  visitBlockStmt(stmt: ast.BlockStmt, context: void): void {
+  visitBlockStmt(stmt: ast.BlockStmt): void {
     this.beginScope();
-    this.resolveStmt(stmt.statements);
+    this.resolve(stmt.statements);
     this.endScope();
   }
 
@@ -130,7 +125,6 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
         ),
       );
     this.resolveLocal(expr, expr.name);
-    return;
   }
 
   visitAssignExpr(expr: ast.AssignExpr): void {
@@ -142,9 +136,9 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   visitClassStmt(stmt: ast.ClassStmt): void {
     const enclosingClass = this.currentClass;
     this.currentClass = ClassType.Class;
-
     this.declare(stmt.name);
     this.define(stmt.name);
+
     this.beginScope();
     this.scopes.peek()["this"] = true;
     stmt.methods.forEach((method) => {
@@ -163,7 +157,7 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   }
 
   visitExpressionStmt(stmt: ast.ExpressionStmt): void {
-    return this.resolve(stmt.expression);
+    this.resolve(stmt.expression);
   }
   visitIfStmt(stmt: ast.IfStmt): void {
     this.resolve(stmt.condition);
@@ -182,6 +176,15 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
       );
     }
     if (stmt.value !== null) {
+      if (this.currentFunction === FunctionType.Initializer) {
+        errorReporter.report(
+          new ResolverError(
+            "Cannot return value from an initializer.",
+            stmt.keyword.line,
+            "",
+          ),
+        );
+      }
       this.resolve(stmt.value);
     }
   }
@@ -227,12 +230,12 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
       errorReporter.report(
         new ResolverError(
           "Cannot use 'this' outside of a class.",
-          expr.value.line,
-          expr.value.lexeme,
+          expr.keyword.line,
+          expr.keyword.lexeme,
         ),
       );
     }
-    this.resolveLocal(expr, expr.value);
+    this.resolveLocal(expr, expr.keyword);
   }
   visitForStmt(expr: ast.ForStmt): void {
     if (expr) {

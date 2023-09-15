@@ -101,7 +101,6 @@ export class LoxClockFunction extends LoxCallable {
 export class LoxFunction extends LoxCallable {
   static Return = class Return {
     value: LoxObject;
-
     constructor(value: LoxObject) {
       this.value = value;
     }
@@ -124,6 +123,7 @@ export class LoxFunction extends LoxCallable {
   arity(): number {
     return this.declaration.params.length;
   }
+
   override call(interpreter: Interpreter, args: LoxObject[]): LoxObject {
     const env = new Environment(this.closure);
     for (const [i, param] of this.declaration.params.entries()) {
@@ -148,7 +148,6 @@ export class LoxFunction extends LoxCallable {
     environment.define("this", instance);
     return new LoxFunction(this.declaration, environment, this.is_initializer);
   }
-
   toString(): string {
     return `<fn ${this.declaration.name.lexeme}>`;
   }
@@ -167,10 +166,9 @@ export class LoxInstance {
     if (name.lexeme in this.fields) {
       return this.fields[name.lexeme] as LoxObject;
     }
-    const method = this.klass.findMethod(name.lexeme);
-
-    if (method !== null) return method.bind(this);
-
+    const method = this.klass.findMethod(name.lexeme) as LoxFunction;
+    let fun = method.bind(this);
+    if (method !== null) return fun;
     throw errorReporter.report(
       new RuntimeError(name, `Undefined property '${name.lexeme}'.`),
     );
