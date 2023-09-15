@@ -1,27 +1,9 @@
-class Dog{
-    woof(){
-        print "Woof Woof!";
+class Thing {
+    getCallback(a) {
+        return 12 + a ;
     }
 }
 
-class Cat{
-    meow(){
-        print "Meow Meow!";
-    }
-}
-
-class Me{
-    init(){
-        print "I am a dog person but";
-        print "My girl loves cats";
-        print "So I have no choice";
-    }
-}
-
-var d = Dog();
-d.woof();
-
-var c = Cat();
-c.meow();
-
-var me = Me();
+var t = Thing();
+var b = t.getCallback(12);
+print b;

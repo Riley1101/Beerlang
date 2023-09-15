@@ -272,9 +272,9 @@ export class SuperExpr implements Expr {
 }
 
 export class ThisExpr implements Expr {
-  keyword: Token;
+  value: Token;
   constructor(value: Token) {
-    this.keyword = value;
+    this.value = value;
   }
   accept<T>(visitor: ExprVisitor<T>): T {
     return visitor.visitThisExpr(this);
@@ -387,7 +387,7 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   }
 
   visitThisExpr(expr: ThisExpr): string {
-    return this.parenthesize(expr.keyword.lexeme);
+    return this.parenthesize(expr.value.lexeme);
   }
 
   visitLiteralExpr(expr: LiteralExpr): string {

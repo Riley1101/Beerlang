@@ -140,12 +140,11 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
   }
 
   visitClassStmt(stmt: ast.ClassStmt): void {
-    let enclosingClass = this.currentClass;
+    const enclosingClass = this.currentClass;
     this.currentClass = ClassType.Class;
 
     this.declare(stmt.name);
     this.define(stmt.name);
-
     this.beginScope();
     this.scopes.peek()["this"] = true;
     stmt.methods.forEach((method) => {
@@ -228,12 +227,12 @@ export class Resolver implements ast.SyntaxVisitor<void, void> {
       errorReporter.report(
         new ResolverError(
           "Cannot use 'this' outside of a class.",
-          expr.keyword.line,
-          expr.keyword.lexeme,
+          expr.value.line,
+          expr.value.lexeme,
         ),
       );
     }
-    this.resolveLocal(expr, expr.keyword);
+    this.resolveLocal(expr, expr.value);
   }
   visitForStmt(expr: ast.ForStmt): void {
     if (expr) {
