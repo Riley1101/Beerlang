@@ -1,4 +1,45 @@
 import { Token } from "./token";
+import chalk from "chalk";
+
+/**
+ * The logger instance used throughout the application.
+ * planned to be replaced with a native custom logger in the future
+ */
+export const Log: typeof chalk = chalk;
+export class Logger {
+  private _log: typeof chalk;
+  constructor() {
+    this._log = Log;
+  }
+
+  public info(message: any): void {
+    if (typeof message === "object") {
+      message = JSON.stringify(message, null, 2);
+    }
+    console.log(this._log.blue(message));
+  }
+
+  public error(message: any): void {
+    if (typeof message === "object") {
+      message = JSON.stringify(message, null, 2);
+    }
+    console.log(this._log.red(message));
+  }
+
+  public warn(message: any): void {
+    if (typeof message === "object") {
+      message = JSON.stringify(message, null, 2);
+    }
+    console.log(this._log.yellow(message));
+  }
+
+  public debug(message: any): void {
+    if (typeof message === "object") {
+      message = JSON.stringify(message, null, 2);
+    }
+    console.log(this._log.green(message));
+  }
+}
 
 export class ClientError extends Error {
   constructor(message: string) {

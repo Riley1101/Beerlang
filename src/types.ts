@@ -1,4 +1,4 @@
-export type Gidoon = string | number | boolean | null;
+export type Literals = string | number | boolean | null;
 
 export enum TokenType {
   // Single-character tokens.

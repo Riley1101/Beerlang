@@ -1,9 +1,11 @@
 import { Token } from "./token";
 import { keywords } from "./types";
 import { errorReporter, SyntaxError } from "./error";
-import { Gidoon, TokenType } from "./types";
+import { Literals, TokenType } from "./types";
+import { Logger } from "./error";
 
 export class Scanner implements Scanner {
+  private logger: Logger = new Logger();
   private tokens: Token[];
   private source: string;
   private current: number = 0;
@@ -41,7 +43,7 @@ export class Scanner implements Scanner {
     return true;
   }
 
-  private add_token(type: TokenType, literal: Gidoon) {
+  private add_token(type: TokenType, literal: Literals) {
     let text = this.source.substring(this.start, this.current);
     let token = new Token(type, text, literal, this.line);
     this.tokens.push(token);
@@ -93,8 +95,8 @@ export class Scanner implements Scanner {
             this.line +
             " column " +
             this.current +
-            ""
-        )
+            "",
+        ),
       );
     }
     this.advance();
@@ -140,7 +142,7 @@ export class Scanner implements Scanner {
       case "=":
         this.add_token(
           this.match("=") ? TokenType.EQUAL_EQUAL : TokenType.EQUAL,
-          null
+          null,
         );
         break;
       case "o":
@@ -157,19 +159,19 @@ export class Scanner implements Scanner {
       case "!":
         this.add_token(
           this.match("=") ? TokenType.BANG_EQUAL : TokenType.BANG,
-          null
+          null,
         );
         break;
       case "<":
         this.add_token(
           this.match("=") ? TokenType.LESS_EQUAL : TokenType.LESS,
-          null
+          null,
         );
         break;
       case ">":
         this.add_token(
           this.match("=") ? TokenType.GREATER_EQUAL : TokenType.GREATER,
-          null
+          null,
         );
         break;
       case "\n":
@@ -197,6 +199,6 @@ export class Scanner implements Scanner {
   }
 
   get_tokens() {
-    console.log(this.tokens);
+    this.logger.info(this.tokens);
   }
 }
