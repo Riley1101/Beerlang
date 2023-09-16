@@ -71,6 +71,16 @@ export class ErrorReporter {
   hasRuntimeError: boolean = false;
   hasSyntaxError: boolean = false;
 
+  log(error: Error) {
+    if (error instanceof ClientError) {
+      console.log(Log.red(error.message));
+    } else if (error instanceof RuntimeError) {
+      console.log(Log.red(error.message));
+    } else {
+      console.log(Log.red(error.message));
+    }
+  }
+
   report(error: Error) {
     if (error instanceof ClientError) {
       this.hasCliError = true;
@@ -79,6 +89,7 @@ export class ErrorReporter {
     } else {
       this.hasSyntaxError = true;
     }
+    this.log(error);
   }
 }
 

@@ -10,6 +10,7 @@ export enum TokenType {
   DOT = "DOT",
   MINUS = "MINUS",
   PLUS = "PLUS",
+  MODULO = "MODULO",
   SEMICOLON = "SEMICOLON",
   SLASH = "SLASH",
   STAR = "STAR",

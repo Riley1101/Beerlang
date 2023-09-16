@@ -1,8 +1,6 @@
+import { errorReporter, Logger, SyntaxError } from "./error";
 import { Token } from "./token";
-import { keywords } from "./types";
-import { errorReporter, SyntaxError } from "./error";
-import { Literals, TokenType } from "./types";
-import { Logger } from "./error";
+import { keywords, Literals, TokenType } from "./types";
 
 export class Scanner implements Scanner {
   private logger: Logger = new Logger();
@@ -105,12 +103,10 @@ export class Scanner implements Scanner {
   }
 
   private number() {
-    let current = this.current_char();
-    console.log(current, "current");
-    if (this.peek() === "." && this.is_digit(this.peek())) {
+    while (this.is_digit(this.peek())) {
       this.advance();
     }
-    while (this.is_digit(this.peek())) {
+    if (this.peek() === "." && this.is_digit(this.peek())) {
       this.advance();
     }
     let raw_number = this.source.substring(this.start, this.current);
@@ -121,15 +117,20 @@ export class Scanner implements Scanner {
   private scan() {
     let c = this.advance();
     switch (c) {
+      case "➕":
       case "+":
         this.add_token(TokenType.PLUS, null);
         break;
+      case "➖":
       case "-":
         this.add_token(TokenType.MINUS, null);
         break;
+      case "✖":
+      case "❌":
       case "*":
         this.add_token(TokenType.STAR, null);
         break;
+      case "➗":
       case "/":
         if (this.match("/")) {
           while (this.peek() != "\n" && !this.is_end()) {
@@ -138,6 +139,10 @@ export class Scanner implements Scanner {
         } else {
           this.add_token(TokenType.SLASH, null);
         }
+        break;
+      case "♻":
+      case "%":
+        this.add_token(TokenType.MODULO, null);
         break;
       case "=":
         this.add_token(
