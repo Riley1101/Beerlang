@@ -173,14 +173,20 @@ export class Scanner implements Scanner {
         );
         break;
       case "<":
+      case "⬅":
         this.add_token(
-          this.match("=") ? TokenType.LESS_EQUAL : TokenType.LESS,
+          this.match("=") || this.match("✔")
+            ? TokenType.LESS_EQUAL
+            : TokenType.LESS,
           null,
         );
         break;
       case ">":
+      case "➡":
         this.add_token(
-          this.match("=") ? TokenType.GREATER_EQUAL : TokenType.GREATER,
+          this.match("=") || this.match("✔")
+            ? TokenType.GREATER_EQUAL
+            : TokenType.GREATER,
           null,
         );
         break;
