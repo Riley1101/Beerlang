@@ -72,6 +72,9 @@ export class Scanner implements Scanner {
       this.advance();
     }
     let text = this.source.substring(this.start, this.current);
+    /**
+     * check tokens with keyword map
+     **/
     if (keywords[text] !== undefined) {
       this.add_token(keywords[text], null);
     } else {
@@ -145,6 +148,7 @@ export class Scanner implements Scanner {
         this.add_token(TokenType.MODULO, null);
         break;
       case "✔":
+      case "=":
         this.add_token(
           this.match("=") || this.match("✔")
             ? TokenType.EQUAL_EQUAL
@@ -202,10 +206,9 @@ export class Scanner implements Scanner {
       case "\r":
         break;
       default:
-        let char = this.current_char();
-        if (this.is_digit(char)) {
+        if (this.is_digit(c)) {
           this.number();
-        } else if (this.is_alpha(char)) {
+        } else if (this.is_alpha(c)) {
           this.identifier();
         } else {
           errorReporter.report(new SyntaxError(null, "Unexpected character."));
