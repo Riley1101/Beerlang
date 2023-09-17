@@ -144,9 +144,11 @@ export class Scanner implements Scanner {
       case "%":
         this.add_token(TokenType.MODULO, null);
         break;
-      case "=":
+      case "✔":
         this.add_token(
-          this.match("=") ? TokenType.EQUAL_EQUAL : TokenType.EQUAL,
+          this.match("=") || this.match("✔")
+            ? TokenType.EQUAL_EQUAL
+            : TokenType.EQUAL,
           null,
         );
         break;
@@ -161,9 +163,12 @@ export class Scanner implements Scanner {
       case ".":
         this.add_token(TokenType.DOT, null);
         break;
+      case "❗":
       case "!":
         this.add_token(
-          this.match("=") ? TokenType.BANG_EQUAL : TokenType.BANG,
+          this.match("=") || this.match("✔")
+            ? TokenType.BANG_EQUAL
+            : TokenType.BANG,
           null,
         );
         break;
