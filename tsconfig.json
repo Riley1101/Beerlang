@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext","dom"],
+    "lib": ["ESNext", "dom"],
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "bundler",
@@ -17,5 +17,9 @@
     "types": [
       "bun-types" // add Bun global
     ]
+  },
+  "typedocOptions": {
+    "entryPoints": ["./index.ts"],
+    "out": "docs"
   }
 }

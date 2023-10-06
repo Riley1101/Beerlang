@@ -3,13 +3,16 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "typedoc": "^0.25.1",
+    "typescript": "^5.2.2"
   },
   "scripts": {
-    "start": "bun run index.ts"
+    "start": "bun run index.ts",
+    "docs::gen": "typedoc ./index.ts ./src/* --out docs/ " 
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": ""
   },
   "dependencies": {
     "chalk": "^5.3.0"

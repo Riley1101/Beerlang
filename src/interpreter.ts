@@ -8,6 +8,13 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
     return expr.accept(this);
   }
 
+  private is_equal(a: BeerObject, b: BeerObject): boolean {
+    if (a === null && b === null) return true
+    if (a === null) return false
+
+    return a === b
+  }
+
   private is_truthy(object: BeerObject): boolean {
     if (object === null) return false;
     if (typeof object === "boolean") return object;
@@ -35,9 +42,9 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
         this.checkNumberOperands(expr.operator, left, right);
         return (left as number) - (right as number);
       case TokenType.BANG_EQUAL:
-        return !this.isEqual(left, right);
+        return !this.is_equal(left, right);
       case TokenType.EQUAL_EQUAL:
-        return this.isEqual(left, right);
+        return this.is_equal(left, right);
       case TokenType.SLASH:
         this.checkNumberOperands(expr.operator, left, right);
         return (left as number) / (right as number);
@@ -52,6 +59,7 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
           return left + right;
         }
     }
+    return null;
   }
 
   checkNumberOperands(token: Token, left: BeerObject, right: BeerObject): void {
