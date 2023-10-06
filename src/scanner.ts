@@ -72,11 +72,10 @@ export class Scanner implements Scanner {
       this.advance();
     }
     let text = this.source.substring(this.start, this.current);
-    /**
-     * check tokens with keyword map
-     **/
-    if (keywords[text] !== undefined) {
-      this.add_token(keywords[text], null);
+    // map token via Records
+    const token_type = keywords[text];
+    if (token_type !== undefined) {
+      this.add_token(token_type, null);
     } else {
       this.add_token(TokenType.IDENTIFIER, null);
     }

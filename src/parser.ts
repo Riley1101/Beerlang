@@ -8,8 +8,7 @@ export class Parser {
   }
 
   public parse() {
-      while (!this.is_at_end()) {
-      }
+    while (!this.is_at_end()) {}
   }
 
   private peek(): Token {
