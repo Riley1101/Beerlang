@@ -1,7 +1,15 @@
 import { Scanner } from "./src/scanner";
 import { read_source } from "./src/read_source";
+import { Parser } from "./src/parser";
+import { AstPrinter } from "./src/ast";
 
 const source = await read_source();
 const scanner = new Scanner(source);
+const parser = new Parser();
+const astPrinter = new AstPrinter();
 scanner.scan_tokens();
-scanner.get_tokens();
+let tokens = scanner.get_tokens();
+parser.setTokens(tokens);
+
+
+

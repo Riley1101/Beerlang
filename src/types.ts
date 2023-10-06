@@ -67,3 +67,9 @@ export const keywords: Record<string, TokenType> = {
   var: TokenType.VAR,
   while: TokenType.WHILE,
 };
+
+export type BeerObject=
+  | string
+  | number
+  | boolean
+  | null

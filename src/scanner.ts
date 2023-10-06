@@ -216,7 +216,8 @@ export class Scanner implements Scanner {
     }
   }
 
-  get_tokens() {
+  get_tokens(): Token[] {
     this.logger.info(this.tokens);
+    return this.tokens;
   }
 }

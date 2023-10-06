@@ -19,7 +19,7 @@ export class Logger {
     console.log(this._log.blue(message));
   }
 
-  public error(message: any): void {
+  public error(message: any): void{
     if (typeof message === "object") {
       message = JSON.stringify(message, null, 2);
     }
@@ -81,7 +81,7 @@ export class ErrorReporter {
     }
   }
 
-  report(error: Error) {
+  report(error: Error) :never {
     if (error instanceof ClientError) {
       this.hasCliError = true;
     } else if (error instanceof RuntimeError) {
@@ -90,6 +90,7 @@ export class ErrorReporter {
       this.hasSyntaxError = true;
     }
     this.log(error);
+    throw error;
   }
 }
 
