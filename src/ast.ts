@@ -41,6 +41,7 @@ export interface StmtVisitor<T> {
  * @method {T} visitLiteralExpr - Visits a literal expression
  * @method {T} visitGroupingExpr - Visits a grouping expression
  * @method {T} visitVariableExpr - Visits a variable expression
+ * @method {T} visitAssignExpr - Visits an assignment expression
  */
 export interface ExprVisitor<T> {
   visitBinaryExpr(expr: BinaryExpr): T;
@@ -48,6 +49,7 @@ export interface ExprVisitor<T> {
   visitLiteralExpr(expr: LiteralExpr): T;
   visitGroupingExpr(expr: GroupingExpr): T;
   visitVariableExpr(expr: VariableExpr): T;
+  visitAssignExpr(expr: AssignExpr): T;
 }
 
 /**
@@ -179,6 +181,12 @@ export class LiteralExpr implements Expr {
   }
 }
 
+/**
+ * @class GroupingExpr
+ * @implements {Expr}
+ * @member {Expr} expression- The expression to be grouped
+ * @method {T} accept - Accepts a visitor
+ */
 export class GroupingExpr implements Expr {
   expression: Expr;
   constructor(expression: Expr) {
@@ -189,6 +197,12 @@ export class GroupingExpr implements Expr {
   }
 }
 
+/**
+ * @class VariableExpr
+ * @implements {Expr}
+ * @member {Token} name - The name of the variable
+ * @method {T} accept - Accepts a visitor
+ */
 export class VariableExpr implements Expr {
   constructor(public name: Token) {
     this.name = name;
@@ -198,7 +212,35 @@ export class VariableExpr implements Expr {
   }
 }
 
+/**
+ * @class AssignExpr
+ * @implements {Expr}
+ * @member {Token} name - The name of the variable
+ * @member {Expr} value - The value of the variable
+ * @method {T} accept - Accepts a visitor
+ */
+export class AssignExpr implements Expr {
+  constructor(
+    public name: Token,
+    public value: Expr,
+  ) {
+    this.name = name;
+    this.value = value;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitAssignExpr(this);
+  }
+}
+
 export class AstPrinter implements SyntaxVisitor<string, string> {
+  /**
+   * @param expr - {AssignExpr} expression
+   * @returns string
+   */
+  visitAssignExpr(expr: AssignExpr): string {
+    return this.parenthesize(expr.name.lexeme, expr.value);
+  }
+
   /**
    * @param expr - {BinaryExpr} expression
    * @returns string
@@ -224,12 +266,26 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     return expr.value.toString();
   }
 
+  /**
+   * @param stmt - {ExpressionStmt} statement
+   * @returns parenthesize version of the ast expression
+   */
   visitExpressionStmt(stmt: ExpressionStmt): string {
     return this.parenthesize("expression", stmt.expression);
   }
+
+  /**
+   * @param stmt - {PrintStmt} statement
+   * @returns parenthesize version of the ast print
+   */
   visitPrintStmt(stmt: PrintStmt): string {
     return this.parenthesize("print", stmt.expression);
   }
+
+  /**
+   * @param stmt - {VarStmt} statement
+   * @returns parenthesize version of the ast var
+   */
   visitVarStmt(stmt: VarStmt): string {
     const name = new VariableExpr(stmt.name);
     if (stmt.initializer) {
@@ -238,6 +294,10 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     return this.parenthesize("var", name);
   }
 
+  /**
+   * @param expr - {VariableExpr} expression
+   * @returns {string} name of the variable
+   */
   visitVariableExpr(expr: VariableExpr): string {
     return expr.name.lexeme;
   }
@@ -285,6 +345,10 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     }
   }
 
+  /**
+   * Print ast of the statements
+   * @param stmt - {Stmt[]} statements
+   */
   print_ast(stmt: Stmt[]): void {
     console.log(Log.cyan(this.stringify(stmt)));
   }

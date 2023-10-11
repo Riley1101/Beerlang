@@ -221,12 +221,35 @@ export class Parser {
 
   /**
    * <h3>Grammar for Expression</h3>
-   * expression     → equality ;
+   * expression     → assignment;
+   * assignment     → IDENTIFIER "=" assignment
    * @returns {Token} current token
    *
    */
   private expression(): ast.Expr {
-    return this.equality();
+    return this.assignment();
+  }
+
+  /**
+   * <h3>Grammar for Assignment</h3>
+   * assignment     → IDENTIFIER "=" assignment
+   *             | equality ;
+   * @returns {ast.Expr} assignment
+   */
+  private assignment(): ast.Expr {
+    let expr = this.equality();
+    if (this.match(TokenType.EQUAL)) {
+      let equals = this.previous();
+      let value = this.assignment();
+      if (expr instanceof ast.VariableExpr) {
+        let name = expr.name;
+        return new ast.AssignExpr(name, value);
+      }
+      errorReporter.report(
+        new SyntaxError(equals, "Invalid assignment target."),
+      );
+    }
+    return expr;
   }
 
   /** <h2>Helper utils</h2> */

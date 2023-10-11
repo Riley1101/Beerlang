@@ -1,4 +1,5 @@
 import * as ast from "./ast";
+import { Environment } from "./environment";
 import { errorReporter } from "./error";
 import { Token } from "./token";
 import { BeerObject, TokenType } from "./types";
@@ -8,6 +9,7 @@ import { BeerObject, TokenType } from "./types";
  * @class Interpreter
  */
 export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
+  private environment: Environment = new Environment();
   /** ========================== Utility Methods ========================== */
   /**
    * @param expr - ast.Expr to be interpreted
@@ -93,6 +95,16 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
   /** ========================== Visitor Methods ========================== */
 
   /** ========================== Expressions ========================== */
+
+  /**
+   * @param expr - {ast.LiteralExpr} expression
+   * @returns { BeerObject  }
+   */
+  visitAssignExpr(expr: ast.AssignExpr): BeerObject {
+    let value = this.evaluate(expr.value);
+    this.environment.assign(expr.name.lexeme, value);
+    return value;
+  }
   /**
    * @param {ast.BinaryExpr} expr - The expression to be evaluated
    * @returns { BeerObject | never }
@@ -189,10 +201,33 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
   }
 
   /**
+   * Evaluate the expression
    * @param stmt - The expression to be evaluated
    * @returns void;
    */
   visitExpressionStmt(stmt: ast.ExpressionStmt): void {
     this.evaluate(stmt.expression);
+  }
+
+  /**
+   * Find the value of the variable in the environment
+   * @param expr - The expression to be evaluated
+   * @returns BeerObject;
+   */
+  visitVariableExpr(expr: ast.VariableExpr): BeerObject {
+    return this.environment.get(expr.name.lexeme);
+  }
+
+  /**
+   * Evaluate the stmt and define in the environment
+   * @param stmt - The expression to be evaluated
+   * @returns void;
+   */
+  visitVarStmt(stmt: ast.VarStmt): void {
+    let value = null;
+    if (stmt.initializer !== null) {
+      value = this.evaluate(stmt.initializer);
+    }
+    this.environment.define(stmt.name.lexeme, value);
   }
 }
