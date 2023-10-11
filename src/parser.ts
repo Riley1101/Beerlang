@@ -21,17 +21,47 @@ export class Parser {
 
   /**
    * <h3>Parse the expressions</h3>
-   * @returns {ast.Expr} expression
    */
-  public parse(): ast.Expr {
-    try {
-      return this.expression();
-    } catch (e) {
-      console.log(" ===== Pasing expressions error  ======");
-      console.log(e);
-      console.log(" ===== Pasing expressions error  ======");
-      throw e;
+  public parse() {
+    const statements: ast.Stmt[] = [];
+    while (!this.is_at_end()) {
+      statements.push(this.statement());
     }
+    return statements;
+  }
+
+  /**
+   * <h3>Ecaluation of statements</h3>
+   * statement     → printStmt
+   *              | expressionStmt ;
+   * @returns ast.Stmt
+   */
+  private statement(): ast.Stmt {
+    if (this.match(TokenType.PRINT)) return this.print_statement();
+    return this.expression_statement();
+  }
+
+  /**
+   * <h3>Evaluation of Print</h3>
+   * printStmt     → expression
+   *             | "print" expression
+   * @returns ast.Stmt ast of print
+   */
+  private print_statement(): ast.Stmt {
+    let value = this.expression();
+    this.consume(TokenType.SEMICOLON, "Expect ';' after value.");
+    return new ast.PrintStmt(value);
+  }
+
+  /**
+   * <h3>Evaluation of Expression</h3>
+   * expressionStmt → expression
+   * @returns ast.Stmt
+   */
+  private expression_statement(): ast.Stmt {
+    const expr = this.expression();
+    this.consume(TokenType.SEMICOLON, "Expect ';' after expression.");
+    return new ast.ExpressionStmt(expr);
   }
 
   /**

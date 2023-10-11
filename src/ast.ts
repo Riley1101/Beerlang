@@ -1,10 +1,33 @@
 import { Token } from "./token";
 import { BeerObject } from "./types";
 
+/**
+ * Expression interface
+ * @interface Expr
+ * @method {T} accept - Accepts a visitor
+ */
 export interface Expr {
   accept<T>(visitor: ExprVisitor<T>): T;
 }
 
+/**
+ * Statement interface
+ * @interface Stmt
+ * @method {T} accept - Accepts a visitor
+ */
+export interface Stmt {
+  accept<T>(visitor: StmtVisitor<T>): T;
+}
+
+/**
+ * StmtVisitor interface
+ * @interface StmtVisitor
+ * @member {T} accept - Accepts a visitor
+ */
+export interface StmtVisitor<T> {
+  visitExpressionStmt(stmt: ExpressionStmt): T;
+  visitPrintStmt(stmt: PrintStmt): T;
+}
 export interface ExprVisitor<T> {
   visitBinaryExpr(expr: BinaryExpr): T;
   visitUnaryExpr(expr: UnaryExpr): T;
@@ -12,7 +35,34 @@ export interface ExprVisitor<T> {
   visitGroupingExpr(expr: GroupingExpr): T;
 }
 
-export type SyntaxVisitor<E, R> = ExprVisitor<E>;
+/**
+ * Syntax visitor for the interpreter
+ * SyntaxVisitor type
+ */
+export type SyntaxVisitor<E, R> = ExprVisitor<E> & StmtVisitor<R>;
+
+export class ExpressionStmt implements Stmt {
+  constructor(public expression: Expr) {
+    this.expression = expression;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitExpressionStmt(this);
+  }
+}
+
+export class PrintStmt implements Stmt {
+  constructor(public expression: Expr) {
+    this.expression = expression;
+  }
+
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitPrintStmt(this);
+  }
+}
+
+/**
+ * Expressions
+ **/
 
 /** class BinaryExpr */
 export class BinaryExpr implements Expr {

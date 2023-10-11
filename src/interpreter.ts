@@ -7,9 +7,8 @@ import { BeerObject, TokenType } from "./types";
  * The interpreter class is responsible for evaluating the AST
  * @class Interpreter
  */
-export class Interpreter implements ast.ExprVisitor<BeerObject> {
+export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
   /** ========================== Utility Methods ========================== */
-
   /**
    * @param expr - ast.Expr to be interpreted
    * @returns {void}
@@ -45,6 +44,22 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
   }
 
   /**
+   * Checks if the operands are numbers
+   * @param {Token} token of the operator
+   * @param {BeerObject} left
+   * @param {BeerObject} right
+   * @returns {void | never}
+   */
+  checkNumberOperands(token: Token, left: BeerObject, right: BeerObject): void {
+    if (typeof left === "number" && typeof right === "number") return;
+    else
+      errorReporter.report(
+        new SyntaxError(
+          "Operands must be numbers at " + token.line + token.lexeme,
+        ),
+      );
+  }
+  /**
    * Checks if the object is truthy
    * @param object - BeerObject
    * @returns {boolean}
@@ -67,6 +82,8 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
   }
 
   /** ========================== Visitor Methods ========================== */
+
+  /** ========================== Expressions ========================== */
   /**
    * @param {ast.BinaryExpr} expr - The expression to be evaluated
    * @returns { BeerObject | never }
@@ -120,23 +137,6 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
   }
 
   /**
-   * Checks if the operands are numbers
-   * @param {Token} token of the operator
-   * @param {BeerObject} left
-   * @param {BeerObject} right
-   * @returns {void | never}
-   */
-  checkNumberOperands(token: Token, left: BeerObject, right: BeerObject): void {
-    if (typeof left === "number" && typeof right === "number") return;
-    else
-      errorReporter.report(
-        new SyntaxError(
-          "Operands must be numbers at " + token.line + token.lexeme,
-        ),
-      );
-  }
-
-  /**
    * @param expr - The expression to be evaluated
    * @returns BeerObject;
    */
@@ -165,5 +165,25 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
    */
   visitGroupingExpr(expr: ast.GroupingExpr): BeerObject {
     return this.evaluate(expr.expression);
+  }
+
+  /** ========================== Statements ========================== */
+
+  /**
+   * Print the evaluated expression
+   * @param stmt - The expression to be evaluated
+   * @returns void;
+   */
+  visitPrintStmt(stmt: ast.PrintStmt): void {
+    let value = this.evaluate(stmt.expression);
+    console.log(this.stringify(value));
+  }
+
+  /**
+   * @param stmt - The expression to be evaluated
+   * @returns void;
+   */
+  visitExpressionStmt(stmt: ast.ExpressionStmt): void {
+    this.evaluate(stmt.expression);
   }
 }
