@@ -138,4 +138,22 @@ export class AstPrinter implements ExprVisitor<string> {
     str += ")";
     return str;
   }
+
+  /**
+   * Print expression
+   * @param expr - {Expr} expression
+   */
+  print(expr: Expr): string {
+    console.log(expr);
+    return expr.accept(this);
+  }
+
+  /**
+   * Print all the expressions
+   * @param expr - {Expr} expression
+   * @returns
+   */
+  stringify(expr: Expr): string {
+    return this.print(expr);
+  }
 }

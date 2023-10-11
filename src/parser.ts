@@ -19,8 +19,19 @@ export class Parser {
     this.tokens = tokens;
   }
 
-  public parse() {
-    while (!this.is_at_end()) {}
+  /**
+   * <h3>Parse the expressions</h3>
+   * @returns {ast.Expr} expression
+   */
+  public parse(): ast.Expr {
+    try {
+      return this.expression();
+    } catch (e) {
+      console.log(" ===== Pasing expressions error  ======");
+      console.log(e);
+      console.log(" ===== Pasing expressions error  ======");
+      throw e;
+    }
   }
 
   /**
@@ -31,6 +42,7 @@ export class Parser {
    */
   private equality(): ast.Expr {
     let expr = this.comparison();
+    console.log("equality", expr);
     while (this.match(TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL)) {
       let operator = this.previous();
       let right = this.comparison();
@@ -137,6 +149,12 @@ export class Parser {
     );
   }
 
+  /**
+   * <h3>Grammar for Expression</h3>
+   * expression     → equality ;
+   * @returns {Token} current token
+   *
+   */
   private expression(): ast.Expr {
     return this.equality();
   }
@@ -149,8 +167,7 @@ export class Parser {
    */
   private consume(type: TokenType, message: string): Token | never {
     if (this.check(type)) return this.advance();
-    errorReporter.report(new SyntaxError(this.peek(), message));
-    throw new Error(message);
+    return errorReporter.report(new SyntaxError(this.peek(), message));
   }
   /**
    * Check if current token is in the given list of types.
@@ -204,5 +221,28 @@ export class Parser {
    */
   private is_at_end(): boolean {
     return this.peek().type === "EOF";
+  }
+
+  /**
+   * Synchronize the parser after an error.
+   * @returns {void}
+   */
+  private synchronize(): void {
+    this.advance();
+    while (this.is_at_end()) {
+      if (this.previous().type === TokenType.SEMICOLON) return;
+      switch (this.peek().type) {
+        case TokenType.CLASS:
+        case TokenType.FUN:
+        case TokenType.VAR:
+        case TokenType.FOR:
+        case TokenType.IF:
+        case TokenType.WHILE:
+        case TokenType.PRINT:
+        case TokenType.RETURN:
+          return;
+      }
+      this.advance();
+    }
   }
 }

@@ -118,6 +118,7 @@ export class Scanner implements Scanner {
 
   private scan() {
     let c = this.advance();
+    console.log(c,"Character ->>>>>>>>>>>>>>>>>>>");
     switch (c) {
       case "➕":
       case "+":
@@ -210,7 +211,8 @@ export class Scanner implements Scanner {
         } else if (this.is_alpha(c)) {
           this.identifier();
         } else {
-          errorReporter.report(new SyntaxError(null, "Unexpected character."));
+          console.log("what am i");
+          // errorReporter.report(new SyntaxError(null, "Unexpected character."));
         }
         break;
     }
