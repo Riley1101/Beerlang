@@ -1,3 +1,4 @@
+import { exit } from "process";
 import { Token } from "./token";
 import chalk from "chalk";
 
@@ -19,7 +20,7 @@ export class Logger {
     console.log(this._log.blue(message));
   }
 
-  public error(message: any): void{
+  public error(message: any): void {
     if (typeof message === "object") {
       message = JSON.stringify(message, null, 2);
     }
@@ -81,16 +82,17 @@ export class ErrorReporter {
     }
   }
 
-  report(error: Error) :never {
+  report(error: Error): never {
     if (error instanceof ClientError) {
       this.hasCliError = true;
+      exit(65);
     } else if (error instanceof RuntimeError) {
       this.hasRuntimeError = true;
+      exit(70);
     } else {
       this.hasSyntaxError = true;
+      exit(65);
     }
-    this.log(error);
-    throw error;
   }
 }
 

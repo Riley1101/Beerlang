@@ -7,10 +7,23 @@ import { BeerObject, TokenType } from "./types";
  * The interpreter class is responsible for evaluating the AST
  * @class Interpreter
  */
-/**
- *
- */
 export class Interpreter implements ast.ExprVisitor<BeerObject> {
+  /** ========================== Utility Methods ========================== */
+
+  /**
+   * @param expr - ast.Expr to be interpreted
+   * @returns {void}
+   */
+  public interpret(expr: ast.Expr): void {
+    try {
+      let value = this.evaluate(expr);
+      let s = this.stringify(value);
+      console.log(s);
+    } catch (error: any) {
+      return errorReporter.report(error);
+    }
+  }
+
   /**
    * Evaluates the AST via visitor
    * @param expr - The expression to be evaluated
@@ -42,6 +55,18 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
     return true;
   }
 
+  /**
+   * Converts the object to a string representation
+   * @param object - BeerObject
+   * @returns {string} string representation of the object
+   */
+  private stringify(object: BeerObject): string {
+    if (object === null) return "nil";
+    if (typeof object === "number") return object.toString();
+    return object.toString();
+  }
+
+  /** ========================== Visitor Methods ========================== */
   /**
    * @param {ast.BinaryExpr} expr - The expression to be evaluated
    * @returns { BeerObject | never }
@@ -134,7 +159,11 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
     return expr.value;
   }
 
-  visitGroupingExpr(expr: ast.GroupingExpr) {
+  /**
+   * @param expr - The expression to be evaluated
+   * @returns BeerObject;
+   */
+  visitGroupingExpr(expr: ast.GroupingExpr): BeerObject {
     return this.evaluate(expr.expression);
   }
 }
