@@ -3,25 +3,50 @@ import { errorReporter } from "./error";
 import { Token } from "./token";
 import { BeerObject, TokenType } from "./types";
 
+/**
+ * The interpreter class is responsible for evaluating the AST
+ * @class Interpreter
+ */
+/**
+ *
+ */
 export class Interpreter implements ast.ExprVisitor<BeerObject> {
+  /**
+   * Evaluates the AST via visitor
+   * @param expr - The expression to be evaluated
+   * @returns
+   */
   private evaluate(expr: ast.Expr): BeerObject {
     return expr.accept(this);
   }
 
+  /**
+   * @param a - BeerObject
+   * @param b - BeerObject
+   * @returns {boolean} true if a and b are equal, false otherwise
+   */
   private is_equal(a: BeerObject, b: BeerObject): boolean {
     if (a === null && b === null) return true;
     if (a === null) return false;
-
     return a === b;
   }
 
+  /**
+   * Checks if the object is truthy
+   * @param object - BeerObject
+   * @returns {boolean}
+   */
   private is_truthy(object: BeerObject): boolean {
     if (object === null) return false;
     if (typeof object === "boolean") return object;
     return true;
   }
 
-  visitBinaryExpr(expr: ast.BinaryExpr) {
+  /**
+   * @param {ast.BinaryExpr} expr - The expression to be evaluated
+   * @returns { BeerObject | never }
+   */
+  visitBinaryExpr(expr: ast.BinaryExpr): BeerObject {
     let left = this.evaluate(expr.left);
     let right = this.evaluate(expr.right);
     let operator = expr.operator.type;
@@ -69,6 +94,13 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
     return null;
   }
 
+  /**
+   * Checks if the operands are numbers
+   * @param {Token} token of the operator
+   * @param {BeerObject} left
+   * @param {BeerObject} right
+   * @returns {void | never}
+   */
   checkNumberOperands(token: Token, left: BeerObject, right: BeerObject): void {
     if (typeof left === "number" && typeof right === "number") return;
     else
@@ -79,7 +111,11 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
       );
   }
 
-  visitUnaryExpr(expr: ast.UnaryExpr) {
+  /**
+   * @param expr - The expression to be evaluated
+   * @returns BeerObject;
+   */
+  visitUnaryExpr(expr: ast.UnaryExpr): BeerObject {
     let right = this.evaluate(expr.right) as number;
     switch (expr.operator.type) {
       case TokenType.MINUS:
@@ -90,7 +126,11 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
     return null;
   }
 
-  visitLiteralExpr(expr: ast.LiteralExpr) {
+  /**
+   * @param expr - The expression to be evaluated
+   * @returns BeerObject;
+   */
+  visitLiteralExpr(expr: ast.LiteralExpr): BeerObject {
     return expr.value;
   }
 

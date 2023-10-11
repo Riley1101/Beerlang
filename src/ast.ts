@@ -144,7 +144,6 @@ export class AstPrinter implements ExprVisitor<string> {
    * @param expr - {Expr} expression
    */
   print(expr: Expr): string {
-    console.log(expr);
     return expr.accept(this);
   }
 

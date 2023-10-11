@@ -13,6 +13,5 @@ let tokens = scanner.get_tokens();
 const parser = new Parser();
 parser.setTokens(tokens);
 let res = parser.parse();
-console.log(res,"one two")
 const astPrinter = new AstPrinter();
 console.log("AST", astPrinter.print(res));

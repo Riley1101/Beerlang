@@ -42,7 +42,6 @@ export class Parser {
    */
   private equality(): ast.Expr {
     let expr = this.comparison();
-    console.log("equality", expr);
     while (this.match(TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL)) {
       let operator = this.previous();
       let right = this.comparison();
