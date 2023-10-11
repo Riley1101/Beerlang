@@ -167,6 +167,13 @@ export class AstPrinter implements ExprVisitor<string> {
     return expr.value.toString();
   }
 
+  visitExpressionStmt(stmt: ExpressionStmt): string {
+    return this.parenthesize("expression", stmt.expression);
+  }
+  visitPrintStmt(stmt: PrintStmt): string {
+    return this.parenthesize("print", stmt.expression);
+  }
+
   /**
    * @param expr - {GroupingExpr} expression
    * @returns string
@@ -202,7 +209,15 @@ export class AstPrinter implements ExprVisitor<string> {
    * @param expr - {Expr} expression
    * @returns
    */
-  stringify(expr: Expr): string {
-    return this.print(expr);
+  stringify(target: Expr | Stmt | Stmt[]): string {
+    if (target instanceof Array) {
+      return target.map((stmt) => stmt.accept(this)).join("\n");
+    } else {
+      return target.accept(this);
+    }
+  }
+
+  print_ast(stmt: Stmt[]): void {
+    console.log(this.stringify(stmt));
   }
 }

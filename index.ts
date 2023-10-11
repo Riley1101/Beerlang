@@ -32,4 +32,5 @@ interpreter.interpret(res);
 /**
  * Init AstPrinter
  */
-// const astPrinter = new AstPrinter();
+const astPrinter = new AstPrinter();
+astPrinter.print_ast(res);

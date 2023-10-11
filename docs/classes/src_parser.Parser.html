@@ -19,13 +19,15 @@
 <section class="tsd-panel tsd-comment">
 <div class="tsd-comment tsd-typography"><p>Parser class</p>
 </div>
-<div class="tsd-comment tsd-typography"></div></section>
+<div class="tsd-comment tsd-typography">
+<h4>Classdesc</h4><p>Parser class to parse the tokens into ast</p>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">Parser</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L9">src/parser.ts:9</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L11">src/parser.ts:11</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -48,6 +50,7 @@
 <a href="src_parser.Parser.html#consume" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>consume</span></a>
 <a href="src_parser.Parser.html#equality" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>equality</span></a>
 <a href="src_parser.Parser.html#expression" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>expression</span></a>
+<a href="src_parser.Parser.html#expression_statement" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>expression_<wbr/>statement</span></a>
 <a href="src_parser.Parser.html#factor" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>factor</span></a>
 <a href="src_parser.Parser.html#is_at_end" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>is_<wbr/>at_<wbr/>end</span></a>
 <a href="src_parser.Parser.html#match" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>match</span></a>
@@ -55,7 +58,9 @@
 <a href="src_parser.Parser.html#peek" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>peek</span></a>
 <a href="src_parser.Parser.html#previous" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>previous</span></a>
 <a href="src_parser.Parser.html#primary" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>primary</span></a>
+<a href="src_parser.Parser.html#print_statement" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>print_<wbr/>statement</span></a>
 <a href="src_parser.Parser.html#setTokens" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Tokens</span></a>
+<a href="src_parser.Parser.html#statement" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>statement</span></a>
 <a href="src_parser.Parser.html#synchronize" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>synchronize</span></a>
 <a href="src_parser.Parser.html#term" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>term</span></a>
 <a href="src_parser.Parser.html#unary" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>unary</span></a>
@@ -69,19 +74,19 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="src_parser.Parser.html" class="tsd-signature-type tsd-kind-class">Parser</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L13">src/parser.ts:13</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L15">src/parser.ts:15</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="current" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>current</span><a href="#current" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">current</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L11">src/parser.ts:11</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L13">src/parser.ts:13</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="tokens" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>tokens</span><a href="#tokens" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">tokens</span><span class="tsd-signature-symbol">:</span> <a href="src_token.Token.html" class="tsd-signature-type tsd-kind-class">Token</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L10">src/parser.ts:10</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L12">src/parser.ts:12</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="advance" class="tsd-anchor"></a>
@@ -93,7 +98,7 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L199">src/parser.ts:199</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L231">src/parser.ts:231</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="check" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>check</span><a href="#check" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -111,7 +116,7 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L191">src/parser.ts:191</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L223">src/parser.ts:223</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="comparison" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>comparison</span><a href="#comparison" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -124,7 +129,7 @@ comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;</div>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L60">src/parser.ts:60</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L92">src/parser.ts:92</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="consume" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>consume</span><a href="#consume" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -148,7 +153,7 @@ comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;</div>
 <h4>Throws</h4><p>returns the token if found, else throws an error</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L167">src/parser.ts:167</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L199">src/parser.ts:199</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="equality" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>equality</span><a href="#equality" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -161,7 +166,7 @@ equality       → comparison ( ( "!=" | "==" ) comparison )* ;</div>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L43">src/parser.ts:43</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L75">src/parser.ts:75</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="expression" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>expression</span><a href="#expression" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -173,7 +178,19 @@ expression     → equality ;</div>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L157">src/parser.ts:157</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L189">src/parser.ts:189</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="expression_statement" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>expression_<wbr/>statement</span><a href="#expression_statement" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="expression_statement.expression_statement-1"><span class="tsd-kind-call-signature">expression_<wbr/>statement</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a><a href="#expression_statement.expression_statement-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><h3>Evaluation of Expression</h3>
+expressionStmt → expression</div>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a></h4><p>ast.Stmt</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L63">src/parser.ts:63</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="factor" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>factor</span><a href="#factor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -186,7 +203,7 @@ factor         → unary ( ( "/" | "*" ) unary )* ;</div>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L101">src/parser.ts:101</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L133">src/parser.ts:133</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="is_at_end" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>is_<wbr/>at_<wbr/>end</span><a href="#is_at_end" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -196,7 +213,7 @@ factor         → unary ( ( "/" | "*" ) unary )* ;</div>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L221">src/parser.ts:221</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L253">src/parser.ts:253</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="match" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>match</span><a href="#match" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -216,18 +233,17 @@ If so, consume it and return true.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L177">src/parser.ts:177</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L209">src/parser.ts:209</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="parse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>parse</span><a href="#parse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="parse.parse-1"><span class="tsd-kind-call-signature">parse</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_ast.Expr.html" class="tsd-signature-type tsd-kind-interface">Expr</a><a href="#parse.parse-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="parse.parse-1"><span class="tsd-kind-call-signature">parse</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a><span class="tsd-signature-symbol">[]</span><a href="#parse.parse-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><h3>Parse the expressions</h3></div>
-<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_ast.Expr.html" class="tsd-signature-type tsd-kind-interface">Expr</a></h4><p>expression</p>
-
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a><span class="tsd-signature-symbol">[]</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L26">src/parser.ts:26</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L27">src/parser.ts:27</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="peek" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>peek</span><a href="#peek" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -237,7 +253,7 @@ If so, consume it and return true.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L214">src/parser.ts:214</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L246">src/parser.ts:246</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="previous" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>previous</span><a href="#previous" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -247,7 +263,7 @@ If so, consume it and return true.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L207">src/parser.ts:207</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L239">src/parser.ts:239</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="primary" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>primary</span><a href="#primary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -261,7 +277,20 @@ primary → NUMBER | STRING | "true" | "false" | "nil" ;</div>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L134">src/parser.ts:134</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L166">src/parser.ts:166</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="print_statement" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>print_<wbr/>statement</span><a href="#print_statement" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="print_statement.print_statement-1"><span class="tsd-kind-call-signature">print_<wbr/>statement</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a><a href="#print_statement.print_statement-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><h3>Evaluation of Print</h3>
+printStmt     → expression
+            | "print" expression</div>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a></h4><p>ast.Stmt ast of print</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L52">src/parser.ts:52</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setTokens" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Tokens</span><a href="#setTokens" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -274,7 +303,20 @@ primary → NUMBER | STRING | "true" | "false" | "nil" ;</div>
 <h5><span class="tsd-kind-parameter">tokens</span>: <a href="src_token.Token.html" class="tsd-signature-type tsd-kind-class">Token</a><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L18">src/parser.ts:18</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L20">src/parser.ts:20</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="statement" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>statement</span><a href="#statement" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="statement.statement-1"><span class="tsd-kind-call-signature">statement</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a><a href="#statement.statement-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><h3>Ecaluation of statements</h3>
+statement     → printStmt
+             | expressionStmt ;</div>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a></h4><p>ast.Stmt</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L41">src/parser.ts:41</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="synchronize" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>synchronize</span><a href="#synchronize" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -285,7 +327,7 @@ primary → NUMBER | STRING | "true" | "false" | "nil" ;</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L229">src/parser.ts:229</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L261">src/parser.ts:261</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="term" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>term</span><a href="#term" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -298,7 +340,7 @@ term           → factor ( ( "-" | "+" ) factor )* ;</div>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L84">src/parser.ts:84</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L116">src/parser.ts:116</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="unary" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>unary</span><a href="#unary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -312,7 +354,7 @@ unary          → ( "!" | "-" ) Unary
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/cc644c6/src/parser.ts#L118">src/parser.ts:118</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/4a06f9d/src/parser.ts#L150">src/parser.ts:150</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -341,6 +383,7 @@ unary          → ( "!" | "-" ) Unary
 <li><a href="#consume" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>consume</span></a></li>
 <li><a href="#equality" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>equality</span></a></li>
 <li><a href="#expression" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>expression</span></a></li>
+<li><a href="#expression_statement" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>expression_<wbr/>statement</span></a></li>
 <li><a href="#factor" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>factor</span></a></li>
 <li><a href="#is_at_end" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>is_<wbr/>at_<wbr/>end</span></a></li>
 <li><a href="#match" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>match</span></a></li>
@@ -348,7 +391,9 @@ unary          → ( "!" | "-" ) Unary
 <li><a href="#peek" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>peek</span></a></li>
 <li><a href="#previous" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>previous</span></a></li>
 <li><a href="#primary" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>primary</span></a></li>
+<li><a href="#print_statement" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>print_<wbr/>statement</span></a></li>
 <li><a href="#setTokens" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Tokens</span></a></li>
+<li><a href="#statement" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>statement</span></a></li>
 <li><a href="#synchronize" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>synchronize</span></a></li>
 <li><a href="#term" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>term</span></a></li>
 <li><a href="#unary" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>unary</span></a></li></ul></div></details></div>
