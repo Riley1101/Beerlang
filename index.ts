@@ -32,5 +32,4 @@ interpreter.interpret(res);
 /**
  * Init AstPrinter
  */
-const astPrinter = new AstPrinter();
-console.log("AST", astPrinter.print(res));
+// const astPrinter = new AstPrinter();

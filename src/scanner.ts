@@ -2,6 +2,10 @@ import { errorReporter, Logger, SyntaxError } from "./error";
 import { Token } from "./token";
 import { keywords, Literals, TokenType } from "./types";
 
+/**
+ * @class Scanner
+ * @classdesc Scans the source code string and returns a list of tokens.
+ */
 export class Scanner implements Scanner {
   private logger: Logger = new Logger();
   private tokens: Token[];
@@ -10,6 +14,9 @@ export class Scanner implements Scanner {
   private start: number = 0;
   private line: number = 1;
 
+  /**
+   * @param {string} source - the source code string
+   */
   constructor(source: string) {
     this.source = source;
     this.tokens = [];
@@ -18,7 +25,12 @@ export class Scanner implements Scanner {
     this.line = 1;
   }
 
-  public scan_tokens() {
+  /**
+   * Scan the source code string and return a list of tokens.
+   * updates the tokens property of the class
+   * @returns {void}
+   */
+  public scan_tokens(): void {
     while (!this.is_end()) {
       this.start = this.current;
       this.scan();
@@ -26,14 +38,29 @@ export class Scanner implements Scanner {
     this.tokens.push(new Token(TokenType.EOF, "", null, this.line));
   }
 
+  /**
+   * checks if the scanner
+   * has reached the end of the source code string
+   * @returns {boolean}
+   */
   private is_end(): boolean {
     return this.current >= this.source.length;
   }
 
+  /**
+   *<p> Consume the next character in the source code string and return it.</p>
+   * @returns {string} the next character
+   */
   private advance(): string {
     return this.source.charAt(this.current++);
   }
 
+  /**
+   * <p>Match the current character
+   * in the source code string with expected one</p>
+   * @param expected - {string} the expected character
+   * @returns
+   */
   private match(expected: string) {
     if (this.is_end()) return false;
     if (this.source.charAt(this.current) !== expected) return false;
@@ -41,32 +68,65 @@ export class Scanner implements Scanner {
     return true;
   }
 
+  /**
+   * <p>Accumulate tokens at the specific range of the source code string </p>
+   * @param type - TokenType
+   * @param literal - Literals
+   */
   private add_token(type: TokenType, literal: Literals) {
     let text = this.source.substring(this.start, this.current);
     let token = new Token(type, text, literal, this.line);
     this.tokens.push(token);
   }
 
+  /**
+   * <p>Lookahead  check the next character
+   * but does not consume like this.advance()</p>
+   * @see this.advance()
+   * @returns {string}
+   */
   private peek(): string {
     return this.source.charAt(this.current);
   }
 
+  /**
+   * <p>Lookahead  check the current character</p>
+   * @returns {string} current character
+   */
   private current_char(): string {
     return this.source.charAt(this.current - 1);
   }
 
+  /**
+   * Check if is a digit
+   * @param c - {string} the character to check
+   * @returns {boolean}
+   */
   private is_digit(c: string): boolean {
     return c >= "0" && c <= "9";
   }
 
+  /**
+   * Check if is a letter
+   * @param c - {string} the character to check
+   * @returns
+   */
   private is_alpha(c: string): boolean {
     return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z") || c === "_";
   }
 
+  /**
+   * Check if the character is a letter or a digit
+   * @param c - {string} the character to check
+   * @returns
+   */
   private is_alpha_numeric(c: string): boolean {
     return this.is_alpha(c) || this.is_digit(c);
   }
 
+  /**
+   *  Look for reserved keywords or identifiers
+   */
   private identifier() {
     while (this.is_alpha_numeric(this.peek())) {
       this.advance();
@@ -81,6 +141,9 @@ export class Scanner implements Scanner {
     }
   }
 
+  /**
+   * <p>Look for string literals</p>
+   */
   private string() {
     while (this.peek() !== '"' && !this.is_end()) {
       if (this.peek() === "\n") this.line++;
@@ -104,6 +167,9 @@ export class Scanner implements Scanner {
     this.add_token(TokenType.STRING, value);
   }
 
+  /**
+   * <p>Look for number literals</p>
+   */
   private number() {
     while (this.is_digit(this.peek())) {
       this.advance();
@@ -116,9 +182,11 @@ export class Scanner implements Scanner {
     this.add_token(TokenType.NUMBER, value);
   }
 
+  /**
+   * <p>Scan for tokens in the source code string</p>
+   **/
   private scan() {
     let c = this.advance();
-    console.log(c,"Character ->>>>>>>>>>>>>>>>>>>");
     switch (c) {
       case "➕":
       case "+":
@@ -205,6 +273,9 @@ export class Scanner implements Scanner {
       case " ":
       case "\r":
         break;
+      case ";":
+        this.add_token(TokenType.SEMICOLON, null);
+        break;
       default:
         if (this.is_digit(c)) {
           this.number();
@@ -218,6 +289,10 @@ export class Scanner implements Scanner {
     }
   }
 
+  /**
+   * <p>Getter for the tokens</p>
+   * @returns {Token[]} the tokens
+   */
   get_tokens(): Token[] {
     this.logger.info(this.tokens);
     return this.tokens;

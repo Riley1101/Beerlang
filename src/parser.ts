@@ -5,6 +5,8 @@ import { TokenType } from "./types";
 
 /**
  * Parser class
+ * @class parser
+ * @classdesc Parser class to parse the tokens into ast
  */
 export class Parser {
   private tokens: Token[];

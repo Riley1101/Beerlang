@@ -13,14 +13,23 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    * @param expr - ast.Expr to be interpreted
    * @returns {void}
    */
-  public interpret(expr: ast.Expr): void {
+  public interpret(exprs: ast.Stmt[]): void {
     try {
-      let value = this.evaluate(expr);
-      let s = this.stringify(value);
-      console.log(s);
-    } catch (error: any) {
-      return errorReporter.report(error);
+      for (let expr of exprs) {
+        this.execute(expr);
+      }
+    } catch (e) {
+      throw e;
     }
+  }
+
+  /**
+   * Analog to this.evaluate() but for statements
+   * @param stmt - ast.Stmt to be executed
+   * @returns {void}
+   */
+  private execute(stmt: ast.Stmt): void {
+    stmt.accept(this);
   }
 
   /**
