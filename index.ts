@@ -13,3 +13,4 @@ const astPrinter = new AstPrinter();
 scanner.scan_tokens();
 let tokens = scanner.get_tokens();
 parser.setTokens(tokens);
+parser.parse()

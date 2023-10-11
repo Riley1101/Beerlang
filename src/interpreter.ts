@@ -9,10 +9,10 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
   }
 
   private is_equal(a: BeerObject, b: BeerObject): boolean {
-    if (a === null && b === null) return true
-    if (a === null) return false
+    if (a === null && b === null) return true;
+    if (a === null) return false;
 
-    return a === b
+    return a === b;
   }
 
   private is_truthy(object: BeerObject): boolean {
@@ -25,7 +25,7 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
     let left = this.evaluate(expr.left);
     let right = this.evaluate(expr.right);
     let operator = expr.operator.type;
-    switch (expr.operator.type) {
+    switch (operator) {
       case TokenType.GREATER:
         this.checkNumberOperands(expr.operator, left, right);
         return (left as number) > (right as number);
@@ -58,13 +58,25 @@ export class Interpreter implements ast.ExprVisitor<BeerObject> {
         if (typeof left === "string" && typeof right === "string") {
           return left + right;
         }
+        errorReporter.report(
+          new SyntaxError(
+            "Operands must be two numbers or two strings at " +
+              expr.operator.line +
+              expr.operator.lexeme,
+          ),
+        );
     }
     return null;
   }
 
   checkNumberOperands(token: Token, left: BeerObject, right: BeerObject): void {
     if (typeof left === "number" && typeof right === "number") return;
-    else errorReporter.report(new SyntaxError("Operands must be numbers"));
+    else
+      errorReporter.report(
+        new SyntaxError(
+          "Operands must be numbers at " + token.line + token.lexeme,
+        ),
+      );
   }
 
   visitUnaryExpr(expr: ast.UnaryExpr) {
