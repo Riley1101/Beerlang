@@ -1,5 +1,5 @@
 {
-  "name": "gideon-clone",
+  "name": "gideon-v3",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "bun run index.ts",
-    "docs::gen": "typedoc ./index.ts ./src/* --out docs/ " 
+    "docs::gen": "typedoc ./index.ts ./src/* --out docs/ "
   },
   "peerDependencies": {
     "typescript": ""
