@@ -39,7 +39,7 @@ export class Scanner implements Scanner {
   }
 
   /**
-   * checks if the scanner
+   * Checks if the scanner
    * has reached the end of the source code string
    * @returns {boolean}
    */
@@ -282,7 +282,6 @@ export class Scanner implements Scanner {
         } else if (this.is_alpha(c)) {
           this.identifier();
         } else {
-          console.log("what am i");
           // errorReporter.report(new SyntaxError(null, "Unexpected character."));
         }
         break;

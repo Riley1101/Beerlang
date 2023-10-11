@@ -1,5 +1,5 @@
-import { errorReporter, SyntaxError } from "./error";
 import * as ast from "./ast";
+import { errorReporter, SyntaxError } from "./error";
 import { Token } from "./token";
 import { TokenType } from "./types";
 
@@ -27,9 +27,44 @@ export class Parser {
   public parse() {
     const statements: ast.Stmt[] = [];
     while (!this.is_at_end()) {
-      statements.push(this.statement());
+      try {
+        statements.push(this.declaration());
+      } catch (e) {
+        if (e instanceof SyntaxError) {
+          throw errorReporter.report(e);
+        }
+        this.synchronize();
+      }
     }
     return statements;
+  }
+
+  /**
+   * <h3>Grammar for declearation</h3>
+   * declaration   → varDecl
+   *             | statement ;
+   * @returns ast.Stmt
+   */
+  private declaration() {
+    if (this.match(TokenType.VAR)) {
+      return this.var_declaration();
+    }
+    return this.statement();
+  }
+
+  /**
+   * <h3>Grammar for var declaration</h3>
+   *     varDecl       → "var" IDENTIFIER ( "=" expression )? ";" ;
+   *     @returns ast.Stmt
+   */
+  private var_declaration(): ast.Stmt {
+    const name = this.consume(TokenType.IDENTIFIER, "Expect variable name.");
+    let initializer = null;
+    if (this.match(TokenType.EQUAL)) {
+      initializer = this.expression();
+    }
+    this.consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+    return new ast.VarStmt(name, initializer);
   }
 
   /**
@@ -175,6 +210,10 @@ export class Parser {
       this.consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
       return new ast.GroupingExpr(expr);
     }
+    if (this.match(TokenType.IDENTIFIER)) {
+      return new ast.VariableExpr(this.previous());
+    }
+    console.log(this.peek());
     return errorReporter.report(
       new SyntaxError(this.peek(), "Expect expression."),
     );

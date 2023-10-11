@@ -24,13 +24,14 @@ parser.setTokens(tokens);
 let res = parser.parse();
 
 /**
+ * Init AstPrinter
+ */
+const astPrinter = new AstPrinter();
+astPrinter.print_ast(res);
+
+/**
  * Init Interpreter
  */
 const interpreter = new Interpreter();
 interpreter.interpret(res);
 
-/**
- * Init AstPrinter
- */
-const astPrinter = new AstPrinter();
-astPrinter.print_ast(res);

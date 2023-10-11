@@ -1,5 +1,6 @@
 import { Token } from "./token";
 import { BeerObject } from "./types";
+import { Log } from "./error";
 
 /**
  * Expression interface
@@ -22,17 +23,31 @@ export interface Stmt {
 /**
  * StmtVisitor interface
  * @interface StmtVisitor
- * @member {T} accept - Accepts a visitor
+ * @method {T} visitExpressionStmt - Visits an expression Statement
+ * @method {T} visitPrintStmt - Visits a print Statement
+ * @method {T} visitVarStmt - Visits a var statement
  */
 export interface StmtVisitor<T> {
   visitExpressionStmt(stmt: ExpressionStmt): T;
   visitPrintStmt(stmt: PrintStmt): T;
+  visitVarStmt(stmt: VarStmt): T;
 }
+
+/**
+ * Expression Visitor interface
+ * @interface ExprVisitor
+ * @method {T} visitBinaryExpr - Visits a binary expression
+ * @method {T} visitUnaryExpr - Visits a unary expressions
+ * @method {T} visitLiteralExpr - Visits a literal expression
+ * @method {T} visitGroupingExpr - Visits a grouping expression
+ * @method {T} visitVariableExpr - Visits a variable expression
+ */
 export interface ExprVisitor<T> {
   visitBinaryExpr(expr: BinaryExpr): T;
   visitUnaryExpr(expr: UnaryExpr): T;
   visitLiteralExpr(expr: LiteralExpr): T;
   visitGroupingExpr(expr: GroupingExpr): T;
+  visitVariableExpr(expr: VariableExpr): T;
 }
 
 /**
@@ -41,6 +56,13 @@ export interface ExprVisitor<T> {
  */
 export type SyntaxVisitor<E, R> = ExprVisitor<E> & StmtVisitor<R>;
 
+/**
+ * Expressions Statement
+ * @class  ExpressionStmt
+ * @implements {Stmt}
+ * @member {Expr} expression - The expression to be evaluated
+ * @method {T} accept - Accepts a visitor
+ */
 export class ExpressionStmt implements Stmt {
   constructor(public expression: Expr) {
     this.expression = expression;
@@ -50,13 +72,39 @@ export class ExpressionStmt implements Stmt {
   }
 }
 
+/**
+ * Print statement
+ * @class PrintStmt
+ * @implements {Stmt}
+ * @member {Expr} expression - The expression to be printed
+ * @method {T} accept - Accepts a visitor
+ */
 export class PrintStmt implements Stmt {
   constructor(public expression: Expr) {
     this.expression = expression;
   }
-
   accept<T>(visitor: StmtVisitor<T>): T {
     return visitor.visitPrintStmt(this);
+  }
+}
+
+/**
+ * Print statement
+ * @class PrintStmt
+ * @implements {Stmt}
+ * @member {Expr} expression - The expression to be printed
+ * @method {T} accept - Accepts a visitor
+ */
+export class VarStmt implements Stmt {
+  constructor(
+    public name: Token,
+    public initializer: Expr | null,
+  ) {
+    this.name = name;
+    this.initializer = initializer;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitVarStmt(this);
   }
 }
 
@@ -141,7 +189,16 @@ export class GroupingExpr implements Expr {
   }
 }
 
-export class AstPrinter implements ExprVisitor<string> {
+export class VariableExpr implements Expr {
+  constructor(public name: Token) {
+    this.name = name;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitVariableExpr(this);
+  }
+}
+
+export class AstPrinter implements SyntaxVisitor<string, string> {
   /**
    * @param expr - {BinaryExpr} expression
    * @returns string
@@ -172,6 +229,17 @@ export class AstPrinter implements ExprVisitor<string> {
   }
   visitPrintStmt(stmt: PrintStmt): string {
     return this.parenthesize("print", stmt.expression);
+  }
+  visitVarStmt(stmt: VarStmt): string {
+    const name = new VariableExpr(stmt.name);
+    if (stmt.initializer) {
+      return this.parenthesize("var", name, stmt.initializer);
+    }
+    return this.parenthesize("var", name);
+  }
+
+  visitVariableExpr(expr: VariableExpr): string {
+    return expr.name.lexeme;
   }
 
   /**
@@ -218,6 +286,6 @@ export class AstPrinter implements ExprVisitor<string> {
   }
 
   print_ast(stmt: Stmt[]): void {
-    console.log(this.stringify(stmt));
+    console.log(Log.cyan(this.stringify(stmt)));
   }
 }

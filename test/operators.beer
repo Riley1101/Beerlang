@@ -1,2 +1,2 @@
-print "Hello world";
-
+var a = 12;
+print a;

@@ -85,14 +85,16 @@ export class ErrorReporter {
   report(error: Error): never {
     if (error instanceof ClientError) {
       this.hasCliError = true;
-      exit(65);
+     // exit(65);
     } else if (error instanceof RuntimeError) {
       this.hasRuntimeError = true;
-      exit(70);
+      //exit(70);
     } else {
       this.hasSyntaxError = true;
-      exit(65);
+      //exit(65);
     }
+    this.log(error);
+    throw error;
   }
 }
 
