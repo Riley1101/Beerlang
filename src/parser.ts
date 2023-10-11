@@ -68,13 +68,30 @@ export class Parser {
   }
 
   /**
+   * <h3>Grammar for block</h3>
+   * block          → "{" declaration* "}" ;
+   * @returns ast.Stmt
+   */
+  private block(): ast.Stmt[] {
+    const statements: ast.Stmt[] = [];
+    while (!this.check(TokenType.RIGHT_BRACE) && !this.is_at_end()) {
+      statements.push(this.declaration());
+    }
+    this.consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
+    return statements;
+  }
+
+  /**
    * <h3>Ecaluation of statements</h3>
-   * statement     → printStmt
-   *              | expressionStmt ;
+   * statement     → expressionStmt
+   *            | printStmt ;
+   *            | block ;
    * @returns ast.Stmt
    */
   private statement(): ast.Stmt {
     if (this.match(TokenType.PRINT)) return this.print_statement();
+    if (this.match(TokenType.LEFT_BRACE))
+      return new ast.BlockStmt(this.block());
     return this.expression_statement();
   }
 
@@ -213,7 +230,6 @@ export class Parser {
     if (this.match(TokenType.IDENTIFIER)) {
       return new ast.VariableExpr(this.previous());
     }
-    console.log(this.peek());
     return errorReporter.report(
       new SyntaxError(this.peek(), "Expect expression."),
     );

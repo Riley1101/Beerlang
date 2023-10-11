@@ -92,6 +92,26 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     return object.toString();
   }
 
+  /**
+   * Execute a list of statements in an given environment
+   * @param statements - list of statements
+   * @param environment - environment to execute the statements in.
+   */
+  private execute_block(
+    statements: ast.Stmt[],
+    environment: Environment,
+  ): void {
+    const previous = this.environment;
+    try {
+      this.environment = environment;
+      for (let statement of statements) {
+        this.execute(statement);
+      }
+    } finally {
+      this.environment = previous;
+    }
+  }
+
   /** ========================== Visitor Methods ========================== */
 
   /** ========================== Expressions ========================== */
@@ -229,5 +249,9 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
       value = this.evaluate(stmt.initializer);
     }
     this.environment.define(stmt.name.lexeme, value);
+  }
+
+  visitBlockStmt(stmt: ast.BlockStmt): void {
+    this.execute_block(stmt.statements, new Environment(this.environment));
   }
 }

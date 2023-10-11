@@ -31,6 +31,7 @@ export interface StmtVisitor<T> {
   visitExpressionStmt(stmt: ExpressionStmt): T;
   visitPrintStmt(stmt: PrintStmt): T;
   visitVarStmt(stmt: VarStmt): T;
+  visitBlockStmt(stmt: BlockStmt): T;
 }
 
 /**
@@ -57,6 +58,22 @@ export interface ExprVisitor<T> {
  * SyntaxVisitor type
  */
 export type SyntaxVisitor<E, R> = ExprVisitor<E> & StmtVisitor<R>;
+
+/**
+ * Block Statement
+ * @class BlockStmt
+ * @implements {Stmt}
+ * @member {Stmt[]} statements - The statements in the block
+ * @method {T} accept - Accepts a visitor
+ */
+export class BlockStmt implements Stmt {
+  constructor(public statements: Stmt[]) {
+    this.statements = statements;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitBlockStmt(this);
+  }
+}
 
 /**
  * Expressions Statement
@@ -295,6 +312,20 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
   }
 
   /**
+   * Generate ast for the statements in the block
+   * @param stmt - {BlockStmt} statement
+   * @returns  parenthesize version of the ast block
+   */
+  visitBlockStmt(stmt: BlockStmt): string {
+    let str = `(block `;
+    for (const statement of stmt.statements) {
+      str += "\n" + this.indent(statement.accept(this));
+    }
+    str += ")";
+    return str;
+  }
+
+  /**
    * @param expr - {VariableExpr} expression
    * @returns {string} name of the variable
    */
@@ -322,6 +353,13 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     }
     str += ")";
     return str;
+  }
+
+  private indent(lines: string): string {
+    return lines
+      .split("\n")
+      .map((line) => `  ${line}`)
+      .join("\n");
   }
 
   /**

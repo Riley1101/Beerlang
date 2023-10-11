@@ -4,7 +4,9 @@ export enum TokenType {
   LEFT_PAREN = "LEFT_PAREN",
   RIGHT_PAREN = "RIGHT_PAREN",
   LEFT_BRACE = "LEFT_BRACE",
+  RIGHT_BRACE = "RIGHT_BRACE",
   LEFT_BRACKET = "LEFT_BRACKET",
+  RIGHT_BRACKET = "RIGHT_BRACKET",
   COMMA = "COMMA",
   DOT = "DOT",
   MINUS = "MINUS",
@@ -68,8 +70,4 @@ export const keywords: Record<string, TokenType> = {
   while: TokenType.WHILE,
 };
 
-export type BeerObject=
-  | string
-  | number
-  | boolean
-  | null
+export type BeerObject = string | number | boolean | null;

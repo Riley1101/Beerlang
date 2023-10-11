@@ -188,6 +188,17 @@ export class Scanner implements Scanner {
   private scan() {
     let c = this.advance();
     switch (c) {
+      case "{":
+        this.add_token(TokenType.LEFT_BRACE, null);
+        break;
+      case "}":
+        this.add_token(TokenType.RIGHT_BRACE, null);
+        break;
+      case "(":
+        this.add_token(TokenType.LEFT_PAREN, null);
+        break;
+      case ")":
+        this.add_token(TokenType.RIGHT_PAREN, null);
       case "➕":
       case "+":
         this.add_token(TokenType.PLUS, null);
