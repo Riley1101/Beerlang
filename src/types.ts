@@ -1,4 +1,6 @@
 import { Interpreter } from "./interpreter";
+import { Environment } from "./environment";
+import * as ast from "./ast";
 
 export type Literals = string | number | boolean | null;
 
@@ -74,21 +76,56 @@ export const keywords: Record<string, TokenType> = {
 
 export type BeerObject = string | number | boolean | null | BeerCallable;
 
+/**
+ * @abstract BeerCallable
+ * @method arity
+ * @method call
+ * @method to_string
+ */
 export abstract class BeerCallable {
   abstract arity(): number;
   abstract call(interpreter: Interpreter, args: BeerObject[]): BeerObject;
   abstract to_string(): string;
 }
 
-export class BeerFunction extends BeerCallable {
+/**
+ * Represents a Beer function.
+ * @class
+ */
+export class BeerFunction implements BeerCallable {
+  static Return = class Return {
+    value: BeerObject;
+    constructor(value: BeerObject) {
+      this.value = value;
+    }
+  };
+  constructor(
+    private declaration: ast.FunctionStmt,
+    private closure: Environment,
+  ) {
+    this.declaration = declaration;
+    this.closure = closure;
+  }
   to_string(): string {
-    return "BeerFunction";
+    return `<fun ${this.declaration.name.lexeme}>`;
   }
   arity(): number {
-    return 0;
+    return this.declaration.params.length;
   }
 
   call(interpreter: Interpreter, args: BeerObject[]): BeerObject {
+    const environment = new Environment(this.closure);
+    for (let i = 0; i < this.declaration.params.length; i++) {
+      environment.define(this.declaration.params[i].lexeme, args[i]);
+    }
+    try {
+      interpreter.execute_block(this.declaration.body, environment);
+    } catch (error) {
+      if (error instanceof BeerFunction.Return) {
+        return error.value;
+      }
+      throw error;
+    }
     return null;
   }
 }

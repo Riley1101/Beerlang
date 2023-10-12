@@ -2,7 +2,7 @@ import { BeerObject } from "./types";
 import { errorReporter } from "./error";
 export class Environment {
   private enclosing: Environment | null;
-  private values: Map<string, any> = new Map<string, any>();
+  private values: Map<string, BeerObject> = new Map<string, BeerObject>();
 
   constructor(enclosing?: Environment) {
     this.enclosing = null;
@@ -24,9 +24,9 @@ export class Environment {
    */
   public get(name: string): BeerObject | never {
     if (this.values.has(name)) {
-      return this.values.get(name);
+      return this.values.get(name) as BeerObject;
     }
-    if (this.enclosing) {
+    if (this.enclosing !== null) {
       return this.enclosing.get(name);
     }
     return errorReporter.report(
@@ -44,7 +44,7 @@ export class Environment {
       this.values.set(name, value);
       return;
     }
-    if (this.enclosing) {
+    if (this.enclosing !== null) {
       this.enclosing.assign(name, value);
       return;
     }

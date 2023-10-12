@@ -35,6 +35,8 @@ export interface StmtVisitor<T> {
   visitIfStmt(stmt: IfStmt): T;
   visitForStmt(stmt: ForStmt): T;
   visitWhileStmt(stmt: WhileStmt): T;
+  visitFunctionStmt(stmt: FunctionStmt): T;
+  visitReturnStmt(stmt: ReturnStmt): T;
 }
 
 /**
@@ -153,6 +155,14 @@ export class ForStmt implements Stmt {
   }
 }
 
+/**
+ * While statement
+ * @class WhileStmt
+ * @implements {Stmt}
+ * @member {Expr} condition - The condition to be evaluated
+ * @member {Stmt} body - The body of the while loop
+ * @method {T} accept - Accepts a visitor
+ */
 export class WhileStmt implements Stmt {
   constructor(
     public condition: Expr,
@@ -163,6 +173,42 @@ export class WhileStmt implements Stmt {
   }
   accept<T>(visitor: StmtVisitor<T>): T {
     return visitor.visitWhileStmt(this);
+  }
+}
+
+export class ReturnStmt implements Stmt {
+  constructor(
+    public keyword: Token,
+    public value: Expr | null,
+  ) {
+    this.keyword = keyword;
+    this.value = value;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitReturnStmt(this);
+  }
+}
+
+/**
+ * @class FunctionStmt
+ * @implements {Stmt}
+ * @member {Token} name - The name of the function
+ * @member {Token[]} params - The parameters of the function
+ * @member {Stmt[]} body - The body of the function
+ * @method {T} accept - Accepts a visitor
+ */
+export class FunctionStmt implements Stmt {
+  constructor(
+    public name: Token,
+    public params: Token[],
+    public body: Stmt[],
+  ) {
+    this.name = name;
+    this.params = params;
+    this.body = body;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitFunctionStmt(this);
   }
 }
 
@@ -461,6 +507,33 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
    */
   visitWhileStmt(stmt: WhileStmt): string {
     let result = `(while ${this.stringify(stmt.condition)}\n`;
+    const bodyResult = this.stringify(stmt.body);
+    result += this.indent(bodyResult);
+    result += ")";
+    return result;
+  }
+
+  /**
+   * Generate ast for the if statements in the block
+   * @param stmt - {ReturnStmt} statement
+   */
+  visitReturnStmt(stmt: ReturnStmt): string {
+    if (stmt.value) {
+      return this.parenthesize("return", stmt.value);
+    }
+    return this.parenthesize("return");
+  }
+  /**
+   * Generate ast for the function statements
+   * @param stmt - {FunctionStmt} statement
+   * @returns parenthesize version of the ast function
+   */
+  visitFunctionStmt(stmt: FunctionStmt): string {
+    let result = `(fun ${stmt.name.lexeme} (`;
+    for (const param of stmt.params) {
+      result += param.lexeme + " ";
+    }
+    result += ")\n";
     const bodyResult = this.stringify(stmt.body);
     result += this.indent(bodyResult);
     result += ")";

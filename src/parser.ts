@@ -1,5 +1,5 @@
 import * as ast from "./ast";
-import { errorReporter, RuntimeError, SyntaxError } from "./error";
+import { errorReporter, SyntaxError } from "./error";
 import { Token } from "./token";
 import { TokenType } from "./types";
 
@@ -40,12 +40,45 @@ export class Parser {
   }
 
   /**
+   * @param kind - The kind of function to be declared
+   * @returns
+   */
+  private function_declaration(kind: string): ast.FunctionStmt {
+    let name = this.consume(TokenType.IDENTIFIER, `Expect ${kind} name.`);
+    this.consume(TokenType.LEFT_PAREN, `Expect '(' after ${kind} name.`);
+    const parameters: Token[] = [];
+    if (!this.check(TokenType.RIGHT_PAREN)) {
+      do {
+        if (parameters.length >= 255) {
+          errorReporter.report(
+            new SyntaxError(
+              this.peek(),
+              "Cannot have more than 255 parameters.",
+            ),
+          );
+        }
+        parameters.push(
+          this.consume(TokenType.IDENTIFIER, "Expect parameter name."),
+        );
+      } while (this.match(TokenType.COMMA));
+    }
+    this.consume(TokenType.RIGHT_PAREN, "Expect ')' after parameters.");
+    this.consume(TokenType.LEFT_BRACE, `Expect '{' before ${kind} body.`);
+    const body = this.block();
+    return new ast.FunctionStmt(name, parameters, body);
+  }
+
+  /**
    * <h3>Grammar for declearation</h3>
-   * declaration   → varDecl
+   * declaration   →  funcDecl;
+   *              | varDecl
    *             | statement ;
    * @returns ast.Stmt
    */
   private declaration() {
+    if (this.match(TokenType.FUN)) {
+      return this.function_declaration("function");
+    }
     if (this.match(TokenType.VAR)) {
       return this.var_declaration();
     }
@@ -86,6 +119,7 @@ export class Parser {
    * statement     → expressionStmt
    *            | ifStmt ;
    *            | printStmt ;
+   *            | returnStmt ;
    *            | whileStmt;
    *            | BlockStmt;
    * @returns ast.Stmt
@@ -94,6 +128,7 @@ export class Parser {
     if (this.match(TokenType.FOR)) return this.for_statement();
     if (this.match(TokenType.IF)) return this.if_statement();
     if (this.match(TokenType.PRINT)) return this.print_statement();
+    if (this.match(TokenType.RETURN)) return this.return_statement();
     if (this.match(TokenType.WHILE)) return this.while_statement();
     if (this.match(TokenType.LEFT_BRACE))
       return new ast.BlockStmt(this.block());
@@ -137,6 +172,16 @@ export class Parser {
       body = new ast.BlockStmt([initializer, body]);
     }
     return body;
+  }
+
+  private return_statement(): ast.Stmt {
+    let keyword = this.previous();
+    let value = null;
+    if (!this.check(TokenType.SEMICOLON)) {
+      value = this.expression();
+    }
+    this.consume(TokenType.SEMICOLON, "Expect ';' after return value.");
+    return new ast.ReturnStmt(keyword, value);
   }
 
   /**
@@ -284,6 +329,11 @@ export class Parser {
     return expr;
   }
 
+  /**
+      * Parse the call expressions using the callee
+   * @param callee - ast.Expr
+   * @returns 
+   */
   private finish_call(callee: ast.Expr): ast.Expr {
     let args: ast.Expr[] = [];
     if (!this.check(TokenType.RIGHT_PAREN)) {
@@ -316,7 +366,7 @@ export class Parser {
       let right = this.unary();
       return new ast.UnaryExpr(operator, right);
     }
-    return this.primary();
+    return this.call();
   }
 
   /**

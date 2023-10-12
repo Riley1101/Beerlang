@@ -2,14 +2,27 @@ import * as ast from "./ast";
 import { Environment } from "./environment";
 import { errorReporter } from "./error";
 import { Token } from "./token";
-import { BeerObject, TokenType, BeerCallable } from "./types";
+import { BeerObject, TokenType, BeerCallable, BeerFunction } from "./types";
 
 /**
  * The interpreter class is responsible for evaluating the AST
  * @class Interpreter
  */
 export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
-  private environment: Environment = new Environment();
+  public globals: Environment = new Environment();
+  private environment: Environment = this.globals;
+  /**
+   * define clock native function
+   * @memberof Interpreter
+   */
+  constructor() {
+      console.log(this.environment)
+    this.globals.define("clock", {
+      arity: () => 0,
+      call: () => Date.now() / 1000,
+      to_string: () => "<native fn>",
+    });
+  }
   /** ========================== Utility Methods ========================== */
   /**
    * @param expr - ast.Expr to be interpreted
@@ -97,10 +110,7 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    * @param statements - list of statements
    * @param environment - environment to execute the statements in.
    */
-  private execute_block(
-    statements: ast.Stmt[],
-    environment: Environment,
-  ): void {
+  public execute_block(statements: ast.Stmt[], environment: Environment): void {
     const previous = this.environment;
     try {
       this.environment = environment;
@@ -237,6 +247,7 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     for (let arg of expr.args) {
       args.push(this.evaluate(arg));
     }
+    console.log(callee instanceof BeerCallable)
     if (!(callee instanceof BeerCallable)) {
       throw errorReporter.report(
         new SyntaxError("Can only call functions and classes."),
@@ -249,7 +260,7 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
         ),
       );
     }
-    let func = callee as BeerCallable;
+    let func = callee;
     return func.call(this, args);
   }
   /** ========================== Statements ========================== */
@@ -280,6 +291,26 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
       this.execute(stmt.body);
     }
   }
+
+  /**
+   * @param stmt - The expression to be evaluated
+   */
+  visitReturnStmt(stmt: ast.ReturnStmt): void {
+    let value = null;
+    if (stmt.value !== null) value = this.evaluate(stmt.value);
+    throw new BeerFunction.Return(value);
+  }
+
+  /**
+   * @param stmt - The expression to be evaluated
+   * @returns void;
+   */
+  visitFunctionStmt(stmt: ast.FunctionStmt): void {
+    let func = new BeerFunction(stmt, this.environment);
+    this.environment.define(stmt.name.lexeme, func);
+    return;
+  }
+
   /**
    * Print the evaluated expression
    * @param stmt - The expression to be evaluated
