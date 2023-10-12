@@ -33,6 +33,7 @@ export interface StmtVisitor<T> {
   visitVarStmt(stmt: VarStmt): T;
   visitBlockStmt(stmt: BlockStmt): T;
   visitIfStmt(stmt: IfStmt): T;
+  visitForStmt(stmt: ForStmt): T;
   visitWhileStmt(stmt: WhileStmt): T;
 }
 
@@ -131,6 +132,23 @@ export class IfStmt implements Stmt {
   }
   accept<T>(visitor: StmtVisitor<T>): T {
     return visitor.visitIfStmt(this);
+  }
+}
+
+export class ForStmt implements Stmt {
+  constructor(
+    public initializer: Stmt | null,
+    public condition: Expr | null,
+    public increment: Expr | null,
+    public body: Stmt,
+  ) {
+    this.initializer = initializer;
+    this.condition = condition;
+    this.increment = increment;
+    this.body = body;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitForStmt(this);
   }
 }
 
@@ -304,6 +322,12 @@ export class LogicalExpr implements Expr {
   }
 }
 
+/**
+ * @class AstPrinter
+ * @implements {SyntaxVisitor<string,string>}
+ * @method {string} parenthesize - Parenthesize a string
+ * @method {string} print - Print a string
+ */
 export class AstPrinter implements SyntaxVisitor<string, string> {
   /**
    * @param expr - {AssignExpr} expression
@@ -385,6 +409,16 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     }
     str += ")";
     return str;
+  }
+
+  visitForStmt(stmt: ForStmt): string {
+    let result = `(for ${this.stringify(stmt.initializer)} ${this.stringify(
+      stmt.condition,
+    )} ${this.stringify(stmt.increment)}\n`;
+    const bodyResult = this.stringify(stmt.body);
+    result += this.indent(bodyResult);
+    result += ")";
+    return result;
   }
 
   /**
@@ -471,7 +505,8 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
    * @param expr - {Expr} expression
    * @returns
    */
-  stringify(target: Expr | Stmt | Stmt[]): string {
+  stringify(target: Expr | Stmt | Stmt[] | null): string {
+    if (target === null) return "nil";
     if (target instanceof Array) {
       return target.map((stmt) => stmt.accept(this)).join("\n");
     } else {

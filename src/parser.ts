@@ -86,11 +86,12 @@ export class Parser {
    * statement     → expressionStmt
    *            | ifStmt ;
    *            | printStmt ;
-   *            | while ;
-   *            | block ;
+   *            | whileStmt;
+   *            | BlockStmt;
    * @returns ast.Stmt
    */
   private statement(): ast.Stmt {
+    if (this.match(TokenType.FOR)) return this.for_statement();
     if (this.match(TokenType.IF)) return this.if_statement();
     if (this.match(TokenType.PRINT)) return this.print_statement();
     if (this.match(TokenType.WHILE)) return this.while_statement();
@@ -99,6 +100,50 @@ export class Parser {
     return this.expression_statement();
   }
 
+  /**
+   * <h3>Evaluation of for statement</h3>
+   * forStmt       → "for" "(" ( varDecl | exprStmt | ";" )
+   *                expression? ";"
+   *                expression? ")" statement ;
+   * @returns ast.Stmt
+   */
+  private for_statement(): ast.Stmt {
+    this.consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
+    let initializer;
+    if (this.match(TokenType.SEMICOLON)) {
+      initializer = null;
+    } else if (this.match(TokenType.VAR)) {
+      initializer = this.var_declaration();
+    } else {
+      initializer = this.expression_statement();
+    }
+    let condition = null;
+    if (!this.check(TokenType.SEMICOLON)) {
+      condition = this.expression();
+    }
+    this.consume(TokenType.SEMICOLON, "Expect ';' after loop condition.");
+    let increment = null;
+    if (!this.check(TokenType.RIGHT_PAREN)) {
+      increment = this.expression();
+    }
+    this.consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.");
+    let body = this.statement();
+    if (increment !== null) {
+      body = new ast.BlockStmt([body, new ast.ExpressionStmt(increment)]);
+    }
+    if (condition === null) condition = new ast.LiteralExpr(true);
+    body = new ast.WhileStmt(condition, body);
+    if (initializer !== null) {
+      body = new ast.BlockStmt([initializer, body]);
+    }
+    return body;
+  }
+
+  /**
+   * <h3>Evaluation of while statement</h3>
+   * whileStmt     → "while" "(" expression ")" statement ;
+   * @returns ast.Stmt
+   */
   private while_statement(): ast.Stmt {
     this.consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
     const condition = this.expression();

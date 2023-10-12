@@ -232,6 +232,23 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    * @param stmt - The expression to be evaluated
    * @returns void;
    */
+  visitForStmt(stmt: ast.ForStmt): void {
+    if (stmt.initializer) {
+      this.execute(stmt.initializer);
+    }
+    while (this.is_truthy(this.evaluate(stmt.condition as ast.Expr))) {
+      this.execute(stmt.body);
+      if (stmt.increment === null) {
+        return;
+      }
+      this.evaluate(stmt.increment);
+    }
+  }
+
+  /**
+   * @param stmt - The expression to be evaluated
+   * @returns void;
+   */
   visitWhileStmt(stmt: ast.WhileStmt): void {
     while (this.is_truthy(this.evaluate(stmt.condition))) {
       this.execute(stmt.body);
