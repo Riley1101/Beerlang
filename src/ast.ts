@@ -55,6 +55,7 @@ export interface ExprVisitor<T> {
   visitVariableExpr(expr: VariableExpr): T;
   visitAssignExpr(expr: AssignExpr): T;
   visitLogicalExpr(expr: LogicalExpr): T;
+  visitCallExpr(expr: CallExpr): T;
 }
 
 /**
@@ -307,6 +308,38 @@ export class AssignExpr implements Expr {
   }
 }
 
+/**
+ * @class CallExpr
+ * @implements {Expr}
+ * @member {Expr} callee - The callee expression.
+ * @member {Token} paren - The paren token.
+ * @member {Expr[]} args - The arguments.
+ * @method {T} accept - Accepts a visitor
+ */
+export class CallExpr implements Expr {
+  constructor(
+    public callee: Expr,
+    public paren: Token,
+    public args: Expr[],
+  ) {
+    this.callee = callee;
+    this.paren = paren;
+    this.args = args;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitCallExpr(this);
+  }
+}
+
+/**
+ * @class LogicalExpr
+ * @implements {Expr}
+ * @member {Expr} left - The left expression.
+ * @member {Token} operator - Operator token.
+ * @member {Expr} right - The right expression.
+ * @method {T} accept - Accepts a visitor
+ * @returns {T} - T
+ */
 export class LogicalExpr implements Expr {
   constructor(
     public left: Expr,
@@ -469,6 +502,14 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
    */
   visitGroupingExpr(expr: GroupingExpr): string {
     return this.parenthesize("group", expr.expression);
+  }
+
+  /**
+   * @param expr - {CallExpr} expression
+   * @returns string
+   */
+  visitCallExpr(expr: CallExpr): string {
+    return this.parenthesize("call", expr.callee, ...expr.args);
   }
 
   /**

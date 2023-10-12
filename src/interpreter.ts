@@ -2,7 +2,7 @@ import * as ast from "./ast";
 import { Environment } from "./environment";
 import { errorReporter } from "./error";
 import { Token } from "./token";
-import { BeerObject, TokenType } from "./types";
+import { BeerObject, TokenType, BeerCallable } from "./types";
 
 /**
  * The interpreter class is responsible for evaluating the AST
@@ -225,6 +225,32 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
       if (!this.is_truthy(left)) return left;
     }
     return this.evaluate(expr.right);
+  }
+
+  /**
+   * @param expr - TODO
+   * @returns
+   */
+  visitCallExpr(expr: ast.CallExpr): BeerObject {
+    const callee = this.evaluate(expr.callee);
+    let args = [];
+    for (let arg of expr.args) {
+      args.push(this.evaluate(arg));
+    }
+    if (!(callee instanceof BeerCallable)) {
+      throw errorReporter.report(
+        new SyntaxError("Can only call functions and classes."),
+      );
+    }
+    if (args.length !== callee.arity()) {
+      throw errorReporter.report(
+        new SyntaxError(
+          `Expected ${callee.arity()} arguments but got ${args.length}.`,
+        ),
+      );
+    }
+    let func = callee as BeerCallable;
+    return func.call(this, args);
   }
   /** ========================== Statements ========================== */
 

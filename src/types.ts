@@ -1,3 +1,5 @@
+import { Interpreter } from "./interpreter";
+
 export type Literals = string | number | boolean | null;
 
 export enum TokenType {
@@ -70,4 +72,23 @@ export const keywords: Record<string, TokenType> = {
   while: TokenType.WHILE,
 };
 
-export type BeerObject = string | number | boolean | null;
+export type BeerObject = string | number | boolean | null | BeerCallable;
+
+export abstract class BeerCallable {
+  abstract arity(): number;
+  abstract call(interpreter: Interpreter, args: BeerObject[]): BeerObject;
+  abstract to_string(): string;
+}
+
+export class BeerFunction extends BeerCallable {
+  to_string(): string {
+    return "BeerFunction";
+  }
+  arity(): number {
+    return 0;
+  }
+
+  call(interpreter: Interpreter, args: BeerObject[]): BeerObject {
+    return null;
+  }
+}

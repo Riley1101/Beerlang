@@ -1,5 +1,5 @@
 import * as ast from "./ast";
-import { errorReporter, SyntaxError } from "./error";
+import { errorReporter, RuntimeError, SyntaxError } from "./error";
 import { Token } from "./token";
 import { TokenType } from "./types";
 
@@ -267,8 +267,45 @@ export class Parser {
   }
 
   /**
+   * <h3>Grammar for call</h3>
+   * expression     → call ;
+   * call           → primary ( "(" arguments? ")" )* ;
+   * @returns ast.Expr
+   */
+  private call(): ast.Expr {
+    let expr = this.primary();
+    while (true) {
+      if (this.match(TokenType.LEFT_PAREN)) {
+        expr = this.finish_call(expr);
+      } else {
+        break;
+      }
+    }
+    return expr;
+  }
+
+  private finish_call(callee: ast.Expr): ast.Expr {
+    let args: ast.Expr[] = [];
+    if (!this.check(TokenType.RIGHT_PAREN)) {
+      do {
+        if (args.length >= 255) {
+          return errorReporter.report(
+            new SyntaxError(this.peek(), "Can't have more than 255 arguments."),
+          );
+        }
+        args.push(this.expression());
+      } while (this.match(TokenType.COMMA));
+    }
+    let token = this.consume(
+      TokenType.RIGHT_PAREN,
+      "Expect ')' after arguments.",
+    );
+    return new ast.CallExpr(callee, token, args);
+  }
+
+  /**
    * <h3>Grammar for Unary</h3>
-   * expression     → unary ;
+   * expression     → unary | call ;
    * unary          → ( "!" | "-" ) Unary
    *               | primary;
    * @returns ast.Expr unary
