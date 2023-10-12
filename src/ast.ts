@@ -32,6 +32,8 @@ export interface StmtVisitor<T> {
   visitPrintStmt(stmt: PrintStmt): T;
   visitVarStmt(stmt: VarStmt): T;
   visitBlockStmt(stmt: BlockStmt): T;
+  visitIfStmt(stmt: IfStmt): T;
+  visitWhileStmt(stmt: WhileStmt): T;
 }
 
 /**
@@ -51,6 +53,7 @@ export interface ExprVisitor<T> {
   visitGroupingExpr(expr: GroupingExpr): T;
   visitVariableExpr(expr: VariableExpr): T;
   visitAssignExpr(expr: AssignExpr): T;
+  visitLogicalExpr(expr: LogicalExpr): T;
 }
 
 /**
@@ -104,6 +107,43 @@ export class PrintStmt implements Stmt {
   }
   accept<T>(visitor: StmtVisitor<T>): T {
     return visitor.visitPrintStmt(this);
+  }
+}
+
+/**
+ * If statement
+ * @class IfStmt
+ * @implements {Stmt}
+ * @member {Expr} condition - The condition to be evaluated
+ * @member {Stmt} thenBranch - The then branch
+ * @member {Stmt} elseBranch - The else branch
+ * @method {T} accept - Accepts a visitor
+ */
+export class IfStmt implements Stmt {
+  constructor(
+    public condition: Expr,
+    public thenBranch: Stmt,
+    public elseBranch: Stmt | null,
+  ) {
+    this.condition = condition;
+    this.thenBranch = thenBranch;
+    this.elseBranch = elseBranch;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitIfStmt(this);
+  }
+}
+
+export class WhileStmt implements Stmt {
+  constructor(
+    public condition: Expr,
+    public body: Stmt,
+  ) {
+    this.condition = condition;
+    this.body = body;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitWhileStmt(this);
   }
 }
 
@@ -249,6 +289,21 @@ export class AssignExpr implements Expr {
   }
 }
 
+export class LogicalExpr implements Expr {
+  constructor(
+    public left: Expr,
+    public operator: Token,
+    public right: Expr,
+  ) {
+    this.left = left;
+    this.operator = operator;
+    this.right = right;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitLogicalExpr(this);
+  }
+}
+
 export class AstPrinter implements SyntaxVisitor<string, string> {
   /**
    * @param expr - {AssignExpr} expression
@@ -283,6 +338,13 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     return expr.value.toString();
   }
 
+  /**
+   * @param expr - {LogicalExpr} expression
+   * @returns string
+   */
+  visitLogicalExpr(expr: LogicalExpr): string {
+    return this.parenthesize(expr.operator.lexeme, expr.left, expr.right);
+  }
   /**
    * @param stmt - {ExpressionStmt} statement
    * @returns parenthesize version of the ast expression
@@ -323,6 +385,40 @@ export class AstPrinter implements SyntaxVisitor<string, string> {
     }
     str += ")";
     return str;
+  }
+
+  /**
+   * Generate ast for the while statement in the block
+   * @param stmt - {While Statement}
+   * @returns  string ast of while statement
+   */
+  visitWhileStmt(stmt: WhileStmt): string {
+    let result = `(while ${this.stringify(stmt.condition)}\n`;
+    const bodyResult = this.stringify(stmt.body);
+    result += this.indent(bodyResult);
+    result += ")";
+    return result;
+  }
+
+  /**
+   * Generate ast for if statements in the block
+   * @param stmt - {IfStmt} statement
+   * @returns  parenthesize version of the ast if
+   */
+  visitIfStmt(stmt: IfStmt): string {
+    let result = `(if ${this.stringify(stmt.condition)}\n`;
+
+    const thenBranchResult = this.stringify(stmt.thenBranch);
+    result += this.indent(thenBranchResult);
+
+    if (stmt.elseBranch !== null) {
+      result += "\n";
+      const elseBranchResult = this.stringify(stmt.elseBranch);
+      result += this.indent(elseBranchResult);
+    }
+    result += ")";
+
+    return result;
   }
 
   /**

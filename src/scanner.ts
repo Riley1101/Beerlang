@@ -199,6 +199,7 @@ export class Scanner implements Scanner {
         break;
       case ")":
         this.add_token(TokenType.RIGHT_PAREN, null);
+        break;
       case "➕":
       case "+":
         this.add_token(TokenType.PLUS, null);

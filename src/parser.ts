@@ -84,15 +84,44 @@ export class Parser {
   /**
    * <h3>Ecaluation of statements</h3>
    * statement     → expressionStmt
+   *            | ifStmt ;
    *            | printStmt ;
+   *            | while ;
    *            | block ;
    * @returns ast.Stmt
    */
   private statement(): ast.Stmt {
+    if (this.match(TokenType.IF)) return this.if_statement();
     if (this.match(TokenType.PRINT)) return this.print_statement();
+    if (this.match(TokenType.WHILE)) return this.while_statement();
     if (this.match(TokenType.LEFT_BRACE))
       return new ast.BlockStmt(this.block());
     return this.expression_statement();
+  }
+
+  private while_statement(): ast.Stmt {
+    this.consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
+    const condition = this.expression();
+    this.consume(TokenType.RIGHT_PAREN, "Expect ')' after condition.");
+    const body = this.statement();
+    return new ast.WhileStmt(condition, body);
+  }
+
+  /**
+   * <h3>Evaluation of if statement</h3>
+   * ifStmt        → "if" "(" expression ")" statement ( "else" statement )? ;
+   * @returns ast.Stmt
+   */
+  private if_statement(): ast.Stmt {
+    this.consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+    const condition = this.expression();
+    this.consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
+    const then_branch = this.statement();
+    let else_branch = null;
+    if (this.match(TokenType.ELSE)) {
+      else_branch = this.statement();
+    }
+    return new ast.IfStmt(condition, then_branch, else_branch);
   }
 
   /**
@@ -249,11 +278,11 @@ export class Parser {
   /**
    * <h3>Grammar for Assignment</h3>
    * assignment     → IDENTIFIER "=" assignment
-   *             | equality ;
+   *              | logic_or ;
    * @returns {ast.Expr} assignment
    */
   private assignment(): ast.Expr {
-    let expr = this.equality();
+    let expr = this.or();
     if (this.match(TokenType.EQUAL)) {
       let equals = this.previous();
       let value = this.assignment();
@@ -264,6 +293,38 @@ export class Parser {
       errorReporter.report(
         new SyntaxError(equals, "Invalid assignment target."),
       );
+    }
+    return expr;
+  }
+
+  /**
+   * <h3>Grammar for Logic Or</h3>
+   * expression     → logic_or;
+   * logic_or       → logic_and ( "or" logic_and )* ;
+   * @returns {ast.Expr} logic_or
+   */
+  private or(): ast.Expr {
+    let expr = this.and();
+    while (this.match(TokenType.OR)) {
+      let operator = this.previous();
+      let right = this.and();
+      expr = new ast.LogicalExpr(expr, operator, right);
+    }
+    return expr;
+  }
+
+  /**
+   * <h3>Grammar for Logic And</h3>
+   * expression     → logic_and;
+   * logic_and      → equality ( "and" equality )* ;
+   * @returns {ast.Expr} logic_and
+   */
+  private and(): ast.Expr {
+    let expr = this.equality();
+    while (this.match(TokenType.AND)) {
+      let operator = this.previous();
+      let right = this.equality();
+      expr = new ast.LogicalExpr(expr, operator, right);
     }
     return expr;
   }

@@ -34,4 +34,3 @@ astPrinter.print_ast(res);
  */
 const interpreter = new Interpreter();
 interpreter.interpret(res);
-

@@ -208,8 +208,35 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     return this.evaluate(expr.expression);
   }
 
+  /**
+   * Find the value of the variable in the environment
+   * @param expr - The expression to be evaluated
+   * @returns BeerObject;
+   */
+  visitVariableExpr(expr: ast.VariableExpr): BeerObject {
+    return this.environment.get(expr.name.lexeme);
+  }
+
+  visitLogicalExpr(expr: ast.LogicalExpr): BeerObject {
+    let left = this.evaluate(expr.left);
+    if (expr.operator.type === TokenType.OR) {
+      if (this.is_truthy(left)) return left;
+    } else {
+      if (!this.is_truthy(left)) return left;
+    }
+    return this.evaluate(expr.right);
+  }
   /** ========================== Statements ========================== */
 
+  /**
+   * @param stmt - The expression to be evaluated
+   * @returns void;
+   */
+  visitWhileStmt(stmt: ast.WhileStmt): void {
+    while (this.is_truthy(this.evaluate(stmt.condition))) {
+      this.execute(stmt.body);
+    }
+  }
   /**
    * Print the evaluated expression
    * @param stmt - The expression to be evaluated
@@ -230,17 +257,8 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
   }
 
   /**
-   * Find the value of the variable in the environment
-   * @param expr - The expression to be evaluated
-   * @returns BeerObject;
-   */
-  visitVariableExpr(expr: ast.VariableExpr): BeerObject {
-    return this.environment.get(expr.name.lexeme);
-  }
-
-  /**
    * Evaluate the stmt and define in the environment
-   * @param stmt - The expression to be evaluated
+   * @param stmt - The statment to be evaluated
    * @returns void;
    */
   visitVarStmt(stmt: ast.VarStmt): void {
@@ -251,7 +269,23 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     this.environment.define(stmt.name.lexeme, value);
   }
 
+  /**
+   * @param stmt - The block statement to be evaluated
+   *
+   */
   visitBlockStmt(stmt: ast.BlockStmt): void {
     this.execute_block(stmt.statements, new Environment(this.environment));
+  }
+
+  /**
+   * If statement visitor
+   * @param stmt - The if statement to be evaluated
+   */
+  visitIfStmt(stmt: ast.IfStmt): void {
+    if (this.is_truthy(this.evaluate(stmt.condition))) {
+      this.execute(stmt.thenBranch);
+    } else if (stmt.elseBranch !== null) {
+      this.execute(stmt.elseBranch);
+    }
   }
 }
