@@ -407,12 +407,12 @@ export class LogicalExpr implements Expr {
 }
 
 /**
- * @class AstPrinter
+ * @class BeerAstPrinter
  * @implements {SyntaxVisitor<string,string>}
  * @method {string} parenthesize - Parenthesize a string
  * @method {string} print - Print a string
  */
-export class AstPrinter implements SyntaxVisitor<string, string> {
+export class BeerAstPrinter implements SyntaxVisitor<string, string> {
   /**
    * @param expr - {AssignExpr} expression
    * @returns string

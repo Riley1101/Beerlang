@@ -58,4 +58,20 @@ export class Environment {
       new ReferenceError(`Undefined variable '${name}'`),
     );
   }
+
+  private ancestor(distance: number): Environment {
+    let environment: Environment = this;
+    for (let i = 0; i < distance; i++) {
+      environment = environment.enclosing as Environment;
+    }
+    return environment;
+  }
+
+  public get_at(distance: number, name: string): BeerObject {
+    return this.ancestor(distance).values.get(name) as BeerObject;
+  }
+
+  public assign_at(distance: number, name: string, value: BeerObject): void {
+    this.ancestor(distance).values.set(name, value);
+  }
 }

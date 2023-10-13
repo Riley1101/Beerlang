@@ -1,5 +1,5 @@
 /**
- * @namespace Interpreter 
+ * @namespace Interpreter
  * @file interpreter.ts
  * @description Defines the main Interpreter class.
  */
@@ -17,11 +17,14 @@ import {
 
 /**
  * The interpreter class is responsible for evaluating the AST
- * @class Interpreter
+ * @class BeerInterpreter
  */
-export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
+export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
   public globals: Environment = new Environment();
+
   private environment: Environment = this.globals;
+
+  private locals: Map<ast.Expr, number> = new Map();
   /**
    * define clock native function
    * @memberof Interpreter
@@ -30,6 +33,26 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     this.globals.define("clock", new BeerClock());
   }
   /** ========================== Utility Methods ========================== */
+
+  /**
+   * Set resolved values to the locals of the interpreter
+   * @param expr - ast.Expr to be interpreted
+   * @param depth - The depth of the expression
+   * @returns {void}
+   */
+  resolve(expr: ast.Expr, depth: number): void {
+    this.locals.set(expr, depth);
+  }
+
+  private look_up_variable(name: Token, expr: ast.Expr): BeerObject {
+    const distance = this.locals.get(expr);
+    if (distance !== undefined) {
+      return this.environment.get_at(distance, name.lexeme);
+    } else {
+      return this.globals.get(name.lexeme);
+    }
+  }
+
   /**
    * @param expr - ast.Expr to be interpreted
    * @returns {void}
@@ -138,7 +161,12 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    */
   visitAssignExpr(expr: ast.AssignExpr): BeerObject {
     let value = this.evaluate(expr.value);
-    this.environment.assign(expr.name.lexeme, value);
+    let distance = this.locals.get(expr);
+    if (distance !== undefined) {
+      this.environment.assign_at(distance, expr.name.lexeme, value);
+    } else {
+      this.globals.assign(expr.name.lexeme, value);
+    }
     return value;
   }
   /**
@@ -230,7 +258,7 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    * @returns BeerObject;
    */
   visitVariableExpr(expr: ast.VariableExpr): BeerObject {
-    return this.environment.get(expr.name.lexeme);
+    return this.look_up_variable(expr.name, expr);
   }
 
   visitLogicalExpr(expr: ast.LogicalExpr): BeerObject {

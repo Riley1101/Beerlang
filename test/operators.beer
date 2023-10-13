@@ -1,64 +1,25 @@
-print "============= Scopes ===============";
-var a = "global";
-{
-  fun showA() {
-    print a;
-  }
 
-  showA();
-  var a = "block";
-  showA();
+print "=== If ===";
+var a = -10;
+var condition = a > 3;
+if (condition) {
+  print "Running true...";
+} else {
+  print "Running false...";
 }
-var a = "outer";
-{
+
+print "=== While loop ===";
+var i = 1;
+while (i < 8) {
+  print i;
+  i = i + 1;
+}
+
+print "=== For loop ===";
+var a = 0;
+var temp;
+for (var b = 1; a < 100; b = temp + b) {
   print a;
-  var a = "inner";
-  print a;
+  temp = a;
+  a = b;
 }
-print a;
-
-print " ============== For Loop =============";
-for(var a = 0; a < 12; a = a + 1){
-    print a;
-}
-
-print "================ While Loop ============";
-var val =12;
-while(val > 0){
-    print val;
-    val = val - 1;
-}
-
-print " =========== Returns =============";
-fun fib(n){
-    if(n < 2) return n;
-    return n * fib(n - 1);
-}
-
-var f = fib(10);
-print f;
-
-print "=========== Functions ==========";
-var a = "global";
-{
-  fun showA() {
-    print a;
-  }
-
-  showA();
-  var a = "block";
-  showA();
-}
-fun makeCounter() {
-  var i = 0;
-  fun count() {
-    i = i + 1;
-    print i;
-  }
-
-  return count;
-}
-
-var counter = makeCounter();
-counter(); // "1".
-counter(); // "2".

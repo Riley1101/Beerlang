@@ -1,5 +1,5 @@
 /**
- * @namespace Parser 
+ * @namespace Parser
  * @file parser.ts
  * @description Defines the Parser class.
  */
@@ -13,12 +13,12 @@ import { TokenType } from "./types";
  * @class parser
  * @classdesc Parser class to parse the tokens into ast
  */
-export class Parser {
+export class BeerParser {
   private tokens: Token[];
   private current: number;
 
-  constructor() {
-    this.tokens = [];
+  constructor(tokens: Token[]) {
+    this.tokens = tokens;
     this.current = 0;
   }
 
@@ -131,13 +131,13 @@ export class Parser {
    * @returns ast.Stmt
    */
   private statement(): ast.Stmt {
-    if (this.match(TokenType.FOR)) return this.for_statement();
+      if (this.match(TokenType.LEFT_BRACE))
+          return new ast.BlockStmt(this.block());
     if (this.match(TokenType.IF)) return this.if_statement();
     if (this.match(TokenType.PRINT)) return this.print_statement();
     if (this.match(TokenType.RETURN)) return this.return_statement();
     if (this.match(TokenType.WHILE)) return this.while_statement();
-    if (this.match(TokenType.LEFT_BRACE))
-      return new ast.BlockStmt(this.block());
+    if (this.match(TokenType.FOR)) return this.for_statement();
     return this.expression_statement();
   }
 
@@ -169,6 +169,7 @@ export class Parser {
     }
     this.consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.");
     let body = this.statement();
+
     if (increment !== null) {
       body = new ast.BlockStmt([body, new ast.ExpressionStmt(increment)]);
     }

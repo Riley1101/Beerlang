@@ -37,7 +37,7 @@ while(val > 0){
 print " =========== Returns =============";
 fun fib(n){
     if(n < 2) return n;
-    return n * fib(n - 1);
+    return n + fib(n - 1);
 }
 
 var f = fib(10);

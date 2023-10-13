@@ -11,7 +11,7 @@ import { keywords, Literals, TokenType } from "./types";
  * @class Scanner
  * @classdesc Scans the source code string and returns a list of tokens.
  */
-export class Scanner implements Scanner {
+export class BeerScanner implements BeerScanner {
   private logger: Logger = new Logger();
   private tokens: Token[];
   private source: string;
@@ -313,7 +313,7 @@ export class Scanner implements Scanner {
     return this.tokens;
   }
 
-  print_tokens() :void {
+  print_tokens(): void {
     this.logger.info(this.tokens);
   }
 }
