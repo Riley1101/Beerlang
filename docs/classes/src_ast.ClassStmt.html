@@ -32,7 +32,7 @@
 <ul class="tsd-hierarchy">
 <li><a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/ast.ts#L224">src/ast.ts:224</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/ast.ts#L238">src/ast.ts:238</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -46,6 +46,7 @@
 <h3 class="tsd-index-heading">Properties</h3>
 <div class="tsd-index-list"><a href="src_ast.ClassStmt.html#methods" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>methods</span></a>
 <a href="src_ast.ClassStmt.html#name" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>name</span></a>
+<a href="src_ast.ClassStmt.html#superclass" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>superclass</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
@@ -56,7 +57,7 @@
 <section class="tsd-panel tsd-member"><a id="constructor" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="constructor.new_ClassStmt"><span class="tsd-kind-constructor-signature">new <wbr/>Class<wbr/>Stmt</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">name</span>, <span class="tsd-kind-parameter">methods</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_ast.ClassStmt.html" class="tsd-signature-type tsd-kind-class">ClassStmt</a><a href="#constructor.new_ClassStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="constructor.new_ClassStmt"><span class="tsd-kind-constructor-signature">new <wbr/>Class<wbr/>Stmt</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">name</span>, <span class="tsd-kind-parameter">superclass</span>, <span class="tsd-kind-parameter">methods</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_ast.ClassStmt.html" class="tsd-signature-type tsd-kind-class">ClassStmt</a><a href="#constructor.new_ClassStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -64,22 +65,29 @@
 <li>
 <h5><span class="tsd-kind-parameter">name</span>: <a href="src_token.Token.html" class="tsd-signature-type tsd-kind-class">Token</a></h5></li>
 <li>
+<h5><span class="tsd-kind-parameter">superclass</span>: <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="src_ast.VariableExpr.html" class="tsd-signature-type tsd-kind-class">VariableExpr</a></h5></li>
+<li>
 <h5><span class="tsd-kind-parameter">methods</span>: <a href="src_ast.FunctionStmt.html" class="tsd-signature-type tsd-kind-class">FunctionStmt</a><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="src_ast.ClassStmt.html" class="tsd-signature-type tsd-kind-class">ClassStmt</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/ast.ts#L225">src/ast.ts:225</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/ast.ts#L239">src/ast.ts:239</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member"><a id="methods" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>methods</span><a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">methods</span><span class="tsd-signature-symbol">:</span> <a href="src_ast.FunctionStmt.html" class="tsd-signature-type tsd-kind-class">FunctionStmt</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/ast.ts#L227">src/ast.ts:227</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/ast.ts#L242">src/ast.ts:242</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="name" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <a href="src_token.Token.html" class="tsd-signature-type tsd-kind-class">Token</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/ast.ts#L226">src/ast.ts:226</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/ast.ts#L240">src/ast.ts:240</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="superclass" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>superclass</span><a href="#superclass" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">superclass</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="src_ast.VariableExpr.html" class="tsd-signature-type tsd-kind-class">VariableExpr</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/ast.ts#L241">src/ast.ts:241</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="accept" class="tsd-anchor"></a>
@@ -100,7 +108,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type tsd-kind-type-parameter">T</span></h4><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/src_ast.Stmt.html">Stmt</a>.<a href="../interfaces/src_ast.Stmt.html#accept">accept</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/ast.ts#L232">src/ast.ts:232</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/ast.ts#L248">src/ast.ts:248</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -123,6 +131,7 @@
 <li><a href="#constructor" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-512"></use></svg><span>constructor</span></a></li>
 <li><a href="#methods" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>methods</span></a></li>
 <li><a href="#name" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>name</span></a></li>
+<li><a href="#superclass" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>superclass</span></a></li>
 <li><a href="#accept" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>accept</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>gideon-v3</span></a>
