@@ -91,6 +91,7 @@ export abstract class BeerCallable {
 /**
  * Represents a Beer function.
  * @class
+ * @extends BeerCallable
  */
 export class BeerFunction extends BeerCallable {
   static Return = class Return {
@@ -132,11 +133,9 @@ export class BeerFunction extends BeerCallable {
 }
 
 /**
- * Native clock function 
+ * Native clock function
  * @class
- * @method to_string
- * @method arity
- * @method call
+ * @extends BeerCallable
  */
 export class BeerClock extends BeerCallable {
   arity(): number {
