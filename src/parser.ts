@@ -1,3 +1,8 @@
+/**
+ * @namespace Parser 
+ * @file parser.ts
+ * @description Defines the Parser class.
+ */
 import * as ast from "./ast";
 import { errorReporter, SyntaxError } from "./error";
 import { Token } from "./token";
@@ -40,8 +45,9 @@ export class Parser {
   }
 
   /**
+   * <h3>Implementation of for function declearations</h3>
    * @param kind - The kind of function to be declared
-   * @returns
+   * @returns ast.FunctionStmt
    */
   private function_declaration(kind: string): ast.FunctionStmt {
     let name = this.consume(TokenType.IDENTIFIER, `Expect ${kind} name.`);
@@ -330,9 +336,9 @@ export class Parser {
   }
 
   /**
-      * Parse the call expressions using the callee
+   * Parse the call expressions using the callee
    * @param callee - ast.Expr
-   * @returns 
+   * @returns
    */
   private finish_call(callee: ast.Expr): ast.Expr {
     let args: ast.Expr[] = [];

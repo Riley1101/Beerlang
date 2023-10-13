@@ -1,7 +1,12 @@
-import { exit } from "process";
+/**
+ * @namespace Logger
+ * @file error.ts
+ * @module src/error.ts
+ * @description Defines the Logger class.
+ */
+
 import { Token } from "./token";
 import chalk from "chalk";
-
 /**
  * The logger instance used throughout the application.
  * planned to be replaced with a native custom logger in the future
@@ -85,7 +90,7 @@ export class ErrorReporter {
   report(error: Error): never {
     if (error instanceof ClientError) {
       this.hasCliError = true;
-     // exit(65);
+      // exit(65);
     } else if (error instanceof RuntimeError) {
       this.hasRuntimeError = true;
       //exit(70);

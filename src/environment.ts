@@ -1,3 +1,9 @@
+/**
+ * @namespace Environment
+ * @file environment.ts
+ * @description Defines the Environment class.
+ */
+
 import { BeerObject } from "./types";
 import { errorReporter } from "./error";
 export class Environment {

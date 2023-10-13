@@ -1,3 +1,8 @@
+/**
+ * @namespace Scanner 
+ * @file scanner.ts
+ * @description Defines the Scanner class.
+ */
 import { errorReporter, Logger, SyntaxError } from "./error";
 import { Token } from "./token";
 import { keywords, Literals, TokenType } from "./types";

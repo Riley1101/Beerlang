@@ -1,3 +1,8 @@
+/**
+ * @namespace Types
+ * @file types.ts
+ * @description Defines the types used in the Beer language.
+ */
 import { Interpreter } from "./interpreter";
 import { Environment } from "./environment";
 import * as ast from "./ast";

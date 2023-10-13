@@ -1,3 +1,8 @@
+/**
+ * @namespace Token 
+ * @file token.ts
+ * @description Defines the Token class.
+ */
 import type { Literals, TokenType } from "./types";
 
 export interface Token {

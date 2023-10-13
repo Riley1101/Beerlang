@@ -1,7 +1,0 @@
-fun a(){
-    var  c = clock();
-    print c;
-    return "hello world";
-}
-var  b  = a();
-print b;

@@ -1,3 +1,8 @@
+/**
+ * @namespace Interpreter 
+ * @file interpreter.ts
+ * @description Defines the main Interpreter class.
+ */
 import * as ast from "./ast";
 import { Environment } from "./environment";
 import { errorReporter } from "./error";
