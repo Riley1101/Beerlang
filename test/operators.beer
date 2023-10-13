@@ -1,6 +1,6 @@
 fun a(){
-    print 12;
-    print "h3llo ";
+    var  c = clock();
+    print c;
     return "hello world";
 }
 var  b  = a();

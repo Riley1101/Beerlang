@@ -130,3 +130,15 @@ export class BeerFunction extends BeerCallable {
     return null;
   }
 }
+
+export class BeerClock extends BeerCallable {
+  arity(): number {
+    return 0;
+  }
+  call(): BeerObject {
+    return Date.now().valueOf() / 1000.0;
+  }
+  to_string(): string {
+    return "<native fn>";
+  }
+}

@@ -2,7 +2,13 @@ import * as ast from "./ast";
 import { Environment } from "./environment";
 import { errorReporter } from "./error";
 import { Token } from "./token";
-import { BeerObject, TokenType, BeerCallable, BeerFunction } from "./types";
+import {
+  BeerObject,
+  TokenType,
+  BeerCallable,
+  BeerFunction,
+  BeerClock,
+} from "./types";
 
 /**
  * The interpreter class is responsible for evaluating the AST
@@ -16,11 +22,7 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    * @memberof Interpreter
    */
   constructor() {
-    this.globals.define("clock", {
-      arity: () => 0,
-      call: () => Date.now() / 1000,
-      to_string: () => "<native fn>",
-    });
+    this.globals.define("clock", new BeerClock());
   }
   /** ========================== Utility Methods ========================== */
   /**
@@ -246,8 +248,8 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     for (let arg of expr.args) {
       args.push(this.evaluate(arg));
     }
-    console.log(args)
-    console.log(callee)
+    console.log(args);
+    console.log(callee);
     if (!(callee instanceof BeerCallable)) {
       throw errorReporter.report(
         new SyntaxError("Can only call functions and classes."),
