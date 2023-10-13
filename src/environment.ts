@@ -7,7 +7,7 @@
 import { BeerObject } from "./types";
 import { errorReporter } from "./error";
 export class Environment {
-  private enclosing: Environment | null;
+  enclosing: Environment | null;
   private values: Map<string, BeerObject> = new Map<string, BeerObject>();
 
   constructor(enclosing?: Environment) {

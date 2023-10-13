@@ -13,6 +13,7 @@ enum FunctionType {
 enum ClassType {
   None = "None",
   Class = "Class",
+  SubClass = "SubClass",
 }
 
 type Scope = Map<string, boolean>;
@@ -123,6 +124,19 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
     this.currentClass = ClassType.Class;
     this.declare(stmt.name);
     this.define(stmt.name);
+    if (stmt.superclass !== null) {
+      if (stmt.name.lexeme === stmt.superclass.name.lexeme) {
+        errorReporter.report(
+          new SyntaxError("A class can't inherit from itself."),
+        );
+      } else {
+        this.currentClass = ClassType.SubClass;
+        this.resolve(stmt.superclass);
+        this.begin_scope();
+        this.scopes.peek().set("super", true);
+      }
+    }
+
     this.begin_scope();
     this.scopes.peek().set("this", true);
 
@@ -134,6 +148,9 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
       this.resolve_function(method, declaration);
     }
     this.end_scope();
+    if (stmt.superclass !== null) {
+      this.end_scope();
+    }
     this.currentClass = enclosingClass;
   }
 
@@ -180,6 +197,25 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
   visitAssignExpr(expr: ast.AssignExpr): void {
     this.resolve(expr.value);
     this.resolve_local(expr, expr.name);
+  }
+
+  visitSuperExpr(expr: ast.SuperExpr): void {
+    if (this.currentClass === ClassType.None) {
+      errorReporter.report(
+        new RuntimeError(
+          expr.keyword,
+          "Cannot use 'super' outside of a class.",
+        ),
+      );
+    } else if (this.currentClass !== ClassType.SubClass) {
+      errorReporter.report(
+        new RuntimeError(
+          expr.keyword,
+          "Cannot use 'super' in a class with no superclass.",
+        ),
+      );
+    }
+    this.resolve_local(expr, expr.keyword);
   }
 
   visitFunctionStmt(stmt: ast.FunctionStmt): void {

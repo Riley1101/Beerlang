@@ -315,7 +315,20 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
    * @param stmt - The statement to be evaluated
    */
   visitClassStmt(stmt: ast.ClassStmt): void {
+    let superclass = null;
+    if (stmt.superclass !== null) {
+      superclass = this.evaluate(stmt.superclass);
+      if (!(superclass instanceof BeerClass)) {
+        throw errorReporter.report(
+          new SyntaxError("Superclass must be a class."),
+        );
+      }
+    }
     this.environment.define(stmt.name.lexeme, null);
+    if (stmt.superclass !== null) {
+      this.environment = new Environment(this.environment);
+      this.environment.define("super", superclass);
+    }
     let methods = new Map<string, BeerFunction>();
     for (let method of stmt.methods) {
       let func = new BeerFunction(
@@ -325,7 +338,10 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
       );
       methods.set(method.name.lexeme, func);
     }
-    let cls = new BeerClass(stmt.name.lexeme, methods);
+    let cls = new BeerClass(stmt.name.lexeme, methods, superclass);
+    if (superclass !== null) {
+      this.environment = this.environment.enclosing as Environment;
+    }
     this.environment.assign(stmt.name.lexeme, cls);
   }
 
@@ -451,5 +467,18 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
     let value = this.evaluate(expr.value);
     object.set(expr.name, value);
     return value;
+  }
+
+  visitSuperExpr(expr: ast.SuperExpr): BeerObject {
+    let distance = this.locals.get(expr) as number;
+    let superclass = this.environment.get_at(distance, "super") as BeerClass;
+    let object = this.environment.get_at(distance - 1, "this") as BeerInstance;
+    let method = superclass.find_method(expr.method.lexeme);
+    if (method === null) {
+      throw errorReporter.report(
+        new SyntaxError(`Undefined property '${expr.method.lexeme}'.`),
+      );
+    }
+    return method.bind(object);
   }
 }

@@ -46,13 +46,18 @@ export class BeerParser {
 
   private class_declaration(): ast.Stmt {
     let name = this.consume(TokenType.IDENTIFIER, "Expect class name.");
+    let super_class = null;
+    if (this.match(TokenType.LESS)) {
+      this.consume(TokenType.IDENTIFIER, "Expect superclass name.");
+      super_class = new ast.VariableExpr(this.previous());
+    }
     this.consume(TokenType.LEFT_BRACE, "Expect '{' before class body.");
     let methods: ast.FunctionStmt[] = [];
     while (!this.check(TokenType.RIGHT_BRACE) && !this.is_at_end()) {
       methods.push(this.function_declaration("method"));
     }
     this.consume(TokenType.RIGHT_BRACE, "Expect '}' after class body.");
-    return new ast.ClassStmt(name, methods);
+    return new ast.ClassStmt(name, super_class, methods);
   }
 
   /**
@@ -409,6 +414,15 @@ export class BeerParser {
     if (this.match(TokenType.TRUE)) return new ast.LiteralExpr(true);
     if (this.match(TokenType.NIL)) return new ast.LiteralExpr(null);
     if (this.match(TokenType.THIS)) return new ast.ThisExpr(this.previous());
+    if (this.match(TokenType.SUPER)) {
+      let keyword = this.previous();
+      this.consume(TokenType.DOT, "Expect '.' after 'super'.");
+      let method = this.consume(
+        TokenType.IDENTIFIER,
+        "Expect superclass method name.",
+      );
+      return new ast.SuperExpr(keyword, method);
+    }
     if (this.match(TokenType.NUMBER, TokenType.STRING)) {
       return new ast.LiteralExpr(this.previous().literal);
     }

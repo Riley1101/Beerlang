@@ -183,15 +183,20 @@ export class BeerClass extends BeerCallable {
   constructor(
     name: string,
     private methods: Map<string, BeerFunction>,
+    private superclass: BeerClass | null,
   ) {
     super();
     this.name = name;
     this.methods = methods;
+    this.superclass = superclass;
   }
 
   find_method(name: string): BeerFunction | null {
     if (this.methods.has(name)) {
       return this.methods.get(name) as BeerFunction;
+    }
+    if (this.superclass !== null) {
+      return this.superclass.find_method(name);
     }
     return null;
   }

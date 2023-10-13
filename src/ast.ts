@@ -56,6 +56,7 @@ export interface StmtVisitor<T> {
  * @method {T} visitAssignExpr - Visits an assignment expression
  */
 export interface ExprVisitor<T> {
+  visitSuperExpr(expr: SuperExpr): T;
   visitBinaryExpr(expr: BinaryExpr): T;
   visitUnaryExpr(expr: UnaryExpr): T;
   visitLiteralExpr(expr: LiteralExpr): T;
@@ -221,12 +222,27 @@ export class FunctionStmt implements Stmt {
   }
 }
 
+export class SuperExpr implements Expr {
+  constructor(
+    public keyword: Token,
+    public method: Token,
+  ) {
+    this.keyword = keyword;
+    this.method = method;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitSuperExpr(this);
+  }
+}
+
 export class ClassStmt implements Stmt {
   constructor(
     public name: Token,
+    public superclass: VariableExpr | null,
     public methods: FunctionStmt[],
   ) {
     this.name = name;
+    this.superclass = superclass;
     this.methods = methods;
   }
   accept<T>(visitor: StmtVisitor<T>): T {
@@ -682,6 +698,9 @@ export class BeerAstPrinter implements SyntaxVisitor<string, string> {
    */
   visitCallExpr(expr: CallExpr): string {
     return this.parenthesize("call", expr.callee, ...expr.args);
+  }
+  visitSuperExpr(expr: SuperExpr): string {
+    return expr.keyword.lexeme;
   }
 
   /**
