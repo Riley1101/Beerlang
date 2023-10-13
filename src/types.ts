@@ -3,7 +3,7 @@
  * @file types.ts
  * @description Defines the types used in the Beer language.
  */
-import { Interpreter } from "./interpreter";
+import { Beer } from "./interpreter";
 import { Environment } from "./environment";
 import * as ast from "./ast";
 
@@ -89,7 +89,7 @@ export type BeerObject = string | number | boolean | null | BeerCallable;
  */
 export abstract class BeerCallable {
   abstract arity(): number;
-  abstract call(interpreter: Interpreter, args: BeerObject[]): BeerObject;
+  abstract call(interpreter: Beer, args: BeerObject[]): BeerObject;
   abstract to_string(): string;
 }
 
@@ -120,7 +120,7 @@ export class BeerFunction extends BeerCallable {
     return this.declaration.params.length;
   }
 
-  call(interpreter: Interpreter, args: BeerObject[]): BeerObject {
+  call(interpreter: Beer, args: BeerObject[]): BeerObject {
     const environment = new Environment(this.closure);
     for (let i = 0; i < this.declaration.params.length; i++) {
       environment.define(this.declaration.params[i].lexeme, args[i]);
