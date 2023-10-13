@@ -29,7 +29,7 @@
 <ul class="tsd-hierarchy">
 <li><a href="../types/src_ast.SyntaxVisitor.html" class="tsd-signature-type tsd-kind-type-alias">SyntaxVisitor</a><span class="tsd-signature-symbol">&lt;</span><a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L22">src/interpreter.ts:22</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L24">src/interpreter.ts:24</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -61,15 +61,19 @@
 <a href="src_interpreter.Beer.html#visitBinaryExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Binary<wbr/>Expr</span></a>
 <a href="src_interpreter.Beer.html#visitBlockStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Block<wbr/>Stmt</span></a>
 <a href="src_interpreter.Beer.html#visitCallExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Call<wbr/>Expr</span></a>
+<a href="src_interpreter.Beer.html#visitClassStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Class<wbr/>Stmt</span></a>
 <a href="src_interpreter.Beer.html#visitExpressionStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Expression<wbr/>Stmt</span></a>
 <a href="src_interpreter.Beer.html#visitForStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>For<wbr/>Stmt</span></a>
 <a href="src_interpreter.Beer.html#visitFunctionStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Function<wbr/>Stmt</span></a>
+<a href="src_interpreter.Beer.html#visitGetExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Get<wbr/>Expr</span></a>
 <a href="src_interpreter.Beer.html#visitGroupingExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Grouping<wbr/>Expr</span></a>
 <a href="src_interpreter.Beer.html#visitIfStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>If<wbr/>Stmt</span></a>
 <a href="src_interpreter.Beer.html#visitLiteralExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Literal<wbr/>Expr</span></a>
 <a href="src_interpreter.Beer.html#visitLogicalExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Logical<wbr/>Expr</span></a>
 <a href="src_interpreter.Beer.html#visitPrintStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Print<wbr/>Stmt</span></a>
 <a href="src_interpreter.Beer.html#visitReturnStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Return<wbr/>Stmt</span></a>
+<a href="src_interpreter.Beer.html#visitSetExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Set<wbr/>Expr</span></a>
+<a href="src_interpreter.Beer.html#visitThisExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>This<wbr/>Expr</span></a>
 <a href="src_interpreter.Beer.html#visitUnaryExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Unary<wbr/>Expr</span></a>
 <a href="src_interpreter.Beer.html#visitVarStmt" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Var<wbr/>Stmt</span></a>
 <a href="src_interpreter.Beer.html#visitVariableExpr" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Variable<wbr/>Expr</span></a>
@@ -89,24 +93,24 @@
 <h4>Memberof</h4><p>Interpreter</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L32">src/interpreter.ts:32</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L34">src/interpreter.ts:34</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="environment" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>environment</span><a href="#environment" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">environment</span><span class="tsd-signature-symbol">:</span> <a href="src_environment.Environment.html" class="tsd-signature-type tsd-kind-class">Environment</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L25">src/interpreter.ts:25</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L27">src/interpreter.ts:27</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="globals" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>globals</span><a href="#globals" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">globals</span><span class="tsd-signature-symbol">:</span> <a href="src_environment.Environment.html" class="tsd-signature-type tsd-kind-class">Environment</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L23">src/interpreter.ts:23</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L25">src/interpreter.ts:25</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="locals" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>locals</span><a href="#locals" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">locals</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Map</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/src_ast.Expr.html" class="tsd-signature-type tsd-kind-interface">Expr</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L27">src/interpreter.ts:27</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L29">src/interpreter.ts:29</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="checkNumberOperands" class="tsd-anchor"></a>
@@ -133,7 +137,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L106">src/interpreter.ts:106</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L108">src/interpreter.ts:108</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="evaluate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>evaluate</span><a href="#evaluate" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -152,7 +156,7 @@
 <h4 class="tsd-returns-title">Returns <a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L84">src/interpreter.ts:84</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L86">src/interpreter.ts:86</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="execute" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>execute</span><a href="#execute" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -171,7 +175,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L75">src/interpreter.ts:75</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L77">src/interpreter.ts:77</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="execute_block" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>execute_<wbr/>block</span><a href="#execute_block" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -195,7 +199,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L142">src/interpreter.ts:142</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L146">src/interpreter.ts:146</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="interpret" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>interpret</span><a href="#interpret" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -209,7 +213,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L60">src/interpreter.ts:60</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L62">src/interpreter.ts:62</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="is_equal" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>is_<wbr/>equal</span><a href="#is_equal" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -232,7 +236,7 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L93">src/interpreter.ts:93</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L95">src/interpreter.ts:95</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="is_truthy" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>is_<wbr/>truthy</span><a href="#is_truthy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -251,7 +255,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L120">src/interpreter.ts:120</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L122">src/interpreter.ts:122</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="look_up_variable" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>look_<wbr/>up_<wbr/>variable</span><a href="#look_up_variable" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -266,7 +270,7 @@
 <h5><span class="tsd-kind-parameter">expr</span>: <a href="../interfaces/src_ast.Expr.html" class="tsd-signature-type tsd-kind-interface">Expr</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L47">src/interpreter.ts:47</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L49">src/interpreter.ts:49</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="resolve" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>resolve</span><a href="#resolve" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -290,7 +294,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L43">src/interpreter.ts:43</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L45">src/interpreter.ts:45</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="stringify" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>stringify</span><a href="#stringify" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-private">
@@ -310,7 +314,7 @@
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L131">src/interpreter.ts:131</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L133">src/interpreter.ts:133</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitAssignExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Assign<wbr/>Expr</span><a href="#visitAssignExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -328,7 +332,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitAssignExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L162">src/interpreter.ts:162</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L175">src/interpreter.ts:175</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitBinaryExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Binary<wbr/>Expr</span><a href="#visitBinaryExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -346,7 +350,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitBinaryExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L176">src/interpreter.ts:176</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L189">src/interpreter.ts:189</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitBlockStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Block<wbr/>Stmt</span><a href="#visitBlockStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -364,7 +368,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitBlockStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L383">src/interpreter.ts:383</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L414">src/interpreter.ts:414</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitCallExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Call<wbr/>Expr</span><a href="#visitCallExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -382,7 +386,25 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitCallExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L278">src/interpreter.ts:278</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L291">src/interpreter.ts:291</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="visitClassStmt" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>visit<wbr/>Class<wbr/>Stmt</span><a href="#visitClassStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="visitClassStmt.visitClassStmt-1"><span class="tsd-kind-call-signature">visit<wbr/>Class<wbr/>Stmt</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">stmt</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#visitClassStmt.visitClassStmt-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">stmt</span>: <a href="src_ast.ClassStmt.html" class="tsd-signature-type tsd-kind-class">ClassStmt</a></h5>
+<div class="tsd-comment tsd-typography"><p>The statement to be evaluated</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<p>Implementation of ast.SyntaxVisitor.visitClassStmt</p>
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L317">src/interpreter.ts:317</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitExpressionStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Expression<wbr/>Stmt</span><a href="#visitExpressionStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -403,7 +425,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitExpressionStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L362">src/interpreter.ts:362</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L393">src/interpreter.ts:393</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitForStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>For<wbr/>Stmt</span><a href="#visitForStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -414,7 +436,7 @@
 <ul class="tsd-parameter-list">
 <li>
 <h5><span class="tsd-kind-parameter">stmt</span>: <a href="src_ast.ForStmt.html" class="tsd-signature-type tsd-kind-class">ForStmt</a></h5>
-<div class="tsd-comment tsd-typography"><p>The expression to be evaluated</p>
+<div class="tsd-comment tsd-typography"><p>The statement to be evaluated</p>
 </div>
 <div class="tsd-comment tsd-typography"></div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><p>void;</p>
@@ -422,7 +444,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitForStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L305">src/interpreter.ts:305</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L336">src/interpreter.ts:336</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitFunctionStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Function<wbr/>Stmt</span><a href="#visitFunctionStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -441,7 +463,26 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitFunctionStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L341">src/interpreter.ts:341</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L372">src/interpreter.ts:372</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="visitGetExpr" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>visit<wbr/>Get<wbr/>Expr</span><a href="#visitGetExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="visitGetExpr.visitGetExpr-1"><span class="tsd-kind-call-signature">visit<wbr/>Get<wbr/>Expr</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">expr</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a><a href="#visitGetExpr.visitGetExpr-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">expr</span>: <a href="src_ast.GetExpr.html" class="tsd-signature-type tsd-kind-class">GetExpr</a></h5>
+<div class="tsd-comment tsd-typography"><p>The expression to be evaluated</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a></h4><p>BeerObject;</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<p>Implementation of ast.SyntaxVisitor.visitGetExpr</p>
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L434">src/interpreter.ts:434</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitGroupingExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Grouping<wbr/>Expr</span><a href="#visitGroupingExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -460,7 +501,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitGroupingExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L251">src/interpreter.ts:251</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L264">src/interpreter.ts:264</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitIfStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>If<wbr/>Stmt</span><a href="#visitIfStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -480,7 +521,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitIfStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L391">src/interpreter.ts:391</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L422">src/interpreter.ts:422</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitLiteralExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Literal<wbr/>Expr</span><a href="#visitLiteralExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -499,7 +540,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitLiteralExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L243">src/interpreter.ts:243</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L256">src/interpreter.ts:256</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitLogicalExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Logical<wbr/>Expr</span><a href="#visitLogicalExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -513,7 +554,7 @@
 <h4 class="tsd-returns-title">Returns <a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a></h4><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitLogicalExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L264">src/interpreter.ts:264</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L277">src/interpreter.ts:277</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitPrintStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Print<wbr/>Stmt</span><a href="#visitPrintStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -534,7 +575,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitPrintStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L352">src/interpreter.ts:352</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L383">src/interpreter.ts:383</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitReturnStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Return<wbr/>Stmt</span><a href="#visitReturnStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -552,7 +593,41 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitReturnStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L331">src/interpreter.ts:331</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L362">src/interpreter.ts:362</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="visitSetExpr" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>visit<wbr/>Set<wbr/>Expr</span><a href="#visitSetExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="visitSetExpr.visitSetExpr-1"><span class="tsd-kind-call-signature">visit<wbr/>Set<wbr/>Expr</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">expr</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a><a href="#visitSetExpr.visitSetExpr-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">expr</span>: <a href="src_ast.SetExpr.html" class="tsd-signature-type tsd-kind-class">SetExpr</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a></h4><aside class="tsd-sources">
+<p>Implementation of ast.SyntaxVisitor.visitSetExpr</p>
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L444">src/interpreter.ts:444</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="visitThisExpr" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>visit<wbr/>This<wbr/>Expr</span><a href="#visitThisExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="visitThisExpr.visitThisExpr-1"><span class="tsd-kind-call-signature">visit<wbr/>This<wbr/>Expr</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">expr</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a><a href="#visitThisExpr.visitThisExpr-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Visitor for this in classes</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">expr</span>: <a href="src_ast.ThisExpr.html" class="tsd-signature-type tsd-kind-class">ThisExpr</a></h5>
+<div class="tsd-comment tsd-typography"><p>{ast.ThisExpr} expression</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="../types/src_types.BeerObject.html" class="tsd-signature-type tsd-kind-type-alias">BeerObject</a></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<p>Implementation of ast.SyntaxVisitor.visitThisExpr</p>
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L167">src/interpreter.ts:167</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitUnaryExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Unary<wbr/>Expr</span><a href="#visitUnaryExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -571,7 +646,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitUnaryExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L228">src/interpreter.ts:228</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L241">src/interpreter.ts:241</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitVarStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Var<wbr/>Stmt</span><a href="#visitVarStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -592,7 +667,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitVarStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L371">src/interpreter.ts:371</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L402">src/interpreter.ts:402</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitVariableExpr" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>Variable<wbr/>Expr</span><a href="#visitVariableExpr" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -613,7 +688,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitVariableExpr</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L260">src/interpreter.ts:260</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L273">src/interpreter.ts:273</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="visitWhileStmt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>visit<wbr/>While<wbr/>Stmt</span><a href="#visitWhileStmt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -632,7 +707,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of ast.SyntaxVisitor.visitWhileStmt</p>
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/b40d708/src/interpreter.ts#L322">src/interpreter.ts:322</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/7256898/src/interpreter.ts#L353">src/interpreter.ts:353</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -670,15 +745,19 @@
 <li><a href="#visitBinaryExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Binary<wbr/>Expr</span></a></li>
 <li><a href="#visitBlockStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Block<wbr/>Stmt</span></a></li>
 <li><a href="#visitCallExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Call<wbr/>Expr</span></a></li>
+<li><a href="#visitClassStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Class<wbr/>Stmt</span></a></li>
 <li><a href="#visitExpressionStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Expression<wbr/>Stmt</span></a></li>
 <li><a href="#visitForStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>For<wbr/>Stmt</span></a></li>
 <li><a href="#visitFunctionStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Function<wbr/>Stmt</span></a></li>
+<li><a href="#visitGetExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Get<wbr/>Expr</span></a></li>
 <li><a href="#visitGroupingExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Grouping<wbr/>Expr</span></a></li>
 <li><a href="#visitIfStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>If<wbr/>Stmt</span></a></li>
 <li><a href="#visitLiteralExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Literal<wbr/>Expr</span></a></li>
 <li><a href="#visitLogicalExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Logical<wbr/>Expr</span></a></li>
 <li><a href="#visitPrintStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Print<wbr/>Stmt</span></a></li>
 <li><a href="#visitReturnStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Return<wbr/>Stmt</span></a></li>
+<li><a href="#visitSetExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Set<wbr/>Expr</span></a></li>
+<li><a href="#visitThisExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>This<wbr/>Expr</span></a></li>
 <li><a href="#visitUnaryExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Unary<wbr/>Expr</span></a></li>
 <li><a href="#visitVarStmt" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Var<wbr/>Stmt</span></a></li>
 <li><a href="#visitVariableExpr" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>visit<wbr/>Variable<wbr/>Expr</span></a></li>
@@ -687,6 +766,7 @@
 <nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>gideon-v3</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
 <li><a href="../modules/Beer.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>Beer</a></li>
+<li><a href="../modules/src_BeerAstPrinter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/BeerAstPrinter</a></li>
 <li><a href="../modules/src_ast.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/ast</a></li>
 <li><a href="../modules/src_environment.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/environment</a></li>
 <li><a href="../modules/src_error_ts.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/error.ts</a></li>
