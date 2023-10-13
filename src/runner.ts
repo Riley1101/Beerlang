@@ -1,4 +1,4 @@
-import { BeerAstPrinter } from "./ast";
+import { BeerAstPrinter } from "./BeerAstPrinter";
 import { BeerParser } from "./parser";
 import { BeerResolver } from "./resolver";
 import { Beer } from "./interpreter";

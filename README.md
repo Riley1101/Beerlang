@@ -137,5 +137,5 @@ t.add(2);
 t.add(6);
 t.add(9);
 
-traverse(t.root);
+trverse(t.root);
 ```
