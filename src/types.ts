@@ -131,6 +131,13 @@ export class BeerFunction extends BeerCallable {
   }
 }
 
+/**
+ * Native clock function 
+ * @class
+ * @method to_string
+ * @method arity
+ * @method call
+ */
 export class BeerClock extends BeerCallable {
   arity(): number {
     return 0;
