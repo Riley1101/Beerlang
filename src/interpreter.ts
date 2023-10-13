@@ -16,7 +16,6 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    * @memberof Interpreter
    */
   constructor() {
-      console.log(this.environment)
     this.globals.define("clock", {
       arity: () => 0,
       call: () => Date.now() / 1000,
@@ -115,7 +114,7 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     try {
       this.environment = environment;
       for (let statement of statements) {
-        this.execute(statement);
+        statement && this.execute(statement);
       }
     } finally {
       this.environment = previous;
@@ -242,12 +241,13 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
    * @returns
    */
   visitCallExpr(expr: ast.CallExpr): BeerObject {
-    const callee = this.evaluate(expr.callee);
+    let callee = this.evaluate(expr.callee);
     let args = [];
     for (let arg of expr.args) {
       args.push(this.evaluate(arg));
     }
-    console.log(callee instanceof BeerCallable)
+    console.log(args)
+    console.log(callee)
     if (!(callee instanceof BeerCallable)) {
       throw errorReporter.report(
         new SyntaxError("Can only call functions and classes."),

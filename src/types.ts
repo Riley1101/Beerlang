@@ -92,7 +92,7 @@ export abstract class BeerCallable {
  * Represents a Beer function.
  * @class
  */
-export class BeerFunction implements BeerCallable {
+export class BeerFunction extends BeerCallable {
   static Return = class Return {
     value: BeerObject;
     constructor(value: BeerObject) {
@@ -103,6 +103,7 @@ export class BeerFunction implements BeerCallable {
     private declaration: ast.FunctionStmt,
     private closure: Environment,
   ) {
+    super();
     this.declaration = declaration;
     this.closure = closure;
   }

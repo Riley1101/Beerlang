@@ -346,11 +346,11 @@ export class Parser {
         args.push(this.expression());
       } while (this.match(TokenType.COMMA));
     }
-    let token = this.consume(
+    let paren = this.consume(
       TokenType.RIGHT_PAREN,
       "Expect ')' after arguments.",
     );
-    return new ast.CallExpr(callee, token, args);
+    return new ast.CallExpr(callee, paren, args);
   }
 
   /**
