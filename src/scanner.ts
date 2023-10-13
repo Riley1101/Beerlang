@@ -5,7 +5,7 @@
  */
 import { errorReporter, Logger, SyntaxError } from "./error";
 import { Token } from "./token";
-import { keywords, Literals, TokenType } from "./types";
+import {  keywords, Literals, TokenType } from "./types";
 
 /**
  * @class Scanner
@@ -233,11 +233,11 @@ export class BeerScanner implements BeerScanner {
         this.add_token(TokenType.MODULO, null);
         break;
       case "✔":
+        this.add_token(TokenType.EQUAL_EQUAL, null);
+        break;
       case "=":
         this.add_token(
-          this.match("=") || this.match("✔")
-            ? TokenType.EQUAL_EQUAL
-            : TokenType.EQUAL,
+          this.match("=") ? TokenType.EQUAL_EQUAL : TokenType.EQUAL,
           null,
         );
         break;
@@ -253,29 +253,29 @@ export class BeerScanner implements BeerScanner {
         this.add_token(TokenType.DOT, null);
         break;
       case "❗":
+        this.add_token(TokenType.BANG_EQUAL, null);
+        break;
       case "!":
         this.add_token(
-          this.match("=") || this.match("✔")
-            ? TokenType.BANG_EQUAL
-            : TokenType.BANG,
+          this.match("=") ? TokenType.BANG_EQUAL : TokenType.BANG,
           null,
         );
+        break;
+      case "⬅":
+        this.add_token(TokenType.LESS_EQUAL, null);
         break;
       case "<":
-      case "⬅":
         this.add_token(
-          this.match("=") || this.match("✔")
-            ? TokenType.LESS_EQUAL
-            : TokenType.LESS,
+          this.match("=") ? TokenType.LESS_EQUAL : TokenType.LESS,
           null,
         );
         break;
-      case ">":
       case "➡":
+        this.add_token(TokenType.GREATER_EQUAL, null);
+        break;
+      case ">":
         this.add_token(
-          this.match("=") || this.match("✔")
-            ? TokenType.GREATER_EQUAL
-            : TokenType.GREATER,
+          this.match("=") ? TokenType.GREATER_EQUAL : TokenType.GREATER,
           null,
         );
         break;
@@ -299,7 +299,7 @@ export class BeerScanner implements BeerScanner {
         } else if (this.is_alpha(c)) {
           this.identifier();
         } else {
-          // errorReporter.report(new SyntaxError(null, "Unexpected character."));
+          errorReporter.report(new SyntaxError(null, "Unexpected character."));
         }
         break;
     }

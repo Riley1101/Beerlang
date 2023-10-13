@@ -3,9 +3,9 @@
  * @file types.ts
  * @description Defines the types used in the Beer language.
  */
-import { Beer } from "./interpreter";
-import { Environment } from "./environment";
 import * as ast from "./ast";
+import { Environment } from "./environment";
+import { Beer } from "./interpreter";
 
 export type Literals = string | number | boolean | null;
 
@@ -71,6 +71,7 @@ export const keywords: Record<string, TokenType> = {
   nil: TokenType.NIL,
   or: TokenType.OR,
   print: TokenType.PRINT,
+  "🍺": TokenType.PRINT,
   return: TokenType.RETURN,
   super: TokenType.SUPER,
   this: TokenType.THIS,
@@ -153,3 +154,4 @@ export class BeerClock extends BeerCallable {
     return "<native fn>";
   }
 }
+

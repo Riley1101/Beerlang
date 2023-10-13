@@ -69,3 +69,14 @@ counter(); // "1".
 counter(); // "2".
 ```
 
+## Emoji support for the memes
+I am currently figuring out syntax with emojis for Beerlang feel free to leave a pr if you have any suggestions.
+
+```
+print  6 ✔ 6;
+print  6 ❗10;
+print  13 ➡ 6;
+print 12 ⬅ 13;
+print 12 ➕ 100;
+
+```
