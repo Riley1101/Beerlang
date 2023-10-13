@@ -253,8 +253,6 @@ export class Interpreter implements ast.SyntaxVisitor<BeerObject, void> {
     for (let arg of expr.args) {
       args.push(this.evaluate(arg));
     }
-    console.log(args);
-    console.log(callee);
     if (!(callee instanceof BeerCallable)) {
       throw errorReporter.report(
         new SyntaxError("Can only call functions and classes."),

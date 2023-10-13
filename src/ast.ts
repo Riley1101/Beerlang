@@ -1,7 +1,6 @@
 /**
  * @namespace AST
  * @file ast.ts
- * @module src/ast.ts
  * @description Defines the AST for the Beer language
  */
 import { Token } from "./token";

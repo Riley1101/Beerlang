@@ -1,5 +1,5 @@
 /**
- * @namespace Scanner 
+ * @namespace Scanner
  * @file scanner.ts
  * @description Defines the Scanner class.
  */
@@ -310,7 +310,10 @@ export class Scanner implements Scanner {
    * @returns {Token[]} the tokens
    */
   get_tokens(): Token[] {
-    this.logger.info(this.tokens);
     return this.tokens;
+  }
+
+  print_tokens() :void {
+    this.logger.info(this.tokens);
   }
 }
