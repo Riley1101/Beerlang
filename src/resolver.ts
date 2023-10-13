@@ -9,6 +9,12 @@ enum FunctionType {
   Initializer = "Initializer",
   Method = "Method",
 }
+
+enum ClassType {
+  None = "None",
+  Class = "Class",
+}
+
 type Scope = Map<string, boolean>;
 /**
  * ScopeStack
@@ -31,10 +37,10 @@ class ScopeStack extends Array<Scope> {
 export class BeerResolver implements ast.SyntaxVisitor<void, void> {
   private scopes: ScopeStack = new ScopeStack();
   private currentFunction = FunctionType.None;
+  private currentClass = ClassType.None;
   constructor(private interpreter: Beer) {
     this.interpreter = interpreter;
   }
-
   /** ========================== Resolver ========================== */
 
   /**
@@ -108,14 +114,37 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
   }
 
   /** ========================== Visitors ========================== */
+
+  /**
+   * @param stmt - The statements to resolve
+   */
+  visitClassStmt(stmt: ast.ClassStmt): void {
+    const enclosingClass = this.currentClass;
+    this.currentClass = ClassType.Class;
+    this.declare(stmt.name);
+    this.define(stmt.name);
+    this.begin_scope();
+    this.scopes.peek().set("this", true);
+
+    for (const method of stmt.methods) {
+      let declaration = FunctionType.Method;
+      if (method.name.lexeme === "init") {
+        declaration = FunctionType.Initializer;
+      }
+      this.resolve_function(method, declaration);
+    }
+    this.end_scope();
+    this.currentClass = enclosingClass;
+  }
+
   /**
    * Set block scopes for each statement
    * @param statements - The statements to resolve
    */
   visitBlockStmt(stmt: ast.BlockStmt): void {
-      this.begin_scope();
-      this.resolve(stmt.statements);
-      this.end_scope();
+    this.begin_scope();
+    this.resolve(stmt.statements);
+    this.end_scope();
   }
 
   /**
@@ -175,6 +204,14 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
 
   visitReturnStmt(stmt: ast.ReturnStmt): void {
     if (stmt.value !== null) {
+      if (this.currentFunction === FunctionType.Initializer) {
+        errorReporter.report(
+          new RuntimeError(
+            stmt.keyword,
+            "Cannot return a value from an initializer.",
+          ),
+        );
+      }
       if (this.currentFunction === FunctionType.None) {
         errorReporter.report(
           new RuntimeError(stmt.keyword, "Cannot return from top-level code."),
@@ -209,9 +246,7 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
     this.resolve(expr.expression);
   }
 
-  visitLiteralExpr(_: ast.LiteralExpr): void {
-    return;
-  }
+  visitLiteralExpr(_: ast.LiteralExpr): void {}
 
   visitUnaryExpr(expr: ast.UnaryExpr): void {
     this.resolve(expr.right);
@@ -219,5 +254,23 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
   visitLogicalExpr(expr: ast.LogicalExpr): void {
     this.resolve(expr.left);
     this.resolve(expr.right);
+  }
+
+  visitSetExpr(expr: ast.SetExpr): void {
+    this.resolve(expr.value);
+    this.resolve(expr.object);
+  }
+  visitGetExpr(expr: ast.GetExpr): void {
+    this.resolve(expr.object);
+  }
+
+  visitThisExpr(expr: ast.ThisExpr): void {
+    if (this.currentClass === ClassType.None) {
+      errorReporter.report(
+        new RuntimeError(expr.keyword, "Cannot use 'this' outside of a class."),
+      );
+      return;
+    }
+    this.resolve_local(expr, expr.keyword);
   }
 }

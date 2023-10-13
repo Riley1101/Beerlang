@@ -13,6 +13,8 @@ import {
   BeerCallable,
   BeerFunction,
   BeerClock,
+  BeerClass,
+  BeerInstance,
 } from "./types";
 
 /**
@@ -131,6 +133,8 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
   private stringify(object: BeerObject): string {
     if (object === null) return "nil";
     if (typeof object === "number") return object.toString();
+    if (object instanceof BeerCallable) return object.to_string();
+    if (object instanceof BeerInstance) return object.to_string();
     return object.toString();
   }
 
@@ -154,6 +158,15 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
   /** ========================== Visitor Methods ========================== */
 
   /** ========================== Expressions ========================== */
+
+  /**
+   * Visitor for this in classes
+   * @param expr - {ast.ThisExpr} expression
+   * @returns
+   */
+  visitThisExpr(expr: ast.ThisExpr): BeerObject {
+    return this.look_up_variable(expr.keyword, expr);
+  }
 
   /**
    * @param expr - {ast.LiteralExpr} expression
@@ -299,7 +312,25 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
   /** ========================== Statements ========================== */
 
   /**
-   * @param stmt - The expression to be evaluated
+   * @param stmt - The statement to be evaluated
+   */
+  visitClassStmt(stmt: ast.ClassStmt): void {
+    this.environment.define(stmt.name.lexeme, null);
+    let methods = new Map<string, BeerFunction>();
+    for (let method of stmt.methods) {
+      let func = new BeerFunction(
+        method,
+        this.environment,
+        method.name.lexeme === "init",
+      );
+      methods.set(method.name.lexeme, func);
+    }
+    let cls = new BeerClass(stmt.name.lexeme, methods);
+    this.environment.assign(stmt.name.lexeme, cls);
+  }
+
+  /**
+   * @param stmt - The statement to be evaluated
    * @returns void;
    */
   visitForStmt(stmt: ast.ForStmt): void {
@@ -339,7 +370,7 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
    * @returns void;
    */
   visitFunctionStmt(stmt: ast.FunctionStmt): void {
-    let func = new BeerFunction(stmt, this.environment);
+    let func = new BeerFunction(stmt, this.environment, false);
     this.environment.define(stmt.name.lexeme, func);
     return;
   }
@@ -394,5 +425,31 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
     } else if (stmt.elseBranch !== null) {
       this.execute(stmt.elseBranch);
     }
+  }
+
+  /**
+   * @param expr - The expression to be evaluated
+   * @returns BeerObject;
+   */
+  visitGetExpr(expr: ast.GetExpr): BeerObject {
+    let object = this.evaluate(expr.object);
+    if (object instanceof BeerInstance) {
+      return object.get(expr.name);
+    }
+    throw errorReporter.report(
+      new SyntaxError("Only instances have properties."),
+    );
+  }
+
+  visitSetExpr(expr: ast.SetExpr): BeerObject {
+    let object = this.evaluate(expr.object);
+    if (!(object instanceof BeerInstance)) {
+      throw errorReporter.report(
+        new SyntaxError("Only instances have fields."),
+      );
+    }
+    let value = this.evaluate(expr.value);
+    object.set(expr.name, value);
+    return value;
   }
 }

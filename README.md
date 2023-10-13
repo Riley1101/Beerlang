@@ -70,6 +70,7 @@ counter(); // "2".
 ```
 
 ## Emoji support for the memes
+
 I am currently figuring out syntax with emojis for Beerlang feel free to leave a pr if you have any suggestions.
 
 ```
@@ -79,4 +80,62 @@ print  13 ➡ 6;
 print 12 ⬅ 13;
 print 12 ➕ 100;
 
+```
+
+```
+
+class Node{
+    init(value){
+        this.left = nil;
+        this.value= value;
+        this.right= nil;
+    }
+}
+
+class Tree{
+    init(){
+        this.root = nil;
+    }
+    add(val){
+        var newNode = Node(val);
+        if(this.root == nil){
+            this.root = newNode;
+            return newNode;
+        }
+        var tmp = this.root;
+        while(tmp!=nil){
+            if(val < tmp.value){
+                if(tmp.left == nil){
+                    tmp.left = newNode;
+                    return newNode;
+                }
+                tmp = tmp.left;
+            }
+            else{
+                if(tmp.right== nil){
+                    tmp.right= newNode;
+                    return newNode;
+                }
+                tmp = tmp.right;
+            }
+        }
+    }
+}
+
+fun traverse(node){
+    if(node == nil) return;
+    print node.value;
+    traverse(node.left);
+    traverse(node.right);
+}
+
+var t = Tree();
+t.add(3);
+t.add(1);
+t.add(0);
+t.add(2);
+t.add(6);
+t.add(9);
+
+traverse(t.root);
 ```

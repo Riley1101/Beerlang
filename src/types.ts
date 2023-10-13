@@ -5,6 +5,8 @@
  */
 import * as ast from "./ast";
 import { Environment } from "./environment";
+import { Token } from "./token";
+import { errorReporter } from "./error";
 import { Beer } from "./interpreter";
 
 export type Literals = string | number | boolean | null;
@@ -71,7 +73,6 @@ export const keywords: Record<string, TokenType> = {
   nil: TokenType.NIL,
   or: TokenType.OR,
   print: TokenType.PRINT,
-  "🍺": TokenType.PRINT,
   return: TokenType.RETURN,
   super: TokenType.SUPER,
   this: TokenType.THIS,
@@ -80,7 +81,13 @@ export const keywords: Record<string, TokenType> = {
   while: TokenType.WHILE,
 };
 
-export type BeerObject = string | number | boolean | null | BeerCallable;
+export type BeerObject =
+  | string
+  | number
+  | boolean
+  | null
+  | BeerCallable
+  | BeerInstance;
 
 /**
  * @abstract BeerCallable
@@ -109,16 +116,24 @@ export class BeerFunction extends BeerCallable {
   constructor(
     private declaration: ast.FunctionStmt,
     private closure: Environment,
+    private is_initializer = false,
   ) {
     super();
     this.declaration = declaration;
     this.closure = closure;
+    this.is_initializer = is_initializer;
   }
   to_string(): string {
     return `<fun ${this.declaration.name.lexeme}>`;
   }
   arity(): number {
     return this.declaration.params.length;
+  }
+
+  bind(instance: BeerInstance): BeerFunction {
+    let environment = new Environment(this.closure);
+    environment.define("this", instance);
+    return new BeerFunction(this.declaration, environment, this.is_initializer);
   }
 
   call(interpreter: Beer, args: BeerObject[]): BeerObject {
@@ -130,10 +145,13 @@ export class BeerFunction extends BeerCallable {
       interpreter.execute_block(this.declaration.body, environment);
     } catch (error) {
       if (error instanceof BeerFunction.Return) {
+        if (this.is_initializer) return this.closure.get_at(0, "this");
         return error.value;
       }
       throw error;
     }
+
+    if (this.is_initializer) return this.closure.get_at(0, "this");
     return null;
   }
 }
@@ -155,3 +173,81 @@ export class BeerClock extends BeerCallable {
   }
 }
 
+/**
+ * Represents a Beer class.
+ * @class BeerClass
+ *
+ */
+export class BeerClass extends BeerCallable {
+  name: string;
+  constructor(
+    name: string,
+    private methods: Map<string, BeerFunction>,
+  ) {
+    super();
+    this.name = name;
+    this.methods = methods;
+  }
+
+  find_method(name: string): BeerFunction | null {
+    if (this.methods.has(name)) {
+      return this.methods.get(name) as BeerFunction;
+    }
+    return null;
+  }
+
+  override arity(): number {
+    const initializer = this.find_method("init");
+    if (initializer === null) return 0;
+    return initializer.arity();
+  }
+
+  override call(interpreter: Beer, args: BeerObject[]): BeerObject {
+    let instance = new BeerInstance(this);
+    const initializer = this.find_method("init");
+    if (initializer !== null)
+      initializer.bind(instance).call(interpreter, args);
+    return instance;
+  }
+  override to_string(): string {
+    return `<class ${this.name}>`;
+  }
+}
+
+/**
+ * Represents a Beer instance.
+ * @class BeerInstance
+ * @method get
+ * @method to_string
+ * @param {BeerClass} klass
+ * @member {Map<string, BeerObject>} fields
+ * @returns {BeerObject}
+ */
+export class BeerInstance {
+  private fields: Map<string, BeerObject> = new Map();
+  constructor(private klass: BeerClass) {
+    this.klass = klass;
+  }
+
+  get(name: Token): BeerObject | never {
+    if (this.fields.has(name.lexeme)) {
+      return this.fields.get(name.lexeme) as BeerObject;
+    }
+    let method = this.klass.find_method(name.lexeme);
+    if (method) {
+      return method.bind(this);
+    }
+
+    return errorReporter.report(
+      new SyntaxError(`Undefined property '${name.lexeme}'.`),
+    );
+  }
+
+  set(name: Token, value: BeerObject): void {
+    this.fields.set(name.lexeme, value);
+  }
+
+  to_string(): string {
+    return `<instance ${this.klass.name}>`;
+  }
+}

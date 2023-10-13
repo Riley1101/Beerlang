@@ -41,6 +41,7 @@ export interface StmtVisitor<T> {
   visitForStmt(stmt: ForStmt): T;
   visitWhileStmt(stmt: WhileStmt): T;
   visitFunctionStmt(stmt: FunctionStmt): T;
+  visitClassStmt(stmt: ClassStmt): T;
   visitReturnStmt(stmt: ReturnStmt): T;
 }
 
@@ -63,6 +64,9 @@ export interface ExprVisitor<T> {
   visitAssignExpr(expr: AssignExpr): T;
   visitLogicalExpr(expr: LogicalExpr): T;
   visitCallExpr(expr: CallExpr): T;
+  visitGetExpr(expr: GetExpr): T;
+  visitSetExpr(expr: SetExpr): T;
+  visitThisExpr(expr: ThisExpr): T;
 }
 
 /**
@@ -217,6 +221,19 @@ export class FunctionStmt implements Stmt {
   }
 }
 
+export class ClassStmt implements Stmt {
+  constructor(
+    public name: Token,
+    public methods: FunctionStmt[],
+  ) {
+    this.name = name;
+    this.methods = methods;
+  }
+  accept<T>(visitor: StmtVisitor<T>): T {
+    return visitor.visitClassStmt(this);
+  }
+}
+
 /**
  * Print statement
  * @class PrintStmt
@@ -238,8 +255,52 @@ export class VarStmt implements Stmt {
 }
 
 /**
- * Expressions
+ * Expressions for set in class instances
+ * @class Expr
+ * @member {T} accept - Accepts a visitor
  **/
+
+export class SetExpr implements Expr {
+  constructor(
+    public object: Expr,
+    public name: Token,
+    public value: Expr,
+  ) {
+    this.object = object;
+    this.name = name;
+    this.value = value;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitSetExpr(this);
+  }
+}
+
+export class ThisExpr implements Expr {
+  constructor(public keyword: Token) {
+    this.keyword = keyword;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitThisExpr(this);
+  }
+}
+
+/**
+ * Expressions for get in class instances
+ * @class Expr
+ * @member {T} accept - Accepts a visitor
+ */
+export class GetExpr implements Expr {
+  constructor(
+    public object: Expr,
+    public name: Token,
+  ) {
+    this.object = object;
+    this.name = name;
+  }
+  accept<T>(visitor: ExprVisitor<T>): T {
+    return visitor.visitGetExpr(this);
+  }
+}
 
 /** class BinaryExpr */
 export class BinaryExpr implements Expr {
@@ -414,6 +475,18 @@ export class LogicalExpr implements Expr {
  */
 export class BeerAstPrinter implements SyntaxVisitor<string, string> {
   /**
+   * @param expr - {Expr} expression
+   */
+  visitSetExpr(expr: SetExpr): string {
+    return this.parenthesize(`set ${expr.name.lexeme}`, expr.value);
+  }
+  /**
+   * @param expr -  {Expr} expression
+   */
+  visitGetExpr(expr: GetExpr): string {
+    return this.parenthesize(`get ${expr.name.lexeme}`, expr.object);
+  }
+  /**
    * @param expr - {AssignExpr} expression
    * @returns string
    */
@@ -546,6 +619,20 @@ export class BeerAstPrinter implements SyntaxVisitor<string, string> {
   }
 
   /**
+   * Generate ast for the class statements
+   * @param stmt - {ClassStmt} statement
+   * @returns string
+   */
+  visitClassStmt(stmt: ClassStmt): string {
+    let result = `(class ${stmt.name.lexeme}`;
+    stmt.methods.forEach((method) => {
+      result += "\n" + this.indent(this.stringify(method));
+    });
+    result += ")";
+    return result;
+  }
+
+  /**
    * Generate ast for if statements in the block
    * @param stmt - {IfStmt} statement
    * @returns  parenthesize version of the ast if
@@ -580,6 +667,13 @@ export class BeerAstPrinter implements SyntaxVisitor<string, string> {
    */
   visitGroupingExpr(expr: GroupingExpr): string {
     return this.parenthesize("group", expr.expression);
+  }
+
+  /**
+   * @param expr - {This} expression
+   */
+  visitThisExpr(expr: ThisExpr): string {
+    return expr.keyword.lexeme;
   }
 
   /**

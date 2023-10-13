@@ -44,6 +44,17 @@ export class BeerParser {
     return statements;
   }
 
+  private class_declaration(): ast.Stmt {
+    let name = this.consume(TokenType.IDENTIFIER, "Expect class name.");
+    this.consume(TokenType.LEFT_BRACE, "Expect '{' before class body.");
+    let methods: ast.FunctionStmt[] = [];
+    while (!this.check(TokenType.RIGHT_BRACE) && !this.is_at_end()) {
+      methods.push(this.function_declaration("method"));
+    }
+    this.consume(TokenType.RIGHT_BRACE, "Expect '}' after class body.");
+    return new ast.ClassStmt(name, methods);
+  }
+
   /**
    * <h3>Implementation of for function declearations</h3>
    * @param kind - The kind of function to be declared
@@ -76,12 +87,16 @@ export class BeerParser {
 
   /**
    * <h3>Grammar for declearation</h3>
-   * declaration   →  funcDecl;
+   * declaration   →  classDecl
+   *             | funcDecl;
    *              | varDecl
    *             | statement ;
    * @returns ast.Stmt
    */
   private declaration() {
+    if (this.match(TokenType.CLASS)) {
+      return this.class_declaration();
+    }
     if (this.match(TokenType.FUN)) {
       return this.function_declaration("function");
     }
@@ -131,8 +146,8 @@ export class BeerParser {
    * @returns ast.Stmt
    */
   private statement(): ast.Stmt {
-      if (this.match(TokenType.LEFT_BRACE))
-          return new ast.BlockStmt(this.block());
+    if (this.match(TokenType.LEFT_BRACE))
+      return new ast.BlockStmt(this.block());
     if (this.match(TokenType.IF)) return this.if_statement();
     if (this.match(TokenType.PRINT)) return this.print_statement();
     if (this.match(TokenType.RETURN)) return this.return_statement();
@@ -329,6 +344,12 @@ export class BeerParser {
     while (true) {
       if (this.match(TokenType.LEFT_PAREN)) {
         expr = this.finish_call(expr);
+      } else if (this.match(TokenType.DOT)) {
+        const name = this.consume(
+          TokenType.IDENTIFIER,
+          "Expect property name after '.'.",
+        );
+        expr = new ast.GetExpr(expr, name);
       } else {
         break;
       }
@@ -387,6 +408,7 @@ export class BeerParser {
     if (this.match(TokenType.FALSE)) return new ast.LiteralExpr(false);
     if (this.match(TokenType.TRUE)) return new ast.LiteralExpr(true);
     if (this.match(TokenType.NIL)) return new ast.LiteralExpr(null);
+    if (this.match(TokenType.THIS)) return new ast.ThisExpr(this.previous());
     if (this.match(TokenType.NUMBER, TokenType.STRING)) {
       return new ast.LiteralExpr(this.previous().literal);
     }
@@ -428,6 +450,9 @@ export class BeerParser {
       if (expr instanceof ast.VariableExpr) {
         let name = expr.name;
         return new ast.AssignExpr(name, value);
+      } else if (expr instanceof ast.GetExpr) {
+        let get = expr;
+        return new ast.SetExpr(get.object, get.name, value);
       }
       errorReporter.report(
         new SyntaxError(equals, "Invalid assignment target."),
