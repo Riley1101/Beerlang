@@ -1,6 +1,10 @@
 {
-  "name": "",
+  "name": "Beerlang",
   "module": "index.ts",
+  "version": "0.0.3",
+  "description": "Beerlang is an interpreter written in Typescript",
+  "author": "ArkarDev",
+  "license": "MIT",
   "type": "module",
   "bin": {
     "beer": "./beer/index.js"
