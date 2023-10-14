@@ -212,6 +212,15 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
         return this.is_equal(left, right);
       case TokenType.SLASH:
         this.checkNumberOperands(expr.operator, left, right);
+        if (right === 0) {
+          errorReporter.report(
+            new Error(
+              "Division by zero at  line " +
+                expr.operator.line +
+                expr.operator.lexeme,
+            ),
+          );
+        }
         return (left as number) / (right as number);
       case TokenType.STAR:
         this.checkNumberOperands(expr.operator, left, right);

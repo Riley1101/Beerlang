@@ -1,0 +1,9 @@
+var a = 2 + 3; // Addition
+var b = 7 - 4; // Subtraction
+var c = 5 * 6; // Multiplication
+var d = 10 / 2; // Division
+
+print a; // Output: 5
+print b; // Output: 3
+print c; // Output: 30
+print d; // Output: 5

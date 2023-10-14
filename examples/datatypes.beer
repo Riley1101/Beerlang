@@ -1,0 +1,12 @@
+var a = 12;
+var b = 26;
+print a + b;
+
+var t = true;
+var f = false;
+var notExists = nil;
+
+print notExists;
+
+var breakfast = "break";
+print "Today's breakfast is " + breakfast + ".";

@@ -243,10 +243,6 @@ export class BeerScanner implements BeerScanner {
           this.add_token(TokenType.SLASH, null);
         }
         break;
-      case "♻":
-      case "%":
-        this.add_token(TokenType.MODULO, null);
-        break;
       case "✔":
         this.add_token(TokenType.EQUAL_EQUAL, null);
         break;
