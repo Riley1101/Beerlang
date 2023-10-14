@@ -1,7 +1,7 @@
 {
   "name": "@arkardev/beerlang",
   "module": "index.ts",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Beerlang is an interpreter written in Typescript",
   "author": "ArkarDev",
   "license": "MIT",
