@@ -194,11 +194,17 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
     this.resolve_local(expr, expr.name);
   }
 
+  /**
+   * @param expr - Resolve Assign expression
+   */
   visitAssignExpr(expr: ast.AssignExpr): void {
     this.resolve(expr.value);
     this.resolve_local(expr, expr.name);
   }
 
+  /**
+   * @param expr - Resolve binary expression
+   */
   visitSuperExpr(expr: ast.SuperExpr): void {
     if (this.currentClass === ClassType.None) {
       errorReporter.report(
@@ -218,26 +224,41 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
     this.resolve_local(expr, expr.keyword);
   }
 
+  /**
+   * @param stmt - Resolve FunctionStmt
+   */
   visitFunctionStmt(stmt: ast.FunctionStmt): void {
     this.declare(stmt.name);
     this.define(stmt.name);
     this.resolve_function(stmt, FunctionType.Function);
   }
 
+  /**
+   * @param stmt - Resolve ExpressionStmt
+   */
   visitExpressionStmt(stmt: ast.ExpressionStmt): void {
     this.resolve(stmt.expression);
   }
 
+  /**
+   * @param stmt - Resolve IfStmt
+   */
   visitIfStmt(stmt: ast.IfStmt): void {
     this.resolve(stmt.condition);
     this.resolve(stmt.thenBranch);
     if (stmt.elseBranch !== null) this.resolve(stmt.elseBranch);
   }
 
+  /**
+   * @param stmt - Resolve PrintStmt
+   */
   visitPrintStmt(stmt: ast.PrintStmt): void {
     this.resolve(stmt.expression);
   }
 
+  /**
+   * @param stmt - Resolve ReturnStmt
+   */
   visitReturnStmt(stmt: ast.ReturnStmt): void {
     if (stmt.value !== null) {
       if (this.currentFunction === FunctionType.Initializer) {
@@ -257,49 +278,83 @@ export class BeerResolver implements ast.SyntaxVisitor<void, void> {
     }
   }
 
+  /**
+   * @param stmt - Resolve WhileStmt
+   */
   visitWhileStmt(stmt: ast.WhileStmt): void {
     this.resolve(stmt.condition);
     this.resolve(stmt.body);
   }
 
+  /**
+   * @param stmt - Resolve ForStmt
+   */
   visitForStmt(stmt: ast.ForStmt): void {
     if (stmt.initializer !== null) this.resolve(stmt.initializer);
     if (stmt.condition !== null) this.resolve(stmt.condition);
     if (stmt.increment !== null) this.resolve(stmt.increment);
   }
 
+  /**
+   * @param expr - Resolve BinaryExpr
+   */
   visitBinaryExpr(expr: ast.BinaryExpr): void {
     this.resolve(expr.left);
     this.resolve(expr.right);
   }
 
+  /**
+   * @param expr - Resolve CallExpr
+   */
   visitCallExpr(expr: ast.CallExpr): void {
     this.resolve(expr.callee);
     expr.args.forEach((arg) => this.resolve(arg));
   }
 
+  /**
+   * @param expr - Resolve GroupingExpr
+   */
   visitGroupingExpr(expr: ast.GroupingExpr): void {
     this.resolve(expr.expression);
   }
 
+  /**
+   * @param expr - Resolve UnaryExpr
+   */
   visitLiteralExpr(_: ast.LiteralExpr): void {}
 
+  /**
+   * @param expr - Resolve UnaryExpr
+   */
   visitUnaryExpr(expr: ast.UnaryExpr): void {
     this.resolve(expr.right);
   }
+
+  /**
+   * @param expr - Resolve LogicalExpr
+   */
   visitLogicalExpr(expr: ast.LogicalExpr): void {
     this.resolve(expr.left);
     this.resolve(expr.right);
   }
 
+  /**
+   * @param expr - Resolve setExpr
+   */
   visitSetExpr(expr: ast.SetExpr): void {
     this.resolve(expr.value);
     this.resolve(expr.object);
   }
+  /**
+   * @param expr - Resolve getExpr
+   */
   visitGetExpr(expr: ast.GetExpr): void {
     this.resolve(expr.object);
   }
 
+  /**
+   * @param expr - Resolve visitor
+   */
   visitThisExpr(expr: ast.ThisExpr): void {
     if (this.currentClass === ClassType.None) {
       errorReporter.report(

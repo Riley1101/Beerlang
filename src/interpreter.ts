@@ -457,6 +457,10 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
     );
   }
 
+  /**
+   * @param expr - visit for setExpr
+   * @returns BeerObject;
+   */
   visitSetExpr(expr: ast.SetExpr): BeerObject {
     let object = this.evaluate(expr.object);
     if (!(object instanceof BeerInstance)) {
@@ -469,6 +473,10 @@ export class Beer implements ast.SyntaxVisitor<BeerObject, void> {
     return value;
   }
 
+  /**
+   * @param expr - Visitor for GetExpr
+   * @returns  BeerObject;
+   */
   visitSuperExpr(expr: ast.SuperExpr): BeerObject {
     let distance = this.locals.get(expr) as number;
     let superclass = this.environment.get_at(distance, "super") as BeerClass;
