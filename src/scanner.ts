@@ -5,7 +5,7 @@
  */
 import { errorReporter, Logger, SyntaxError } from "./error";
 import { Token } from "./token";
-import {  keywords, Literals, TokenType } from "./types";
+import { keywords, Literals, TokenType } from "./types";
 
 /**
  * @class Scanner
@@ -14,17 +14,32 @@ import {  keywords, Literals, TokenType } from "./types";
 export class BeerScanner implements BeerScanner {
   private logger: Logger = new Logger();
   private tokens: Token[];
-  private source: string;
+  source: string;
   private current: number = 0;
   private start: number = 0;
   private line: number = 1;
 
-  /**
-   * @param {string} source - the source code string
-   */
-  constructor(source: string) {
-    this.source = source;
+  constructor() {
+    this.source = "";
     this.tokens = [];
+    this.current = 0;
+    this.start = 0;
+    this.line = 1;
+  }
+
+  add_source(source: string): void {
+    this.source += source;
+    this.current = 0;
+    this.start = 0;
+    this.line = 1;
+  }
+
+  set_source(source: string): void {
+    this.source = source;
+  }
+
+  reset_scanner(): void {
+    this.source = "";
     this.current = 0;
     this.start = 0;
     this.line = 1;

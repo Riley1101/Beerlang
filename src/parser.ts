@@ -22,7 +22,12 @@ export class BeerParser {
     this.current = 0;
   }
 
-  public setTokens(tokens: Token[]) {
+  public reset_parser() {
+    this.current = 0;
+    this.tokens = [];
+  }
+
+  public set_tokens(tokens: Token[]) {
     this.tokens = tokens;
   }
 
