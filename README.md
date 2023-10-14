@@ -8,6 +8,8 @@ Beerlang is a dynamically-typed, interpreted programming language designed for s
 
 ## Installation
 
+Beerlang is developed using bun.js. Make sure you have installed bun.js on your local machine.
+
 To install Beerlang globally via npm, you can use the following command:
 
 ```
