@@ -1,5 +1,5 @@
 {
-  "name": "Beerlang",
+  "name": "@arkardev/Beerlang",
   "module": "index.ts",
   "version": "0.0.3",
   "description": "Beerlang is an interpreter written in Typescript",
