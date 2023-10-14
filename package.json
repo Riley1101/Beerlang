@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "bun run index.ts",
+    "build": "bun run build.ts",
     "docs::gen": "typedoc ./index.ts ./src/* --out docs/ "
   },
   "peerDependencies": {
