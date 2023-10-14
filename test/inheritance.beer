@@ -12,3 +12,4 @@ class BostonCream < Doughnut {
 }
 
 BostonCream().cook();
+

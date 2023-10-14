@@ -1,0 +1,22 @@
+
+print "----------------  If -------------------- ";
+var a = -10;
+var condition = a > 3;
+if (condition) {
+  print " I am true...";
+} else {
+  print " I am false...";
+}
+
+print "----------------  While -------------------- ";
+var i = 1;
+while (i < 8) {
+  print i;
+  i = i + 1;
+}
+
+print "----------------  For  -------------------- ";
+for (var i =0; i < 10; i= i + 1){
+    print i;
+}
+
