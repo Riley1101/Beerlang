@@ -16,12 +16,24 @@
 <li><a href="../modules/src_runner.html">src/runner</a></li>
 <li><a href="src_runner.BeerRunner.html">BeerRunner</a></li></ul>
 <h1>Class BeerRunner</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography">
+<h4>Classdesc</h4><p>Runner for the Beer language</p>
+
+<h4>Member</h4><p>interpreter - The interpreter</p>
+
+<h4>Member</h4><p>resolver - The resolver</p>
+
+<h4>Method</h4><p>exec - Execute the source code</p>
+
+<h4>Method</h4><p>print_ast - Print the AST</p>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">BeerRunner</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/runner.ts#L12">src/runner.ts:12</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L25">src/runner.ts:25</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -33,13 +45,17 @@
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Properties</h3>
-<div class="tsd-index-list"><a href="src_runner.BeerRunner.html#interpreter" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>interpreter</span></a>
+<div class="tsd-index-list"><a href="src_runner.BeerRunner.html#MODE" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>MODE</span></a>
+<a href="src_runner.BeerRunner.html#astPrinter" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>ast<wbr/>Printer</span></a>
+<a href="src_runner.BeerRunner.html#interpreter" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>interpreter</span></a>
+<a href="src_runner.BeerRunner.html#parser" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>parser</span></a>
 <a href="src_runner.BeerRunner.html#resolver" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>resolver</span></a>
+<a href="src_runner.BeerRunner.html#scanner" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>scanner</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
-<div class="tsd-index-list"><a href="src_runner.BeerRunner.html#exec" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>exec</span></a>
-<a href="src_runner.BeerRunner.html#print_ast" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>print_<wbr/>ast</span></a>
+<div class="tsd-index-list"><a href="src_runner.BeerRunner.html#print_ast" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>print_<wbr/>ast</span></a>
+<a href="src_runner.BeerRunner.html#run" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>run</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
@@ -48,34 +64,43 @@
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="constructor.new_BeerRunner"><span class="tsd-kind-constructor-signature">new <wbr/>Beer<wbr/>Runner</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_runner.BeerRunner.html" class="tsd-signature-type tsd-kind-class">BeerRunner</a><a href="#constructor.new_BeerRunner" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="src_runner.BeerRunner.html" class="tsd-signature-type tsd-kind-class">BeerRunner</a></h4></li></ul></section></section>
+<h4 class="tsd-returns-title">Returns <a href="src_runner.BeerRunner.html" class="tsd-signature-type tsd-kind-class">BeerRunner</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L33">src/runner.ts:33</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="MODE" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>MODE</span><a href="#MODE" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">MODE</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;REPL&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;FILE&quot;</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L31">src/runner.ts:31</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="astPrinter" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>ast<wbr/>Printer</span><a href="#astPrinter" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">ast<wbr/>Printer</span><span class="tsd-signature-symbol">:</span> <a href="src_ast.BeerAstPrinter.html" class="tsd-signature-type tsd-kind-class">BeerAstPrinter</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L28">src/runner.ts:28</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="interpreter" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>interpreter</span><a href="#interpreter" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">interpreter</span><span class="tsd-signature-symbol">:</span> <a href="src_interpreter.Beer.html" class="tsd-signature-type tsd-kind-class">Beer</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">interpreter</span><span class="tsd-signature-symbol">:</span> <a href="src_interpreter.Beer.html" class="tsd-signature-type tsd-kind-class">Beer</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/runner.ts#L13">src/runner.ts:13</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L26">src/runner.ts:26</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="parser" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>parser</span><a href="#parser" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">parser</span><span class="tsd-signature-symbol">:</span> <a href="src_parser.BeerParser.html" class="tsd-signature-type tsd-kind-class">BeerParser</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L29">src/runner.ts:29</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="resolver" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>resolver</span><a href="#resolver" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">resolver</span><span class="tsd-signature-symbol">:</span> <a href="src_resolver.BeerResolver.html" class="tsd-signature-type tsd-kind-class">BeerResolver</a><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">resolver</span><span class="tsd-signature-symbol">:</span> <a href="src_resolver.BeerResolver.html" class="tsd-signature-type tsd-kind-class">BeerResolver</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/runner.ts#L14">src/runner.ts:14</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L27">src/runner.ts:27</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="scanner" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>scanner</span><a href="#scanner" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">scanner</span><span class="tsd-signature-symbol">:</span> <a href="src_scanner.BeerScanner.html" class="tsd-signature-type tsd-kind-class">BeerScanner</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L30">src/runner.ts:30</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
-<section class="tsd-panel tsd-member"><a id="exec" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>exec</span><a href="#exec" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="exec.exec-1"><span class="tsd-kind-call-signature">exec</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">source</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#exec.exec-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">source</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/runner.ts#L15">src/runner.ts:15</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="print_ast" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>print_<wbr/>ast</span><a href="#print_ast" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -88,7 +113,15 @@
 <h5><span class="tsd-kind-parameter">stmts</span>: <a href="../interfaces/src_ast.Stmt.html" class="tsd-signature-type tsd-kind-interface">Stmt</a><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/454e5df/src/runner.ts#L36">src/runner.ts:36</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L71">src/runner.ts:71</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="run" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>run</span><a href="#run" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="run.run-1"><span class="tsd-kind-call-signature">run</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#run.run-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/Riley1101/Gideon/blob/f0789d2/src/runner.ts#L42">src/runner.ts:42</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -109,15 +142,18 @@
 <div class="tsd-accordion-details">
 <ul>
 <li><a href="#constructor" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-512"></use></svg><span>constructor</span></a></li>
+<li><a href="#MODE" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>MODE</span></a></li>
+<li><a href="#astPrinter" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>ast<wbr/>Printer</span></a></li>
 <li><a href="#interpreter" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>interpreter</span></a></li>
+<li><a href="#parser" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>parser</span></a></li>
 <li><a href="#resolver" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>resolver</span></a></li>
-<li><a href="#exec" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>exec</span></a></li>
-<li><a href="#print_ast" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>print_<wbr/>ast</span></a></li></ul></div></details></div>
+<li><a href="#scanner" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>scanner</span></a></li>
+<li><a href="#print_ast" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>print_<wbr/>ast</span></a></li>
+<li><a href="#run" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>run</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>gideon-v3</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
 <li><a href="../modules/Beer.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>Beer</a></li>
-<li><a href="../modules/src_BeerAstPrinter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/BeerAstPrinter</a></li>
 <li><a href="../modules/src_ast.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/ast</a></li>
 <li><a href="../modules/src_environment.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/environment</a></li>
 <li><a href="../modules/src_error_ts.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/error.ts</a></li>
