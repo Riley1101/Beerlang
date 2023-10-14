@@ -3,6 +3,7 @@ import chalk from "chalk";
 console.log(chalk.blue("Building..."));
 await Bun.build({
   entrypoints: ["./index.ts"],
+  minify:true,
   outdir: "./beer",
 });
 

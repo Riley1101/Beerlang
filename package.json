@@ -1,7 +1,10 @@
 {
-  "name": "gideon-v3",
+  "name": "",
   "module": "index.ts",
   "type": "module",
+  "bin": {
+    "beer": "./beer/index.js"
+  },
   "devDependencies": {
     "bun-types": "latest",
     "typedoc": "^0.25.1",

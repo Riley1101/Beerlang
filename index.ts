@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 /**
  * @module Beer
  * @description Beer is an interpreter written in TypeScript.
@@ -9,9 +10,3 @@ import { BeerRunner } from "./src/runner";
 
 const runner = new BeerRunner();
 runner.run();
-
-/*
-source.then((source) => {
-  runner.exec(source);
-};
-*/
