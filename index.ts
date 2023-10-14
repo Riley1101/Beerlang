@@ -5,7 +5,6 @@
  * @version 0.0.3
  */
 
-import { run_file, repl } from "./src/read_source";
 import { BeerRunner } from "./src/runner";
 
 const runner = new BeerRunner();

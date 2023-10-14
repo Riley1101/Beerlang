@@ -49,10 +49,22 @@ export class BeerRunner {
         const statements = this.parser.parse();
         this.resolver.resolve(statements);
         this.print_ast(statements);
+        console.log(
+          chalk.blue("                                                 "),
+        );
+        console.log(
+          chalk.blue(
+            "================      Compiled Output       ================",
+          ),
+        );
+        console.log(
+          chalk.blue("                                                 "),
+        );
         this.interpreter.interpret(statements);
       });
     } else {
       console.log("REPL is still in progress\n");
+      console.log("Usage: beer [script]");
     }
   }
 
