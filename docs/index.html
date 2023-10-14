@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>gideon-v3</title><meta name="description" content="Documentation for gideon-v3"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Beerlang</title><meta name="description" content="Documentation for Beerlang"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base=".">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -6,83 +6,100 @@
 <div id="tsd-toolbar-links"></div></div>
 <ul class="results">
 <li class="state loading">Preparing search index...</li>
-<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">gideon-v3</a></div>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Beerlang</a></div>
 <div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#icon-menu"></use></svg></a></div></div></header>
 <div class="container container-main">
 <div class="col-content">
 <div class="tsd-page-title">
-<h2>gideon-v3</h2></div>
-<div class="tsd-panel tsd-typography"><a id="md:gideon-v3-with-beer-syntax-support" class="tsd-anchor"></a><h1><a href="#md:gideon-v3-with-beer-syntax-support">Gideon v3 with Beer Syntax support</a></h1><p>Gideon V3 is now renamed into Beerlang. it now supports emoji syntax;</p>
-<pre><code class="language-beerlang">print &quot;============= Scopes ===============&quot;;
-var a = &quot;global&quot;;
-{
-  fun showA() {
-    print a;
-  }
-
-  showA();
-  var a = &quot;block&quot;;
-  showA();
-}
-var a = &quot;outer&quot;;
-{
-  print a;
-  var a = &quot;inner&quot;;
-  print a;
-}
-print a;
-
-print &quot; ============== For Loop =============&quot;;
-for(var a = 0; a &lt; 12; a = a + 1){
-    print a;
-}
-
-print &quot;================ While Loop ============&quot;;
-var val =12;
-while(val &gt; 0){
-    print val;
-    val = val - 1;
-}
-
-print &quot; =========== Returns =============&quot;;
-fun fib(n){
-    if(n &lt; 2) return n;
-    return n + fib(n - 1);
-}
-
-var f = fib(10);
-print f;
-
-print &quot;=========== Functions ==========&quot;;
-var a = &quot;global&quot;;
-{
-  fun showA() {
-    print a;
-  }
-
-  showA();
-  var a = &quot;block&quot;;
-  showA();
-}
-fun makeCounter() {
-  var i = 0;
-  fun count() {
-    i = i + 1;
-    print i;
-  }
-
-  return count;
-}
-
-var counter = makeCounter();
-counter(); // &quot;1&quot;.
-counter(); // &quot;2&quot;.
+<h2>Beerlang</h2></div>
+<div class="tsd-panel tsd-typography"><a id="md:beer" class="tsd-anchor"></a><h1><a href="#md:beer">Beer</a></h1><p>Beer is an interpreter for the Beerlang programming language, written in TypeScript.</p>
+<a id="md:introduction" class="tsd-anchor"></a><h2><a href="#md:introduction">Introduction</a></h2><p>Beerlang is a dynamically-typed, interpreted programming language designed for simplicity and fun.</p>
+<a id="md:planned-features" class="tsd-anchor"></a><h3><a href="#md:planned-features">Planned Features</a></h3><ul>
+<li><strong>Emoji Support</strong>: Beerlang is designed to support emojis as part of its syntax, adding a touch of fun and expressiveness to the language. You will be able to use emojis as variable names, function names, and even as operators.</li>
+<li><strong>Funny Syntax</strong>: Beerlang embraces a playful and unconventional syntax that encourages creativity and experimentation. It includes elements such as using &quot;🍺&quot; instead of parentheses for function calls and &quot;🍻&quot; instead of curly braces for code blocks.</li>
+</ul>
+<p>Stay tuned for these exciting additions to Beerlang!</p>
+<a id="md:features" class="tsd-anchor"></a><h2><a href="#md:features">Features</a></h2><ul>
+<li><strong>Easy to Learn</strong>: Beerlang has a simple syntax and minimalistic design, making it easy for beginners to grasp.</li>
+<li><strong>Dynamic Typing</strong>: Variables in Beerlang are dynamically typed, allowing for flexible programming.</li>
+<li><strong>Extensible</strong>: Beerlang supports the creation of user-defined functions and encourages code modularity.</li>
+</ul>
+<a id="md:syntax" class="tsd-anchor"></a><h2><a href="#md:syntax">Syntax</a></h2><a id="md:data-types" class="tsd-anchor"></a><h3><a href="#md:data-types">Data types</a></h3><p>Beerlang supports the following data types:</p>
+<ul>
+<li><strong>Number</strong>: Numbers in Beerlang are represented by numeric literals. For example, <code>var a = 12;</code> and <code>var b = 26;</code> assign the values 12 and 26 to variables <code>a</code> and <code>b</code>, respectively.</li>
+<li><strong>String</strong>: Strings are sequences of characters enclosed in double quotes (<code>&quot;</code>). For example, <code>var breakfast = &quot;break&quot;;</code> assigns the string &quot;break&quot; to the variable <code>breakfast</code>. You can concatenate strings using the <code>+</code> operator, as shown in the example <code>print &quot;Today&#39;s breakfast is &quot; + breakfast + &quot;.&quot;;</code>.</li>
+<li><strong>Boolean</strong>: Beerlang has two boolean values: <code>true</code> and <code>false</code>. For example, <code>var t = true;</code> assigns the value <code>true</code> to the variable <code>t</code>, while <code>var f = false;</code> assigns <code>false</code> to the variable <code>f</code>.</li>
+<li><strong>Nil</strong>: In Beerlang, <code>nil</code> represents the absence of a value. For example, <code>var notExists = nil;</code> assigns <code>nil</code> to the variable <code>notExists</code>. When you print <code>notExists</code>, it will display <code>nil</code>.</li>
+</ul>
+<pre><code class="language-tsx"><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">a</span><span class="hl-1"> = </span><span class="hl-3">12</span><span class="hl-1">;</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">b</span><span class="hl-1"> = </span><span class="hl-3">26</span><span class="hl-1">;</span><br/><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">a</span><span class="hl-1"> + </span><span class="hl-2">b</span><span class="hl-1">;</span><br/><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">t</span><span class="hl-1"> = </span><span class="hl-0">true</span><span class="hl-1">;</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">f</span><span class="hl-1"> = </span><span class="hl-0">false</span><span class="hl-1">;</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">notExists</span><span class="hl-1"> = </span><span class="hl-2">nil</span><span class="hl-1">;</span><br/><br/><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">notExists</span><span class="hl-1">;</span><br/><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">breakfast</span><span class="hl-1"> = </span><span class="hl-4">&quot;break&quot;</span><span class="hl-1">;</span><br/><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot;Today&#39;s breakfast is &quot;</span><span class="hl-1"> + </span><span class="hl-2">breakfast</span><span class="hl-1"> + </span><span class="hl-4">&quot;.&quot;</span><span class="hl-1">;</span>
 </code><button>Copy</button></pre>
-<a id="md:emoji-support-for-the-memes" class="tsd-anchor"></a><h2><a href="#md:emoji-support-for-the-memes">Emoji support for the memes</a></h2><p>I am currently figuring out syntax with emojis for Beerlang feel free to leave a pr if you have any suggestions.</p>
-<pre><code><span class="hl-0">print</span><span class="hl-1">  </span><span class="hl-2">6</span><span class="hl-1"> ✔ </span><span class="hl-2">6</span><span class="hl-1">;</span><br/><span class="hl-0">print</span><span class="hl-1">  </span><span class="hl-2">6</span><span class="hl-1"> ❗</span><span class="hl-2">10</span><span class="hl-1">;</span><br/><span class="hl-0">print</span><span class="hl-1">  </span><span class="hl-2">13</span><span class="hl-1"> ➡ </span><span class="hl-2">6</span><span class="hl-1">;</span><br/><span class="hl-0">print</span><span class="hl-1"> </span><span class="hl-2">12</span><span class="hl-1"> ⬅ </span><span class="hl-2">13</span><span class="hl-1">;</span><br/><span class="hl-0">print</span><span class="hl-1"> </span><span class="hl-2">12</span><span class="hl-1"> ➕ </span><span class="hl-2">100</span><span class="hl-1">;</span><br/>
+<a id="md:operators" class="tsd-anchor"></a><h3><a href="#md:operators">Operators</a></h3><p>Beerlang supports the following arithmetic operators:</p>
+<ul>
+<li><strong>Addition (+)</strong>: The addition operator is used to add two numbers together. For example, <code>var sum = 2 + 3;</code> assigns the value 5 to the variable <code>sum</code>.</li>
+<li><strong>Subtraction (-)</strong>: The subtraction operator is used to subtract one number from another. For example, <code>var difference = 7 - 4;</code> assigns the value 3 to the variable <code>difference</code>.</li>
+<li><strong>Multiplication (*)</strong>: The multiplication operator is used to multiply two numbers. For example, <code>var product = 5 * 6;</code> assigns the value 30 to the variable <code>product</code>.</li>
+<li><strong>Division (/)</strong>: The division operator is used to divide one number by another. For example, <code>var quotient = 10 / 2;</code> assigns the value 5 to the variable <code>quotient</code>.</li>
+</ul>
+<p>Here&#39;s an example that demonstrates the usage of these operators:</p>
+<pre><code class="language-tsx"><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">a</span><span class="hl-1"> = </span><span class="hl-3">2</span><span class="hl-1"> + </span><span class="hl-3">3</span><span class="hl-1">; </span><span class="hl-5">// Addition</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">b</span><span class="hl-1"> = </span><span class="hl-3">7</span><span class="hl-1"> - </span><span class="hl-3">4</span><span class="hl-1">; </span><span class="hl-5">// Subtraction</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">c</span><span class="hl-1"> = </span><span class="hl-3">5</span><span class="hl-1"> * </span><span class="hl-3">6</span><span class="hl-1">; </span><span class="hl-5">// Multiplication</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">d</span><span class="hl-1"> = </span><span class="hl-3">10</span><span class="hl-1"> / </span><span class="hl-3">2</span><span class="hl-1">; </span><span class="hl-5">// Division</span><br/><br/><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">a</span><span class="hl-1">; </span><span class="hl-5">// Output: 5</span><br/><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">b</span><span class="hl-1">; </span><span class="hl-5">// Output: 3</span><br/><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">c</span><span class="hl-1">; </span><span class="hl-5">// Output: 30</span><br/><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">d</span><span class="hl-1">; </span><span class="hl-5">// Output: 5</span><br/>
 </code><button>Copy</button></pre>
-<pre><code><br/><span class="hl-3">class</span><span class="hl-1"> </span><span class="hl-4">Node</span><span class="hl-1">{</span><br/><span class="hl-1">    </span><span class="hl-5">init</span><span class="hl-1">(</span><span class="hl-0">value</span><span class="hl-1">){</span><br/><span class="hl-1">        </span><span class="hl-3">this</span><span class="hl-1">.</span><span class="hl-0">left</span><span class="hl-1"> = </span><span class="hl-0">nil</span><span class="hl-1">;</span><br/><span class="hl-1">        </span><span class="hl-3">this</span><span class="hl-1">.</span><span class="hl-0">value</span><span class="hl-1">= </span><span class="hl-0">value</span><span class="hl-1">;</span><br/><span class="hl-1">        </span><span class="hl-3">this</span><span class="hl-1">.</span><span class="hl-0">right</span><span class="hl-1">= </span><span class="hl-0">nil</span><span class="hl-1">;</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-3">class</span><span class="hl-1"> </span><span class="hl-4">Tree</span><span class="hl-1">{</span><br/><span class="hl-1">    </span><span class="hl-5">init</span><span class="hl-1">(){</span><br/><span class="hl-1">        </span><span class="hl-3">this</span><span class="hl-1">.</span><span class="hl-0">root</span><span class="hl-1"> = </span><span class="hl-0">nil</span><span class="hl-1">;</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">    </span><span class="hl-5">add</span><span class="hl-1">(</span><span class="hl-0">val</span><span class="hl-1">){</span><br/><span class="hl-1">        </span><span class="hl-3">var</span><span class="hl-1"> </span><span class="hl-0">newNode</span><span class="hl-1"> = </span><span class="hl-5">Node</span><span class="hl-1">(</span><span class="hl-0">val</span><span class="hl-1">);</span><br/><span class="hl-1">        </span><span class="hl-6">if</span><span class="hl-1">(</span><span class="hl-3">this</span><span class="hl-1">.</span><span class="hl-0">root</span><span class="hl-1"> == </span><span class="hl-0">nil</span><span class="hl-1">){</span><br/><span class="hl-1">            </span><span class="hl-3">this</span><span class="hl-1">.</span><span class="hl-0">root</span><span class="hl-1"> = </span><span class="hl-0">newNode</span><span class="hl-1">;</span><br/><span class="hl-1">            </span><span class="hl-6">return</span><span class="hl-1"> </span><span class="hl-0">newNode</span><span class="hl-1">;</span><br/><span class="hl-1">        }</span><br/><span class="hl-1">        </span><span class="hl-3">var</span><span class="hl-1"> </span><span class="hl-0">tmp</span><span class="hl-1"> = </span><span class="hl-3">this</span><span class="hl-1">.</span><span class="hl-0">root</span><span class="hl-1">;</span><br/><span class="hl-1">        </span><span class="hl-6">while</span><span class="hl-1">(</span><span class="hl-0">tmp</span><span class="hl-1">!=</span><span class="hl-0">nil</span><span class="hl-1">){</span><br/><span class="hl-1">            </span><span class="hl-6">if</span><span class="hl-1">(</span><span class="hl-0">val</span><span class="hl-1"> &lt; </span><span class="hl-0">tmp</span><span class="hl-1">.</span><span class="hl-0">value</span><span class="hl-1">){</span><br/><span class="hl-1">                </span><span class="hl-6">if</span><span class="hl-1">(</span><span class="hl-0">tmp</span><span class="hl-1">.</span><span class="hl-0">left</span><span class="hl-1"> == </span><span class="hl-0">nil</span><span class="hl-1">){</span><br/><span class="hl-1">                    </span><span class="hl-0">tmp</span><span class="hl-1">.</span><span class="hl-0">left</span><span class="hl-1"> = </span><span class="hl-0">newNode</span><span class="hl-1">;</span><br/><span class="hl-1">                    </span><span class="hl-6">return</span><span class="hl-1"> </span><span class="hl-0">newNode</span><span class="hl-1">;</span><br/><span class="hl-1">                }</span><br/><span class="hl-1">                </span><span class="hl-0">tmp</span><span class="hl-1"> = </span><span class="hl-0">tmp</span><span class="hl-1">.</span><span class="hl-0">left</span><span class="hl-1">;</span><br/><span class="hl-1">            }</span><br/><span class="hl-1">            </span><span class="hl-6">else</span><span class="hl-1">{</span><br/><span class="hl-1">                </span><span class="hl-6">if</span><span class="hl-1">(</span><span class="hl-0">tmp</span><span class="hl-1">.</span><span class="hl-0">right</span><span class="hl-1">== </span><span class="hl-0">nil</span><span class="hl-1">){</span><br/><span class="hl-1">                    </span><span class="hl-0">tmp</span><span class="hl-1">.</span><span class="hl-0">right</span><span class="hl-1">= </span><span class="hl-0">newNode</span><span class="hl-1">;</span><br/><span class="hl-1">                    </span><span class="hl-6">return</span><span class="hl-1"> </span><span class="hl-0">newNode</span><span class="hl-1">;</span><br/><span class="hl-1">                }</span><br/><span class="hl-1">                </span><span class="hl-0">tmp</span><span class="hl-1"> = </span><span class="hl-0">tmp</span><span class="hl-1">.</span><span class="hl-0">right</span><span class="hl-1">;</span><br/><span class="hl-1">            }</span><br/><span class="hl-1">        }</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-0">fun</span><span class="hl-1"> </span><span class="hl-5">traverse</span><span class="hl-1">(</span><span class="hl-0">node</span><span class="hl-1">){</span><br/><span class="hl-1">    </span><span class="hl-6">if</span><span class="hl-1">(</span><span class="hl-0">node</span><span class="hl-1"> == </span><span class="hl-0">nil</span><span class="hl-1">) </span><span class="hl-6">return</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-0">print</span><span class="hl-1"> </span><span class="hl-0">node</span><span class="hl-1">.</span><span class="hl-0">value</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">traverse</span><span class="hl-1">(</span><span class="hl-0">node</span><span class="hl-1">.</span><span class="hl-0">left</span><span class="hl-1">);</span><br/><span class="hl-1">    </span><span class="hl-5">traverse</span><span class="hl-1">(</span><span class="hl-0">node</span><span class="hl-1">.</span><span class="hl-0">right</span><span class="hl-1">);</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-3">var</span><span class="hl-1"> </span><span class="hl-0">t</span><span class="hl-1"> = </span><span class="hl-5">Tree</span><span class="hl-1">();</span><br/><span class="hl-0">t</span><span class="hl-1">.</span><span class="hl-5">add</span><span class="hl-1">(</span><span class="hl-2">3</span><span class="hl-1">);</span><br/><span class="hl-0">t</span><span class="hl-1">.</span><span class="hl-5">add</span><span class="hl-1">(</span><span class="hl-2">1</span><span class="hl-1">);</span><br/><span class="hl-0">t</span><span class="hl-1">.</span><span class="hl-5">add</span><span class="hl-1">(</span><span class="hl-2">0</span><span class="hl-1">);</span><br/><span class="hl-0">t</span><span class="hl-1">.</span><span class="hl-5">add</span><span class="hl-1">(</span><span class="hl-2">2</span><span class="hl-1">);</span><br/><span class="hl-0">t</span><span class="hl-1">.</span><span class="hl-5">add</span><span class="hl-1">(</span><span class="hl-2">6</span><span class="hl-1">);</span><br/><span class="hl-0">t</span><span class="hl-1">.</span><span class="hl-5">add</span><span class="hl-1">(</span><span class="hl-2">9</span><span class="hl-1">);</span><br/><br/><span class="hl-5">trverse</span><span class="hl-1">(</span><span class="hl-0">t</span><span class="hl-1">.</span><span class="hl-0">root</span><span class="hl-1">);</span>
+<p>These operators can be used with variables, numeric literals, and expressions to perform arithmetic operations in Beerlang.</p>
+<a id="md:control-flows" class="tsd-anchor"></a><h3><a href="#md:control-flows">Control flows</a></h3><p>Beerlang supports the following control flow statements:</p>
+<a id="md:if-statement" class="tsd-anchor"></a><h3><a href="#md:if-statement"><code>if</code> statement</a></h3><p>The <code>if</code> statement allows you to conditionally execute a block of code based on a Boolean expression.</p>
+<p>Here&#39;s an example that demonstrates the usage of the <code>if</code> statement:</p>
+<pre><code class="language-tsx"><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">a</span><span class="hl-1"> = -</span><span class="hl-3">10</span><span class="hl-1">;</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">condition</span><span class="hl-1"> = </span><span class="hl-2">a</span><span class="hl-1"> &gt; </span><span class="hl-3">3</span><span class="hl-1">;</span><br/><span class="hl-6">if</span><span class="hl-1"> (</span><span class="hl-2">condition</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot; I am true...&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">} </span><span class="hl-6">else</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot; I am false...&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
 </code><button>Copy</button></pre>
+<a id="md:while-loop" class="tsd-anchor"></a><h3><a href="#md:while-loop"><code>while</code> loop</a></h3><p>The <code>while</code> loop allows you to repeatedly execute a block of code as long as a condition is true.</p>
+<p>Here&#39;s an example that demonstrates the usage of the <code>while</code> loop:</p>
+<pre><code class="language-tsx"><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> = </span><span class="hl-3">1</span><span class="hl-1">;</span><br/><span class="hl-6">while</span><span class="hl-1"> (</span><span class="hl-2">i</span><span class="hl-1"> &lt; </span><span class="hl-3">8</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-2">i</span><span class="hl-1"> = </span><span class="hl-2">i</span><span class="hl-1"> + </span><span class="hl-3">1</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<a id="md:for-loop" class="tsd-anchor"></a><h3><a href="#md:for-loop"><code>for</code> loop</a></h3><p>The <code>for</code> loop allows you to iterate over a range of values or elements in Beerlang.</p>
+<pre><code class="language-tsx"><span class="hl-6">for</span><span class="hl-1"> (</span><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> =</span><span class="hl-3">0</span><span class="hl-1">; </span><span class="hl-2">i</span><span class="hl-1"> &lt; </span><span class="hl-3">10</span><span class="hl-1">; </span><span class="hl-2">i</span><span class="hl-1">= </span><span class="hl-2">i</span><span class="hl-1"> + </span><span class="hl-3">1</span><span class="hl-1">){</span><br/><span class="hl-1">    </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+<p>These control flow statements allow you to make decisions, repeat actions, and iterate over values in Beerlang, adding flexibility and control to your programs.</p>
+<a id="md:functions" class="tsd-anchor"></a><h3><a href="#md:functions">Functions</a></h3><p>In Beerlang, functions are first-class citizens, which means they can be assigned to variables, passed as arguments to other functions, and returned as values from other functions. You can define functions using the <code>fun</code> keyword, followed by the function name and a pair of parentheses for the parameter list. The function body is enclosed in curly braces <code>{}</code>.</p>
+<p>Here&#39;s an example of a function that adds two numbers:</p>
+<pre><code class="language-tsx"><span class="hl-2">fun</span><span class="hl-1"> </span><span class="hl-7">add</span><span class="hl-1">(</span><span class="hl-2">a</span><span class="hl-1">, </span><span class="hl-2">b</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-6">return</span><span class="hl-1"> </span><span class="hl-2">a</span><span class="hl-1"> + </span><span class="hl-2">b</span><span class="hl-1">;</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">result</span><span class="hl-1"> = </span><span class="hl-7">add</span><span class="hl-1">(</span><span class="hl-3">3</span><span class="hl-1">, </span><span class="hl-3">4</span><span class="hl-1">);</span><br/><span class="hl-7">print</span><span class="hl-1">(</span><span class="hl-2">result</span><span class="hl-1">); </span><span class="hl-5">// Output: 7</span><br/><br/><span class="hl-2">fun</span><span class="hl-1"> </span><span class="hl-7">fib</span><span class="hl-1">(</span><span class="hl-2">n</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-6">if</span><span class="hl-1"> (</span><span class="hl-2">n</span><span class="hl-1"> &lt;= </span><span class="hl-3">1</span><span class="hl-1">) </span><span class="hl-6">return</span><span class="hl-1"> </span><span class="hl-2">n</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-6">return</span><span class="hl-1"> </span><span class="hl-7">fib</span><span class="hl-1">(</span><span class="hl-2">n</span><span class="hl-1"> - </span><span class="hl-3">2</span><span class="hl-1">) + </span><span class="hl-7">fib</span><span class="hl-1">(</span><span class="hl-2">n</span><span class="hl-1"> - </span><span class="hl-3">1</span><span class="hl-1">);</span><br/><span class="hl-1">}</span><br/><span class="hl-6">for</span><span class="hl-1"> (</span><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> = </span><span class="hl-3">0</span><span class="hl-1">; </span><span class="hl-2">i</span><span class="hl-1"> &lt; </span><span class="hl-3">20</span><span class="hl-1">; </span><span class="hl-2">i</span><span class="hl-1"> = </span><span class="hl-2">i</span><span class="hl-1"> + </span><span class="hl-3">1</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-7">fib</span><span class="hl-1">(</span><span class="hl-2">i</span><span class="hl-1">);</span><br/><span class="hl-1">}</span><br/>
+</code><button>Copy</button></pre>
+<a id="md:closures" class="tsd-anchor"></a><h3><a href="#md:closures">Closures</a></h3><p>Beerlang supports closures, which are functions that have access to variables from their outer (enclosing) scope. This allows functions to &quot;remember&quot; the values of variables even after they have finished executing. Closures can be useful for creating functions with private variables or for implementing callback functions.</p>
+<p>Here&#39;s an example of a closure in Beerlang:</p>
+<pre><code class="language-tsx"><span class="hl-2">fun</span><span class="hl-1"> </span><span class="hl-7">counter</span><span class="hl-1">() {</span><br/><span class="hl-1">  </span><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">count</span><span class="hl-1"> = </span><span class="hl-3">0</span><span class="hl-1">;</span><br/><br/><span class="hl-1">  </span><span class="hl-2">fun</span><span class="hl-1"> </span><span class="hl-7">increment</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-2">count</span><span class="hl-1"> = </span><span class="hl-2">count</span><span class="hl-1"> + </span><span class="hl-3">1</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-7">print</span><span class="hl-1">(</span><span class="hl-4">&quot;Count: &quot;</span><span class="hl-1"> + </span><span class="hl-2">count</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-6">return</span><span class="hl-1"> </span><span class="hl-2">increment</span><span class="hl-1">;</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">counterFunc</span><span class="hl-1"> = </span><span class="hl-7">counter</span><span class="hl-1">();</span><br/><span class="hl-7">counterFunc</span><span class="hl-1">(); </span><span class="hl-5">// Output: Count: 1</span><br/><span class="hl-7">counterFunc</span><span class="hl-1">(); </span><span class="hl-5">// Output: Count: 2</span><br/>
+</code><button>Copy</button></pre>
+<p>In the example above, the <code>counter</code> function returns the <code>increment</code> function, which has access to the <code>count</code> variable in its outer scope. Each time the <code>increment</code> function is called, it increments the <code>count</code> variable and prints the updated value.</p>
+<p>Closures in Beerlang provide a powerful mechanism for creating functions with encapsulated state and behavior.</p>
+<a id="md:classes" class="tsd-anchor"></a><h3><a href="#md:classes">Classes</a></h3><p>Beerlang supports object-oriented programming through the use of classes. A class is a blueprint for creating objects that share similar properties and behaviors. In Beerlang, you can define classes using the <code>class</code> keyword, followed by the class name and a pair of curly braces <code>{}</code> to enclose the class body.</p>
+<p>In Beerlang, the <code>init</code> method is used as a constructor for a class. It is called when a new instance of the class is created. The <code>init</code> method initializes the properties of the class and performs any necessary setup.</p>
+<p>Here&#39;s an example of a class definition in Beerlang:</p>
+<pre><code class="language-tsx"><span class="hl-0">class</span><span class="hl-1"> </span><span class="hl-8">Breakfast</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">init</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-0">this</span><span class="hl-1">.</span><span class="hl-2">name</span><span class="hl-1"> = </span><span class="hl-4">&quot;cake&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-0">this</span><span class="hl-1">.</span><span class="hl-2">number</span><span class="hl-1"> = </span><span class="hl-3">2</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot;Cakes ready!&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-7">eat</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-6">if</span><span class="hl-1"> (</span><span class="hl-0">this</span><span class="hl-1">.</span><span class="hl-2">number</span><span class="hl-1"> &gt; </span><span class="hl-3">0</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot;Eating &quot;</span><span class="hl-1"> + </span><span class="hl-0">this</span><span class="hl-1">.</span><span class="hl-2">name</span><span class="hl-1"> + </span><span class="hl-4">&quot;...&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">      </span><span class="hl-0">this</span><span class="hl-1">.</span><span class="hl-2">number</span><span class="hl-1"> = </span><span class="hl-0">this</span><span class="hl-1">.</span><span class="hl-2">number</span><span class="hl-1"> - </span><span class="hl-3">1</span><span class="hl-1">;</span><br/><span class="hl-1">    } </span><span class="hl-6">else</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot;Nothing to eat.&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">breakfast</span><span class="hl-1"> = </span><span class="hl-7">Breakfast</span><span class="hl-1">();</span><br/><span class="hl-0">var</span><span class="hl-1"> </span><span class="hl-2">quickEat</span><span class="hl-1"> = </span><span class="hl-2">breakfast</span><span class="hl-1">.</span><span class="hl-2">eat</span><span class="hl-1">;</span><br/><span class="hl-7">quickEat</span><span class="hl-1">();</span><br/><span class="hl-2">breakfast</span><span class="hl-1">.</span><span class="hl-7">eat</span><span class="hl-1">();</span><br/><span class="hl-7">quickEat</span><span class="hl-1">();</span><br/>
+</code><button>Copy</button></pre>
+<p>Beerlang&#39;s class-based approach allows you to organize your code into reusable and modular components, making it easier to manage and maintain your programs.</p>
+<a id="md:inheritance" class="tsd-anchor"></a><h3><a href="#md:inheritance">Inheritance</a></h3><p>In Beerlang, you can create classes that inherit properties and behaviors from other classes. This is known as inheritance and allows you to create a hierarchy of classes with shared characteristics.</p>
+<p>To define a class that inherits from another class, you can use the <code>&lt;</code> keyword followed by the name of the parent class. The child class can then access and override the properties and methods of the parent class.</p>
+<p>Here&#39;s an example that demonstrates inheritance in Beerlang:</p>
+<pre><code class="language-tsx"><span class="hl-0">class</span><span class="hl-1"> </span><span class="hl-8">Doughnut</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">cook</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot;Fry until golden brown.&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-0">class</span><span class="hl-1"> </span><span class="hl-8">BostonCream</span><span class="hl-1"> &lt; </span><span class="hl-8">Doughnut</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">cook</span><span class="hl-1">() {</span><br/><span class="hl-1">    </span><span class="hl-0">super</span><span class="hl-1">.</span><span class="hl-7">cook</span><span class="hl-1">();</span><br/><span class="hl-1">    </span><span class="hl-2">print</span><span class="hl-1"> </span><span class="hl-4">&quot;Pipe full of custard and coat with chocolate.&quot;</span><span class="hl-1">;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-8">BostonCream</span><span class="hl-1">().</span><span class="hl-8">cook</span><span class="hl-1">();</span>
+</code><button>Copy</button></pre>
+<p>Inheritance allows you to reuse code and create a more organized and modular class structure in Beerlang.</p>
+<a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><p>To use Beerlang, ensure that you have Bun.js and npm installed on your system. Then, follow these steps:</p>
+<ol>
+<li>Clone the Beerlang repository: <code>git clone https://github.com/Riley1101/Beerlang</code>&gt;</li>
+<li>Navigate to the repository: <code>cd beerlang</code></li>
+<li>Install dependencies: <code>bun install</code></li>
+<li>Build the project: <code>bun run build</code></li>
+<li>Run Beerlang: <code>bun start</code></li>
+</ol>
+<a id="md:running-beerlang-script" class="tsd-anchor"></a><h3><a href="#md:running-beerlang-script">Running Beerlang Script</a></h3><p>To execute a Beerlang script, use the following command:</p>
+<pre><code><span class="hl-2">bun</span><span class="hl-1"> </span><span class="hl-2">beer</span><span class="hl-1"> </span><span class="hl-2">myscript</span><span class="hl-1">.</span><span class="hl-2">beer</span>
+</code><button>Copy</button></pre>
+<p>Replace <code>myscript.beer</code> with the path to your Beerlang script file.</p>
+<a id="md:examples" class="tsd-anchor"></a><h2><a href="#md:examples">Examples</a></h2><p>Checkout examples in <code>/examples</code></p>
+<a id="md:contributing" class="tsd-anchor"></a><h2><a href="#md:contributing">Contributing</a></h2><p>Contributions to Beerlang are welcome! If you find any bugs, have feature requests, or want to contribute enhancements, please open an issue or submit a pull request on the</p>
+<a id="md:roadmap" class="tsd-anchor"></a><h2><a href="#md:roadmap">Roadmap</a></h2><p>The next step in the development of Beerlang is to add more fun to it. This will involve introducing some funny syntax to make the language even more playful and unconventional. Stay tuned for these exciting additions to Beerlang!</p>
+<a id="md:resources" class="tsd-anchor"></a><h2><a href="#md:resources">Resources</a></h2><ul>
+<li><a href="https://www.edx.org/learn/computer-science/stanford-university-compilers">https://www.edx.org/learn/computer-science/stanford-university-compilers</a></li>
+<li><a href="https://craftinginterpreters.com/">https://craftinginterpreters.com/</a></li>
+<li><a href="https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811">https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811</a></li>
+</ul>
+<a id="md:license" class="tsd-anchor"></a><h2><a href="#md:license">License</a></h2><p>Beerlang is open source and released under the <a href="https://www.notion.so/arkardev/LICENSE">MIT License</a>.</p>
 </div></div>
 <div class="col-sidebar">
 <div class="page-menu">
@@ -105,12 +122,38 @@ counter(); // &quot;2&quot;.
 <ul>
 <li>
 <ul>
-<li><a href="#md:gideon-v3-with-beer-syntax-support"><span>Gideon v3 with <wbr/>Beer <wbr/>Syntax support</span></a></li>
+<li><a href="#md:beer"><span>Beer</span></a></li>
 <li>
 <ul>
-<li><a href="#md:emoji-support-for-the-memes"><span>Emoji support for the memes</span></a></li></ul></li></ul></li></ul></div></details></div>
+<li><a href="#md:introduction"><span>Introduction</span></a></li>
+<li>
+<ul>
+<li><a href="#md:planned-features"><span>Planned <wbr/>Features</span></a></li></ul></li>
+<li><a href="#md:features"><span>Features</span></a></li>
+<li><a href="#md:syntax"><span>Syntax</span></a></li>
+<li>
+<ul>
+<li><a href="#md:data-types"><span>Data types</span></a></li>
+<li><a href="#md:operators"><span>Operators</span></a></li>
+<li><a href="#md:control-flows"><span>Control flows</span></a></li>
+<li><a href="#md:if-statement"><span>if statement</span></a></li>
+<li><a href="#md:while-loop"><span>while loop</span></a></li>
+<li><a href="#md:for-loop"><span>for loop</span></a></li>
+<li><a href="#md:functions"><span>Functions</span></a></li>
+<li><a href="#md:closures"><span>Closures</span></a></li>
+<li><a href="#md:classes"><span>Classes</span></a></li>
+<li><a href="#md:inheritance"><span>Inheritance</span></a></li></ul></li>
+<li><a href="#md:installation"><span>Installation</span></a></li>
+<li>
+<ul>
+<li><a href="#md:running-beerlang-script"><span>Running <wbr/>Beerlang <wbr/>Script</span></a></li></ul></li>
+<li><a href="#md:examples"><span>Examples</span></a></li>
+<li><a href="#md:contributing"><span>Contributing</span></a></li>
+<li><a href="#md:roadmap"><span>Roadmap</span></a></li>
+<li><a href="#md:resources"><span>Resources</span></a></li>
+<li><a href="#md:license"><span>License</span></a></li></ul></li></ul></li></ul></div></details></div>
 <div class="site-menu">
-<nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>gideon-v3</span></a>
+<nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>Beerlang</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base=".">
 <li><a href="modules/Beer.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>Beer</a></li>
 <li><a href="modules/src_ast.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/ast</a></li>
