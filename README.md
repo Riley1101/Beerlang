@@ -6,6 +6,27 @@ Beer is an interpreter for the Beerlang programming language, written in TypeScr
 
 Beerlang is a dynamically-typed, interpreted programming language designed for simplicity and fun.
 
+## Installation
+
+To install Beerlang globally via npm, you can use the following command:
+
+```
+npm i -g @arkardev/beerlang
+```
+
+This will install Beerlang as a global package, allowing you to run it from any directory in your system.
+
+After installing Beerlang globally, you can execute Beerlang scripts using the `beer` command followed by the path to your Beerlang script file, like this:
+
+```
+beer myscript.beer
+
+```
+
+Replace `myscript.beer` with the path to your Beerlang script file.
+
+By installing Beerlang globally, you can access it as a command-line tool and run Beerlang scripts conveniently.
+
 ### Planned Features
 
 - **Emoji Support**: Beerlang is designed to support emojis as part of its syntax, adding a touch of fun and expressiveness to the language. You will be able to use emojis as variable names, function names, and even as operators.
