@@ -4,7 +4,7 @@ console.log(chalk.blue("Building..."));
 await Bun.build({
   entrypoints: ["./index.ts"],
   minify: true,
-  outdir: "./beer/beer.js",
+  outdir: "./beer",
 });
 
 console.log(chalk.green("Build complete!"));

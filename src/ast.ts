@@ -753,4 +753,8 @@ export class BeerAstPrinter implements SyntaxVisitor<string, string> {
   print_ast(stmt: Stmt[]): void {
     console.log(Log.cyan(this.stringify(stmt)));
   }
+
+  public generate_ast(stmt: Stmt[]): string[] {
+    return this.stringify(stmt).split("\n");
+  }
 }
